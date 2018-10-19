@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37A44E99-4E4E-4784-BFE9-5E4E0443C3D9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JAFA_DATA</RootNamespace>
+    <AssemblyName>JAFA_DATA</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DLP.ICO</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Leadtools, Version=16.5.0.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86" />
+    <Reference Include="Leadtools.Codecs, Version=16.5.0.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86" />
+    <Reference Include="Leadtools.Codecs.Tif, Version=16.5.0.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86" />
+    <Reference Include="Leadtools.WinForms, Version=16.5.0.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86" />
+    <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-client\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="MyLibrary">
+      <HintPath>..\MyLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Data.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\clsGetMst.cs" />
+    <Compile Include="Common\exlMntData.cs" />
+    <Compile Include="Common\exlYukyuMst.cs" />
+    <Compile Include="Common\frmPrg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\frmPrg.designer.cs">
+      <DependentUpon>frmPrg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\global.cs" />
+    <Compile Include="Common\OCRData.cs" />
+    <Compile Include="Common\OCROutput.cs" />
+    <Compile Include="Common\Utility.cs" />
+    <Compile Include="Config\frmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\frmConfig.designer.cs">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\getConfig.cs" />
+    <Compile Include="DataGridViewEX.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JAFA_DATADataSet.cs">
+      <DependentUpon>JAFA_DATADataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="JAFA_DATADataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JAFA_DATADataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="JAFA_OCRDataSet.cs">
+      <DependentUpon>JAFA_OCRDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="JAFA_OCRDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JAFA_OCRDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmMateImportXls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmMateImportXls.Designer.cs">
+      <DependentUpon>frmMateImportXls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmMsMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmMsMenu.Designer.cs">
+      <DependentUpon>frmMsMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmMsOutPath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmMsOutPath.designer.cs">
+      <DependentUpon>frmMsOutPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmShukkinType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmShukkinType.designer.cs">
+      <DependentUpon>frmShukkinType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmMate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmMate.designer.cs">
+      <DependentUpon>frmMate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmPastYukyuData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\frmPastYukyuData.designer.cs">
+      <DependentUpon>frmPastYukyuData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmCorrect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmCorrect.dataShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmCorrect.designer.cs">
+      <DependentUpon>frmCorrect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmCorrectMonth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmCorrectMonth.designer.cs">
+      <DependentUpon>frmCorrectMonth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmCorrectMonth.dataShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmNG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmNG.designer.cs">
+      <DependentUpon>frmNG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmNGReNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmNGReNew.Designer.cs">
+      <DependentUpon>frmNGReNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmOCRIndex.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmOCRIndex.Designer.cs">
+      <DependentUpon>frmOCRIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmPastDataViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmPastDataViewer.designer.cs">
+      <DependentUpon>frmPastDataViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmRecovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmRecovery.designer.cs">
+      <DependentUpon>frmRecovery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmPastData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCR\frmPastData.designer.cs">
+      <DependentUpon>frmPastData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OCR\frmPastData.dataShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="workData\frmPastWorksViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmPastWorksViewer.designer.cs">
+      <DependentUpon>frmPastWorksViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmWorkdataCsv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmWorkdataCsv.Designer.cs">
+      <DependentUpon>frmWorkdataCsv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmWorkMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmWorkMenu.Designer.cs">
+      <DependentUpon>frmWorkMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmYukyuViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmYukyuViewer.designer.cs">
+      <DependentUpon>frmYukyuViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmKyujitsuWorkViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmKyujitsuWorkViewer.designer.cs">
+      <DependentUpon>frmKyujitsuWorkViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmWeek40hOverViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmWeek40hOverViewer.designer.cs">
+      <DependentUpon>frmWeek40hOverViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workData\frmKotsuhiCsv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmKotsuhiCsv.Designer.cs">
+      <DependentUpon>frmKotsuhiCsv.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Common\frmPrg.resx">
+      <DependentUpon>frmPrg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\frmConfig.resx">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmMateImportXls.resx">
+      <DependentUpon>frmMateImportXls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmMsMenu.resx">
+      <DependentUpon>frmMsMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmMsOutPath.resx">
+      <DependentUpon>frmMsOutPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmShukkinType.resx">
+      <DependentUpon>frmShukkinType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmMate.resx">
+      <DependentUpon>frmMate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\frmPastYukyuData.resx">
+      <DependentUpon>frmPastYukyuData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmCorrect.resx">
+      <DependentUpon>frmCorrect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmCorrectMonth.resx">
+      <DependentUpon>frmCorrectMonth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmNG.resx">
+      <DependentUpon>frmNG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmNGReNew.resx">
+      <DependentUpon>frmNGReNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmOCRIndex.resx">
+      <DependentUpon>frmOCRIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmPastDataViewer.resx">
+      <DependentUpon>frmPastDataViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmRecovery.resx">
+      <DependentUpon>frmRecovery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCR\frmPastData.resx">
+      <DependentUpon>frmPastData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="workData\frmPastWorksViewer.resx">
+      <DependentUpon>frmPastWorksViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmWorkdataCsv.resx">
+      <DependentUpon>frmWorkdataCsv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmWorkMenu.resx">
+      <DependentUpon>frmWorkMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmYukyuViewer.resx">
+      <DependentUpon>frmYukyuViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmKyujitsuWorkViewer.resx">
+      <DependentUpon>frmKyujitsuWorkViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmWeek40hOverViewer.resx">
+      <DependentUpon>frmWeek40hOverViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmKotsuhiCsv.resx">
+      <DependentUpon>frmKotsuhiCsv.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="JAFA_DATADataSet.xsc">
+      <DependentUpon>JAFA_DATADataSet.xsd</DependentUpon>
+    </None>
+    <None Include="JAFA_DATADataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>JAFA_DATADataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="JAFA_DATADataSet.xss">
+      <DependentUpon>JAFA_DATADataSet.xsd</DependentUpon>
+    </None>
+    <None Include="JAFA_OCRDataSet.xsc">
+      <DependentUpon>JAFA_OCRDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="JAFA_OCRDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>JAFA_OCRDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="JAFA_OCRDataSet.xss">
+      <DependentUpon>JAFA_OCRDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADODB">
+      <Guid>{2A75196C-D9EB-4129-B803-931327F72D5C}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="JRO">
+      <Guid>{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>6</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLP.ICO" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
