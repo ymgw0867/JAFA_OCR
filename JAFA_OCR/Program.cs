@@ -5,6 +5,9 @@ using System.Windows.Forms;
 
 namespace JAFA_OCR
 {
+    /// <summary>
+    ///     2018/10/19 GitHub master
+    /// </summary>
     static class Program
     {
         /// <summary>
