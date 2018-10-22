@@ -55,7 +55,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblErrMsg = new System.Windows.Forms.Label();
             this.lblFuri = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblZenKou = new System.Windows.Forms.Label();
             this.txtKoutsuuhi = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -69,6 +68,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dGV = new JAFA_DATA.DataGridViewEx();
+            this.lblShainkbn = new System.Windows.Forms.Label();
+            this.lblShainKbnName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
@@ -81,7 +82,7 @@
             this.lblName.Font = new System.Drawing.Font("Meiryo UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblName.Location = new System.Drawing.Point(694, 47);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(168, 34);
+            this.lblName.Size = new System.Drawing.Size(140, 34);
             this.lblName.TabIndex = 58;
             this.lblName.Text = "山田　太郎";
             this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -104,7 +105,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label3.Location = new System.Drawing.Point(779, 15);
+            this.label3.Location = new System.Drawing.Point(772, 15);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 24);
             this.label3.TabIndex = 56;
@@ -114,7 +115,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(702, 15);
+            this.label2.Location = new System.Drawing.Point(695, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 24);
             this.label2.TabIndex = 55;
@@ -124,7 +125,7 @@
             // 
             this.txtMonth.Font = new System.Drawing.Font("Meiryo UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtMonth.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtMonth.Location = new System.Drawing.Point(734, 10);
+            this.txtMonth.Location = new System.Drawing.Point(727, 10);
             this.txtMonth.MaxLength = 2;
             this.txtMonth.Name = "txtMonth";
             this.txtMonth.Size = new System.Drawing.Size(42, 34);
@@ -139,12 +140,12 @@
             this.txtYear.BackColor = System.Drawing.SystemColors.Window;
             this.txtYear.Font = new System.Drawing.Font("Meiryo UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtYear.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtYear.Location = new System.Drawing.Point(660, 10);
-            this.txtYear.MaxLength = 2;
+            this.txtYear.Location = new System.Drawing.Point(611, 10);
+            this.txtYear.MaxLength = 4;
             this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(42, 34);
+            this.txtYear.Size = new System.Drawing.Size(82, 34);
             this.txtYear.TabIndex = 1;
-            this.txtYear.Text = "27";
+            this.txtYear.Text = "2018";
             this.txtYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtYear.WordWrap = false;
             this.txtYear.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYear_KeyPress);
@@ -161,9 +162,9 @@
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(175, 813);
+            this.hScrollBar1.Location = new System.Drawing.Point(173, 677);
             this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(428, 27);
+            this.hScrollBar1.Size = new System.Drawing.Size(375, 27);
             this.hScrollBar1.TabIndex = 65;
             this.toolTip1.SetToolTip(this.hScrollBar1, "出勤簿を移動します");
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
@@ -175,7 +176,7 @@
             // btnMinus
             // 
             this.btnMinus.Image = ((System.Drawing.Image)(resources.GetObject("btnMinus.Image")));
-            this.btnMinus.Location = new System.Drawing.Point(40, 813);
+            this.btnMinus.Location = new System.Drawing.Point(38, 677);
             this.btnMinus.Name = "btnMinus";
             this.btnMinus.Size = new System.Drawing.Size(27, 27);
             this.btnMinus.TabIndex = 109;
@@ -187,7 +188,7 @@
             // btnPlus
             // 
             this.btnPlus.Image = ((System.Drawing.Image)(resources.GetObject("btnPlus.Image")));
-            this.btnPlus.Location = new System.Drawing.Point(14, 813);
+            this.btnPlus.Location = new System.Drawing.Point(12, 677);
             this.btnPlus.Name = "btnPlus";
             this.btnPlus.Size = new System.Drawing.Size(27, 27);
             this.btnPlus.TabIndex = 108;
@@ -200,7 +201,7 @@
             // 
             this.btnEnd.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnEnd.Image = ((System.Drawing.Image)(resources.GetObject("btnEnd.Image")));
-            this.btnEnd.Location = new System.Drawing.Point(148, 813);
+            this.btnEnd.Location = new System.Drawing.Point(146, 677);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(26, 27);
             this.btnEnd.TabIndex = 74;
@@ -213,7 +214,7 @@
             // 
             this.btnNext.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnNext.Image = ((System.Drawing.Image)(resources.GetObject("btnNext.Image")));
-            this.btnNext.Location = new System.Drawing.Point(123, 813);
+            this.btnNext.Location = new System.Drawing.Point(121, 677);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(26, 27);
             this.btnNext.TabIndex = 73;
@@ -226,7 +227,7 @@
             // 
             this.btnBefore.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnBefore.Image = ((System.Drawing.Image)(resources.GetObject("btnBefore.Image")));
-            this.btnBefore.Location = new System.Drawing.Point(98, 813);
+            this.btnBefore.Location = new System.Drawing.Point(96, 677);
             this.btnBefore.Name = "btnBefore";
             this.btnBefore.Size = new System.Drawing.Size(26, 27);
             this.btnBefore.TabIndex = 72;
@@ -239,7 +240,7 @@
             // 
             this.btnFirst.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnFirst.Image")));
-            this.btnFirst.Location = new System.Drawing.Point(73, 813);
+            this.btnFirst.Location = new System.Drawing.Point(71, 677);
             this.btnFirst.Name = "btnFirst";
             this.btnFirst.Size = new System.Drawing.Size(26, 27);
             this.btnFirst.TabIndex = 71;
@@ -253,7 +254,7 @@
             this.btnDel.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
             this.btnDel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDel.Location = new System.Drawing.Point(863, 807);
+            this.btnDel.Location = new System.Drawing.Point(861, 671);
             this.btnDel.Name = "btnDel";
             this.btnDel.Size = new System.Drawing.Size(131, 33);
             this.btnDel.TabIndex = 7;
@@ -283,7 +284,7 @@
             this.btnRtn.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnRtn.Image = ((System.Drawing.Image)(resources.GetObject("btnRtn.Image")));
             this.btnRtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRtn.Location = new System.Drawing.Point(996, 807);
+            this.btnRtn.Location = new System.Drawing.Point(994, 671);
             this.btnRtn.Name = "btnRtn";
             this.btnRtn.Size = new System.Drawing.Size(108, 33);
             this.btnRtn.TabIndex = 8;
@@ -297,7 +298,7 @@
             this.btnErrCheck.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnErrCheck.Image = ((System.Drawing.Image)(resources.GetObject("btnErrCheck.Image")));
             this.btnErrCheck.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnErrCheck.Location = new System.Drawing.Point(609, 807);
+            this.btnErrCheck.Location = new System.Drawing.Point(607, 671);
             this.btnErrCheck.Name = "btnErrCheck";
             this.btnErrCheck.Size = new System.Drawing.Size(121, 33);
             this.btnErrCheck.TabIndex = 5;
@@ -322,7 +323,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 8);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(591, 799);
+            this.pictureBox1.Size = new System.Drawing.Size(536, 667);
             this.pictureBox1.TabIndex = 120;
             this.pictureBox1.TabStop = false;
             // 
@@ -330,7 +331,7 @@
             // 
             this.leadImg.Location = new System.Drawing.Point(12, 9);
             this.leadImg.Name = "leadImg";
-            this.leadImg.Size = new System.Drawing.Size(589, 798);
+            this.leadImg.Size = new System.Drawing.Size(536, 666);
             this.leadImg.TabIndex = 121;
             this.leadImg.MouseLeave += new System.EventHandler(this.leadImg_MouseLeave);
             this.leadImg.MouseMove += new System.Windows.Forms.MouseEventHandler(this.leadImg_MouseMove);
@@ -339,19 +340,18 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.lblErrMsg);
-            this.panel1.Location = new System.Drawing.Point(609, 697);
+            this.panel1.Location = new System.Drawing.Point(609, 573);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(495, 60);
+            this.panel1.Size = new System.Drawing.Size(495, 52);
             this.panel1.TabIndex = 162;
             // 
             // lblErrMsg
             // 
-            this.lblErrMsg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblErrMsg.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblErrMsg.ForeColor = System.Drawing.Color.Red;
-            this.lblErrMsg.Location = new System.Drawing.Point(0, 0);
+            this.lblErrMsg.Location = new System.Drawing.Point(2, 0);
             this.lblErrMsg.Name = "lblErrMsg";
-            this.lblErrMsg.Size = new System.Drawing.Size(491, 56);
+            this.lblErrMsg.Size = new System.Drawing.Size(489, 48);
             this.lblErrMsg.TabIndex = 0;
             this.lblErrMsg.Text = "label33";
             this.lblErrMsg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -361,28 +361,18 @@
             this.lblFuri.BackColor = System.Drawing.SystemColors.Window;
             this.lblFuri.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblFuri.Font = new System.Drawing.Font("Meiryo UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblFuri.Location = new System.Drawing.Point(868, 47);
+            this.lblFuri.Location = new System.Drawing.Point(836, 47);
             this.lblFuri.Name = "lblFuri";
-            this.lblFuri.Size = new System.Drawing.Size(236, 34);
+            this.lblFuri.Size = new System.Drawing.Size(131, 34);
             this.lblFuri.TabIndex = 265;
             this.lblFuri.Text = "ﾔﾏﾀﾞﾀﾛｳ";
             this.lblFuri.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(611, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 24);
-            this.label1.TabIndex = 266;
-            this.label1.Text = "平成";
             // 
             // lblZenKou
             // 
             this.lblZenKou.BackColor = System.Drawing.SystemColors.Control;
             this.lblZenKou.Font = new System.Drawing.Font("Meiryo UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblZenKou.Location = new System.Drawing.Point(807, 10);
+            this.lblZenKou.Location = new System.Drawing.Point(800, 10);
             this.lblZenKou.Name = "lblZenKou";
             this.lblZenKou.Size = new System.Drawing.Size(55, 34);
             this.lblZenKou.TabIndex = 267;
@@ -391,12 +381,12 @@
             // 
             // txtKoutsuuhi
             // 
-            this.txtKoutsuuhi.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.txtKoutsuuhi.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtKoutsuuhi.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtKoutsuuhi.Location = new System.Drawing.Point(669, 617);
+            this.txtKoutsuuhi.Location = new System.Drawing.Point(655, 514);
             this.txtKoutsuuhi.MaxLength = 5;
             this.txtKoutsuuhi.Name = "txtKoutsuuhi";
-            this.txtKoutsuuhi.Size = new System.Drawing.Size(95, 26);
+            this.txtKoutsuuhi.Size = new System.Drawing.Size(55, 23);
             this.txtKoutsuuhi.TabIndex = 268;
             this.txtKoutsuuhi.Text = "50000";
             this.txtKoutsuuhi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -404,8 +394,8 @@
             // label4
             // 
             this.label4.BackColor = System.Drawing.SystemColors.Control;
-            this.label4.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label4.Location = new System.Drawing.Point(611, 616);
+            this.label4.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label4.Location = new System.Drawing.Point(598, 513);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 27);
             this.label4.TabIndex = 269;
@@ -415,22 +405,22 @@
             // label5
             // 
             this.label5.BackColor = System.Drawing.SystemColors.Control;
-            this.label5.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label5.Location = new System.Drawing.Point(779, 620);
+            this.label5.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label5.Location = new System.Drawing.Point(710, 517);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 19);
+            this.label5.Size = new System.Drawing.Size(34, 19);
             this.label5.TabIndex = 271;
             this.label5.Text = "日当";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtNittou
             // 
-            this.txtNittou.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.txtNittou.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtNittou.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtNittou.Location = new System.Drawing.Point(834, 617);
+            this.txtNittou.Location = new System.Drawing.Point(745, 514);
             this.txtNittou.MaxLength = 5;
             this.txtNittou.Name = "txtNittou";
-            this.txtNittou.Size = new System.Drawing.Size(95, 26);
+            this.txtNittou.Size = new System.Drawing.Size(57, 23);
             this.txtNittou.TabIndex = 270;
             this.txtNittou.Text = "98765";
             this.txtNittou.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -438,22 +428,22 @@
             // label6
             // 
             this.label6.BackColor = System.Drawing.SystemColors.Control;
-            this.label6.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label6.Location = new System.Drawing.Point(949, 620);
+            this.label6.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label6.Location = new System.Drawing.Point(807, 517);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 19);
+            this.label6.Size = new System.Drawing.Size(44, 19);
             this.label6.TabIndex = 273;
             this.label6.Text = "宿泊費";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtShukuhakuhi
             // 
-            this.txtShukuhakuhi.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.txtShukuhakuhi.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtShukuhakuhi.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtShukuhakuhi.Location = new System.Drawing.Point(1009, 617);
+            this.txtShukuhakuhi.Location = new System.Drawing.Point(855, 514);
             this.txtShukuhakuhi.MaxLength = 5;
             this.txtShukuhakuhi.Name = "txtShukuhakuhi";
-            this.txtShukuhakuhi.Size = new System.Drawing.Size(95, 26);
+            this.txtShukuhakuhi.Size = new System.Drawing.Size(59, 23);
             this.txtShukuhakuhi.TabIndex = 272;
             this.txtShukuhakuhi.Text = "34500";
             this.txtShukuhakuhi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -463,7 +453,7 @@
             this.lblWarn.BackColor = System.Drawing.SystemColors.Control;
             this.lblWarn.Font = new System.Drawing.Font("Meiryo UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblWarn.ForeColor = System.Drawing.Color.Red;
-            this.lblWarn.Location = new System.Drawing.Point(611, 768);
+            this.lblWarn.Location = new System.Drawing.Point(609, 630);
             this.lblWarn.Name = "lblWarn";
             this.lblWarn.Size = new System.Drawing.Size(493, 33);
             this.lblWarn.TabIndex = 274;
@@ -474,8 +464,8 @@
             // 
             this.lblWdays.BackColor = System.Drawing.SystemColors.Window;
             this.lblWdays.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblWdays.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblWdays.Location = new System.Drawing.Point(1067, 655);
+            this.lblWdays.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblWdays.Location = new System.Drawing.Point(1065, 543);
             this.lblWdays.Name = "lblWdays";
             this.lblWdays.Size = new System.Drawing.Size(37, 25);
             this.lblWdays.TabIndex = 282;
@@ -485,8 +475,8 @@
             // 
             this.lblSyoubi.BackColor = System.Drawing.SystemColors.Window;
             this.lblSyoubi.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSyoubi.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblSyoubi.Location = new System.Drawing.Point(892, 657);
+            this.lblSyoubi.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblSyoubi.Location = new System.Drawing.Point(992, 515);
             this.lblSyoubi.Name = "lblSyoubi";
             this.lblSyoubi.Size = new System.Drawing.Size(37, 25);
             this.lblSyoubi.TabIndex = 281;
@@ -495,8 +485,8 @@
             // label8
             // 
             this.label8.BackColor = System.Drawing.SystemColors.Control;
-            this.label8.Font = new System.Drawing.Font("Meiryo UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label8.Location = new System.Drawing.Point(960, 655);
+            this.label8.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label8.Location = new System.Drawing.Point(958, 543);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(106, 27);
             this.label8.TabIndex = 280;
@@ -506,19 +496,19 @@
             // label7
             // 
             this.label7.BackColor = System.Drawing.SystemColors.Control;
-            this.label7.Font = new System.Drawing.Font("Meiryo UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label7.Location = new System.Drawing.Point(780, 655);
+            this.label7.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label7.Location = new System.Drawing.Point(917, 513);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(106, 27);
+            this.label7.Size = new System.Drawing.Size(69, 27);
             this.label7.TabIndex = 279;
             this.label7.Text = "週開始曜日";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // dGV
             // 
-            this.dGV.Location = new System.Drawing.Point(609, 99);
+            this.dGV.Location = new System.Drawing.Point(611, 87);
             this.dGV.Name = "dGV";
-            this.dGV.Size = new System.Drawing.Size(495, 501);
+            this.dGV.Size = new System.Drawing.Size(495, 421);
             this.dGV.TabIndex = 0;
             this.dGV.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter_1);
             this.dGV.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
@@ -526,11 +516,37 @@
             this.dGV.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             this.dGV.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
             // 
+            // lblShainkbn
+            // 
+            this.lblShainkbn.BackColor = System.Drawing.SystemColors.Window;
+            this.lblShainkbn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblShainkbn.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblShainkbn.Location = new System.Drawing.Point(1065, 39);
+            this.lblShainkbn.Name = "lblShainkbn";
+            this.lblShainkbn.Size = new System.Drawing.Size(23, 34);
+            this.lblShainkbn.TabIndex = 283;
+            this.lblShainkbn.Text = "1";
+            this.lblShainkbn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblShainKbnName
+            // 
+            this.lblShainKbnName.BackColor = System.Drawing.SystemColors.Window;
+            this.lblShainKbnName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblShainKbnName.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblShainKbnName.Location = new System.Drawing.Point(969, 47);
+            this.lblShainKbnName.Name = "lblShainKbnName";
+            this.lblShainKbnName.Size = new System.Drawing.Size(137, 34);
+            this.lblShainKbnName.TabIndex = 284;
+            this.lblShainKbnName.Text = "外国人技能実習生";
+            this.lblShainKbnName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmCorrect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1116, 848);
+            this.ClientSize = new System.Drawing.Size(1116, 707);
+            this.Controls.Add(this.lblShainKbnName);
+            this.Controls.Add(this.lblShainkbn);
             this.Controls.Add(this.lblWdays);
             this.Controls.Add(this.lblSyoubi);
             this.Controls.Add(this.label8);
@@ -542,7 +558,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtKoutsuuhi);
             this.Controls.Add(this.lblZenKou);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblFuri);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.txtNo);
@@ -612,7 +627,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblErrMsg;
         private System.Windows.Forms.Label lblFuri;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblZenKou;
         private System.Windows.Forms.TextBox txtKoutsuuhi;
         private System.Windows.Forms.Label label4;
@@ -625,5 +639,7 @@
         private System.Windows.Forms.Label lblSyoubi;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblShainkbn;
+        private System.Windows.Forms.Label lblShainKbnName;
     }
 }

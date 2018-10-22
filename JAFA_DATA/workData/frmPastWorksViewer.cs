@@ -24,12 +24,12 @@ namespace JAFA_DATA.workData
             InitializeComponent();
 
             adp.Fill(dts.勤怠データ);
-            mAdp.Fill(dts.メイトマスター);
+            mAdp.Fill(dts.社員マスター);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
         JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter adp = new JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
 
         #region グリッドカラム定義
         string colYear = "c0";
@@ -94,11 +94,11 @@ namespace JAFA_DATA.workData
             GridViewSetting(dg1);
 
             // 年月表示
-            txtYear.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear.Text = global.cnfYear.ToString();
             txtMonth.Text = global.cnfMonth.ToString();
             txtYear.Focus();
 
-            txtYear2.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear2.Text = global.cnfYear.ToString();
             txtMonth2.Text = global.cnfMonth.ToString();
 
             label10.Text = string.Empty;
@@ -381,7 +381,7 @@ namespace JAFA_DATA.workData
         /// -------------------------------------------------------------------
         private void cmbShozokuLoad()
         {
-            foreach (var t in dts.メイトマスター.OrderBy(a => a.所属コード)
+            foreach (var t in dts.社員マスター.OrderBy(a => a.所属コード)
                                     .GroupBy(a => a.所属名)
                                     .Select(a => a.Key))
             {

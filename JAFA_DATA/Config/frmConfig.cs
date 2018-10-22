@@ -27,7 +27,7 @@ namespace JAFA_DATA.Config
             dhAdp.Fill(dtsD.勤務票ヘッダ);
             chAdp.Fill(dtsC.確定勤務票ヘッダ);
 
-            label5.Text = Properties.Settings.Default.gengou;
+            //label5.Text = Properties.Settings.Default.gengou; // 西暦管理とする 2018/10/19
             getConfigData();
         }
 
@@ -51,6 +51,16 @@ namespace JAFA_DATA.Config
             txtArchive.Text = s.データ保存月数.ToString();
             _YY = s.年.ToString();
             _MM = s.月.ToString();
+
+            // FA仕様：2018/10/19
+            if (s.Is祝日ＣＳＶデータパスNull())
+            {
+                txtCsvPath.Text = string.Empty;
+            }
+            else
+            {
+                txtCsvPath.Text = s.祝日ＣＳＶデータパス;
+            }
         }
 
         string _YY = string.Empty;
@@ -177,6 +187,8 @@ namespace JAFA_DATA.Config
             s.データ保存月数 = int.Parse(txtArchive.Text);
             s.更新年月日 = DateTime.Now;
 
+            s.祝日ＣＳＶデータパス = txtCsvPath.Text; // FA仕様：2018/10/19
+
             // 環境設定データ更新
             adp.Update(dts.環境設定);
 
@@ -268,6 +280,17 @@ namespace JAFA_DATA.Config
             else
             {
                 return false;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //フォルダーを選択する
+            string flName = userFolderSelect();
+
+            if (flName != string.Empty)
+            {
+                txtCsvPath.Text = flName;
             }
         }
     }

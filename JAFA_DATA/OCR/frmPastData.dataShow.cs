@@ -42,7 +42,7 @@ namespace JAFA_DATA.OCR
             * ヘッダ情報表示
             */
             // 年月
-            txtYear.Text = Utility.EmptytoZero((r.年 - Properties.Settings.Default.rekiHosei).ToString());
+            txtYear.Text = Utility.EmptytoZero(r.年.ToString());
             txtMonth.Text = Utility.EmptytoZero(r.月.ToString());
 
             // 交通費等の入力を不可とする

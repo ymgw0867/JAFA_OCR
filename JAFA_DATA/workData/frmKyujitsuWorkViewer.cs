@@ -60,7 +60,7 @@ namespace JAFA_DATA.workData
             GridViewSetting(dg1);
 
             // 年月表示
-            txtYear.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear.Text = global.cnfYear.ToString();
             txtMonth.Text = global.cnfMonth.ToString();
             txtYear.Focus();
 

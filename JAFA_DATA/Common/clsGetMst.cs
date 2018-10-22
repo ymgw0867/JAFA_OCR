@@ -14,17 +14,18 @@ namespace JAFA_DATA.Common
 
         public clsGetMst()
         {
-            adp.Fill(dts.メイトマスター);
+            adp.Fill(dts.社員マスター);
             adpS.Fill(dts.出勤区分);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.出勤区分TableAdapter adpS = new JAFA_OCRDataSetTableAdapters.出勤区分TableAdapter();
         
         /// -------------------------------------------------------------------------
         /// <summary>
-        ///     メイトマスターから社員名を社員コードで検索する </summary>
+        ///     社員マスターから社員名を社員コードで検索する : 
+        ///     2018/10/22 社員区分を追加</summary>
         /// <param name="code">
         ///     社員コード </param>
         /// <returns>
@@ -32,15 +33,16 @@ namespace JAFA_DATA.Common
         /// -------------------------------------------------------------------------
         public string[] getKojinMst(int code)
         {
-            string[] sName = new string[6];
+            string[] sName = new string[7];
             sName[0] = global.NOT_FOUND;
             sName[1] = global.NOT_FOUND;
             sName[2] = global.NOT_FOUND;
             sName[3] = global.NOT_FOUND;
             sName[4] = global.NOT_FOUND;
             sName[5] = global.NOT_FOUND;
+            sName[6] = global.NOT_FOUND;    // 社員区分追加：2018/10/22
 
-            var s = dts.メイトマスター.Where(a => a.職員コード == code);
+            var s = dts.社員マスター.Where(a => a.職員コード == code);
 
             foreach (var t in s)
             {
@@ -48,8 +50,14 @@ namespace JAFA_DATA.Common
                 sName[1] = t.フリガナ;
                 sName[2] = t.所属コード.ToString();
                 sName[3] = t.所属名;
-                sName[4] = "日月火水木金土".Substring(t.週開始曜日, 1);
+                //sName[4] = "日月火水木金土".Substring(t.週開始曜日, 1);   // 2018/10/22 コメント化
                 sName[5] = t.週所定労働日数.ToString();
+
+                // 2018/10/22
+                if (!t.Is調整年月日Null())
+                {
+                    sName[6] = t.社員区分.ToString();   // 2018/10/22
+                }
 
                 break;
             }
@@ -59,15 +67,15 @@ namespace JAFA_DATA.Common
 
         /// -------------------------------------------------------------------------
         /// <summary>
-        ///     社員コードでメイトマスターRowオブジェクトを取得する </summary>
+        ///     社員コードで社員マスターRowオブジェクトを取得する </summary>
         /// <param name="code">
         ///     社員コード </param>
         /// <returns>
-        ///     JAHR_OCRDataSet.メイトマスターRow </returns>
+        ///     JAHR_OCRDataSet.社員マスターRow </returns>
         /// -------------------------------------------------------------------------
-        public JAFA_OCRDataSet.メイトマスターRow getKojinMstRow(int code)
+        public JAFA_OCRDataSet.社員マスターRow getKojinMstRow(int code)
         {
-            JAFA_OCRDataSet.メイトマスターRow s = (JAFA_OCRDataSet.メイトマスターRow)dts.メイトマスター.FindBy職員コード(code);
+            JAFA_OCRDataSet.社員マスターRow s = (JAFA_OCRDataSet.社員マスターRow)dts.社員マスター.FindBy職員コード(code);
             if (s == null)
             {
                 return null;

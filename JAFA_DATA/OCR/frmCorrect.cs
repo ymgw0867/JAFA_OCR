@@ -414,6 +414,8 @@ namespace JAFA_DATA.OCR
 
             // 社員番号のとき
             lblName.Text = string.Empty;
+            lblShainkbn.Text = string.Empty;
+            lblShainKbnName.Text = string.Empty;
 
             if (txtNo.Text != string.Empty)
             {
@@ -425,6 +427,18 @@ namespace JAFA_DATA.OCR
                 lblFuri.Text = sName[1];
                 lblSyoubi.Text = sName[4];
                 lblWdays.Text = sName[5];
+
+                // 社員区分 2018/10/22
+                if (sName[6] != global.NOT_FOUND)
+                {
+                    lblShainkbn.Text = sName[6];
+                    lblShainKbnName.Text = global.shainKbnArray[Utility.StrtoInt(sName[6])];
+                }
+                else
+                {
+                    lblShainkbn.Text = string.Empty;
+                    lblShainKbnName.Text = string.Empty;
+                }
             }
         }
 
@@ -518,8 +532,7 @@ namespace JAFA_DATA.OCR
                     if (Utility.NumericCheck(dGV[cDay, tempRow].Value.ToString()))
                     {
                         {
-                            sDate = (Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei).ToString()
-                                    + "/" +
+                            sDate = Utility.StrtoInt(txtYear.Text) + "/" +
                                     Utility.EmptytoZero(txtMonth.Text) + "/" +
                                     Utility.EmptytoZero(dGV[cDay, tempRow].Value.ToString());
                                                         
@@ -836,7 +849,7 @@ namespace JAFA_DATA.OCR
                 r.社員名 = Utility.NulltoStr(lblName.Text);
 
                 clsGetMst ms = new clsGetMst();
-                JAFA_OCRDataSet.メイトマスターRow mr = ms.getKojinMstRow(r.社員番号);
+                JAFA_OCRDataSet.社員マスターRow mr = ms.getKojinMstRow(r.社員番号);
                 if (mr != null)
                 {
                     r.所属コード = mr.所属コード.ToString();
@@ -1592,19 +1605,24 @@ namespace JAFA_DATA.OCR
             clsGetMst ms = new clsGetMst();       
             foreach (var t in dts.勤務票ヘッダ.OrderBy(a => a.ID))
             {
-                JAFA_OCRDataSet.メイトマスターRow sr = ms.getKojinMstRow(t.社員番号);
+                // 2018/10/22 コメント化
+                //JAFA_OCRDataSet.社員マスターRow sr = ms.getKojinMstRow(t.社員番号);
+                //DayOfWeek dw = DayOfWeek.Monday;
+                //if (!sr.IsNull(0))
+                //{
+                //    // 週開始曜日を取得
+                //    dw = (DayOfWeek)sr.週開始曜日;
+                //}
+
+                // 2018/10/22　週開始は日曜日
                 DayOfWeek dw = DayOfWeek.Monday;
-                if (!sr.IsNull(0))
-                {
-                    // 週開始曜日を取得
-                    dw = (DayOfWeek)sr.週開始曜日;
-                }
+                dw = (DayOfWeek)(0);
 
                 foreach (var m in dts.勤務票明細.Where(a => a.ヘッダID == t.ID))
                 {
                     DateTime wDt;
                     int wNum = 0;
-                    string dt = (t.年 + Properties.Settings.Default.rekiHosei).ToString() + "/" + t.月.ToString() + "/" + m.日付.ToString();
+                    string dt = t.年.ToString() + "/" + t.月.ToString() + "/" + m.日付.ToString();
                     if (DateTime.TryParse(dt, out wDt))
                     {
                         // 日付から週番号を取得

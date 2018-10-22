@@ -80,8 +80,8 @@ namespace JAFA_DATA
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // 環境設定年月の確認
-            string msg = "処理対象年月は " + Properties.Settings.Default.gengou + global.cnfYear.ToString() + "年 " + global.cnfMonth.ToString() + "月です。よろしいですか？";
+            // 環境設定年月の確認 : 西暦 2018/10/19
+            string msg = "処理対象年月は " + global.cnfYear.ToString() + "年 " + global.cnfMonth.ToString() + "月です。よろしいですか？";
             if (MessageBox.Show(msg, "勤務データ登録", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No) return;
             
             this.Hide();
@@ -92,8 +92,8 @@ namespace JAFA_DATA
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // 環境設定年月の確認
-            string msg = "処理対象年月は " + Properties.Settings.Default.gengou + global.cnfYear.ToString() + "年 " + global.cnfMonth.ToString() + "月です。よろしいですか？";
+            // 環境設定年月の確認 : 西暦 2018/10/19
+            string msg = "処理対象年月は " + global.cnfYear.ToString() + "年 " + global.cnfMonth.ToString() + "月です。よろしいですか？";
             if (MessageBox.Show(msg, "勤務データ登録", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No) return;
 
             this.Hide();

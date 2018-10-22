@@ -44,12 +44,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
+            this.txtCsvPath = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(215, 29);
+            this.label1.Location = new System.Drawing.Point(158, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(24, 19);
             this.label1.TabIndex = 0;
@@ -57,8 +60,8 @@
             // 
             // txtYear
             // 
-            this.txtYear.Location = new System.Drawing.Point(156, 26);
-            this.txtYear.MaxLength = 2;
+            this.txtYear.Location = new System.Drawing.Point(98, 26);
+            this.txtYear.MaxLength = 4;
             this.txtYear.Name = "txtYear";
             this.txtYear.Size = new System.Drawing.Size(59, 27);
             this.txtYear.TabIndex = 0;
@@ -67,7 +70,7 @@
             // 
             // txtMonth
             // 
-            this.txtMonth.Location = new System.Drawing.Point(244, 26);
+            this.txtMonth.Location = new System.Drawing.Point(187, 26);
             this.txtMonth.MaxLength = 2;
             this.txtMonth.Name = "txtMonth";
             this.txtMonth.Size = new System.Drawing.Size(59, 27);
@@ -78,7 +81,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(304, 29);
+            this.label2.Location = new System.Drawing.Point(247, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(24, 19);
             this.label2.TabIndex = 2;
@@ -87,7 +90,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 72);
+            this.label3.Location = new System.Drawing.Point(23, 73);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(165, 19);
             this.label3.TabIndex = 4;
@@ -95,7 +98,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(518, 94);
+            this.button1.Location = new System.Drawing.Point(509, 94);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(69, 28);
             this.button1.TabIndex = 3;
@@ -106,7 +109,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 29);
+            this.label4.Location = new System.Drawing.Point(23, 29);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 19);
             this.label4.TabIndex = 7;
@@ -114,7 +117,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(393, 199);
+            this.button2.Location = new System.Drawing.Point(393, 291);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 34);
             this.button2.TabIndex = 5;
@@ -124,7 +127,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(493, 199);
+            this.button3.Location = new System.Drawing.Point(493, 291);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(94, 34);
             this.button3.TabIndex = 6;
@@ -135,7 +138,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(32, 144);
+            this.label6.Location = new System.Drawing.Point(23, 144);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 19);
             this.label6.TabIndex = 11;
@@ -144,7 +147,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(164, 144);
+            this.label7.Location = new System.Drawing.Point(151, 144);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(181, 19);
             this.label7.TabIndex = 12;
@@ -152,7 +155,7 @@
             // 
             // txtArchive
             // 
-            this.txtArchive.Location = new System.Drawing.Point(111, 141);
+            this.txtArchive.Location = new System.Drawing.Point(98, 141);
             this.txtArchive.MaxLength = 2;
             this.txtArchive.Name = "txtArchive";
             this.txtArchive.Size = new System.Drawing.Size(53, 27);
@@ -172,7 +175,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label8.Location = new System.Drawing.Point(33, 183);
+            this.label8.Location = new System.Drawing.Point(161, 172);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(223, 15);
             this.label8.TabIndex = 15;
@@ -181,16 +184,46 @@
             // txtPath
             // 
             this.txtPath.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtPath.Location = new System.Drawing.Point(36, 95);
+            this.txtPath.Location = new System.Drawing.Point(27, 95);
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(482, 27);
             this.txtPath.TabIndex = 16;
+            // 
+            // txtCsvPath
+            // 
+            this.txtCsvPath.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.txtCsvPath.Location = new System.Drawing.Point(27, 231);
+            this.txtCsvPath.Name = "txtCsvPath";
+            this.txtCsvPath.Size = new System.Drawing.Size(482, 27);
+            this.txtCsvPath.TabIndex = 19;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(509, 230);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(69, 28);
+            this.button4.TabIndex = 17;
+            this.button4.Text = "参照";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(23, 209);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(187, 19);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "祝日ＣＳＶデータ作成先パス";
             // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(621, 251);
+            this.ClientSize = new System.Drawing.Size(604, 337);
+            this.Controls.Add(this.txtCsvPath);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
@@ -236,5 +269,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtPath;
+        private System.Windows.Forms.TextBox txtCsvPath;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label9;
     }
 }

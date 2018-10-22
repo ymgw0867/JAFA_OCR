@@ -498,8 +498,7 @@ namespace JAFA_DATA.OCR
                     if (Utility.NumericCheck(dGV[cDay, tempRow].Value.ToString()))
                     {
                         {
-                            sDate = (Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei).ToString()
-                                    + "/" + 
+                            sDate = Utility.StrtoInt(txtYear.Text) + "/" + 
                                     Utility.EmptytoZero(txtMonth.Text) + "/" +
                                     Utility.EmptytoZero(dGV[cDay, tempRow].Value.ToString());
                             
@@ -1162,24 +1161,36 @@ namespace JAFA_DATA.OCR
                     // JAメイトOCRデータ(mdb)作成
                     kd.saveJAMateOCRData();
 
-                    // 有給休暇付与日数計算・有給付与マスター登録
+                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                     * 臨時社員、外国人技能実習生 
+                     */
                     kd.addYukyuData();
+
+                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                     * 正社員：入社後６ヶ月経過時
+                     */
+                    kd.sumYukyuAfter6();
+
+                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                     * 正社員：４月付与
+                     */
+                    kd.sumYukyu04Month();
 
                     // JAメイトOCRデータ(mdb)に有給付与情報を書き込み
                     kd.saveJAMateOCRYukyu();
 
                     // JAメイト年休取得データ CSVファイル出力
-                    kd.saveJAMateNenkyuCsv(global.cnfYear + Properties.Settings.Default.rekiHosei, global.cnfMonth);
+                    kd.saveJAMateNenkyuCsv(global.cnfYear, global.cnfMonth);
 
                     // JAメイトOCRデータ CSVファイル出力
-                    kd.saveJAMateOcrCsv(global.cnfYear + Properties.Settings.Default.rekiHosei, global.cnfMonth);
+                    kd.saveJAMateOcrCsv(global.cnfYear, global.cnfMonth);
 
                     // バックアップ用画像コピー
                     tifFileBackup();
 
                     // 過去データ作成
                     saveLastData();
-                    lastDataYearWaToSe();   // 年を和暦から西暦に書き直す
+                    //lastDataYearWaToSe();   // 年を和暦から西暦に書き直す
 
                     // 設定月数分経過した過去画像と過去勤務データを削除する
                     deleteArchived();
@@ -1356,7 +1367,7 @@ namespace JAFA_DATA.OCR
             }
 
             // 当月バックアップフォルダがあるか？なければ作成する（TIFフォルダ）
-            string yymmPath = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString() + global.cnfMonth.ToString().PadLeft(2, '0'); 
+            string yymmPath = global.cnfYear.ToString() + global.cnfMonth.ToString().PadLeft(2, '0'); 
             if (!System.IO.Directory.Exists(Properties.Settings.Default.tifBackupPath + yymmPath))
             {
                 System.IO.Directory.CreateDirectory(Properties.Settings.Default.tifBackupPath + yymmPath);
@@ -1527,20 +1538,20 @@ namespace JAFA_DATA.OCR
         /// ------------------------------------------------------------------------
         private void lastDataYearWaToSe()
         {
-            OleDbCommand sCom = new OleDbCommand();
-            sCom.Connection = Utility.dbConnect();
+            //OleDbCommand sCom = new OleDbCommand();
+            //sCom.Connection = Utility.dbConnect();
 
-            StringBuilder sb = new StringBuilder();
-            sb.Clear();
-            sb.Append("update 過去勤務票ヘッダ set 年 = 年 + ? ");
-            sb.Append("where 年 < 2014");
-            sCom.CommandText = sb.ToString();
+            //StringBuilder sb = new StringBuilder();
+            //sb.Clear();
+            //sb.Append("update 過去勤務票ヘッダ set 年 = 年 + ? ");
+            //sb.Append("where 年 < 2014");
+            //sCom.CommandText = sb.ToString();
 
-            sCom.Parameters.Clear();
-            sCom.Parameters.AddWithValue("@re", Properties.Settings.Default.rekiHosei);
-            sCom.ExecuteNonQuery();
+            //sCom.Parameters.Clear();
+            //sCom.Parameters.AddWithValue("@re", Properties.Settings.Default.rekiHosei);
+            //sCom.ExecuteNonQuery();
 
-            sCom.Connection.Close();
+            //sCom.Connection.Close();
         }
         
 

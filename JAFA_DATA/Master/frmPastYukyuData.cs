@@ -20,7 +20,7 @@ namespace JAFA_DATA.Master
 
         // 有給付与マスターテーブルアダプター生成
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
 
         // データテーブル生成
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
@@ -31,7 +31,7 @@ namespace JAFA_DATA.Master
 
             // データテーブルにデータを読み込む
             adp.Fill(dts.有給休暇付与マスター);
-            mAdp.Fill(dts.メイトマスター);
+            mAdp.Fill(dts.社員マスター);
         }
 
         private void frm_Load(object sender, EventArgs e)
@@ -212,8 +212,8 @@ namespace JAFA_DATA.Master
                 txtTkuri.Text = r.当年繰越日数.ToString();
                 txtTzan.Text = r.当年初有給残日数.ToString();
 
-                // メイトマスター
-                foreach (var t in dts.メイトマスター.Where(a => a.職員コード == sNUm))
+                // 社員マスター
+                foreach (var t in dts.社員マスター.Where(a => a.職員コード == sNUm))
                 {
                     lblName.Text = t.氏名;                    
                 }

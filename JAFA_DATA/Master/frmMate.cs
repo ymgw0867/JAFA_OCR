@@ -13,13 +13,13 @@ namespace JAFA_DATA.Master
     public partial class frmMate : Form
     {
         // マスター名
-        string msName = "メイト";
+        string msName = "社員";
 
         // フォームモードインスタンス
         Utility.frmMode fMode = new Utility.frmMode();
 
-        // メイトマスターテーブルアダプター生成
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        // 社員マスターテーブルアダプター生成
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
 
         // データテーブル生成
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
@@ -29,7 +29,10 @@ namespace JAFA_DATA.Master
             InitializeComponent();
 
             // データテーブルにデータを読み込む
-            adp.Fill(dts.メイトマスター);
+            adp.Fill(dts.社員マスター);
+
+            txtSzName.AutoSize = false;
+            txtSzName.Height = 28;
         }
 
         private void frm_Load(object sender, EventArgs e)
@@ -49,8 +52,8 @@ namespace JAFA_DATA.Master
             // 画面初期化
             DispInitial();
 
-            // 週開始曜日コンボ
-            cmbYoubi.DropDownStyle = ComboBoxStyle.DropDownList;
+            //// 週開始曜日コンボ
+            //cmbYoubi.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         
         ////カラム定義
@@ -161,7 +164,7 @@ namespace JAFA_DATA.Master
             try
             {
                 // データソースにデータテーブルをバインド
-                tempGrid.DataSource = dts.メイトマスター;
+                tempGrid.DataSource = dts.社員マスター;
 
                 // 列幅調整
                 tempGrid.Columns[0].Width = 70;
@@ -203,7 +206,7 @@ namespace JAFA_DATA.Master
             txtWshoTei.Text = string.Empty;
             rbTaishoku.Checked = false;
             rbZaiseki.Checked = true;
-            cmbYoubi.SelectedIndex = -1;
+            //cmbYoubi.SelectedIndex = -1;
             txtFuyoTsuki.Text = string.Empty;
             txtMemo.Text = string.Empty;
             
@@ -213,6 +216,11 @@ namespace JAFA_DATA.Master
             txtCode.Enabled = true;
 
             txtsNum.Text = string.Empty;
+
+            // 2018/10/19
+            cmbShortWork.SelectedIndex = -1;
+            cmbShain.SelectedIndex = -1;
+            cmbFarm.SelectedIndex = -1;
 
             txtCode.Focus();
         }
@@ -232,7 +240,7 @@ namespace JAFA_DATA.Master
                         return;
 
                     // データセットにデータを追加します
-                    dts.メイトマスター.AddメイトマスターRow(setMateNewRow(dts.メイトマスター.NewメイトマスターRow()));
+                    dts.社員マスター.Add社員マスターRow(setMateNewRow(dts.社員マスター.New社員マスターRow()));
                     
                     break;
 
@@ -244,17 +252,30 @@ namespace JAFA_DATA.Master
                         return;
 
                     // データセット更新
-                    JAFA_OCRDataSet.メイトマスターRow r = dts.メイトマスター.Single(a => a.RowState != DataRowState.Deleted && a.RowState != DataRowState.Detached &&
-                                               a.職員コード == Utility.StrtoInt(fMode.ID));
+                    //JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.Single(a => a.RowState != DataRowState.Deleted && a.RowState != DataRowState.Detached &&
+                    //                           a.職員コード == Utility.StrtoInt(fMode.ID));
 
-                    if (!r.HasErrors)
-                    {
-                        r = setMateNewRow(r);
-                    }
-                    else
-                    {
-                        MessageBox.Show(fMode.ID + "がキー不在です：データの更新に失敗しました","更新エラー",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-                    }
+                    //if (!r.HasErrors)
+                    //{
+                    //    r = setMateNewRow(r);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show(fMode.ID + "がキー不在です：データの更新に失敗しました","更新エラー",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    //}
+
+                    JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.Single(a => a.職員コード == Utility.StrtoInt(fMode.ID));
+
+                    r = setMateNewRow(r);
+
+                    //if (!r.HasErrors)
+                    //{
+                    //    r = setMateNewRow(r);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show(fMode.ID + "がキー不在です：データの更新に失敗しました", "更新エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    //}
 
                     break;
 
@@ -263,8 +284,8 @@ namespace JAFA_DATA.Master
             }
 
             // マスター更新
-            adp.Update(dts.メイトマスター);
-            adp.Fill(dts.メイトマスター);
+            adp.Update(dts.社員マスター);
+            adp.Fill(dts.社員マスター);
 
             // グリッドデータ再表示
             GridViewShow(dg);
@@ -274,7 +295,7 @@ namespace JAFA_DATA.Master
         }
 
 
-        private JAFA_OCRDataSet.メイトマスターRow setMateNewRow(JAFA_OCRDataSet.メイトマスターRow r)
+        private JAFA_OCRDataSet.社員マスターRow setMateNewRow(JAFA_OCRDataSet.社員マスターRow r)
         {
             r.職員コード = Utility.StrtoInt(txtCode.Text);
             r.氏名 = txtName.Text;
@@ -320,10 +341,15 @@ namespace JAFA_DATA.Master
                 r.退職区分 = global.flgOn;
             }
 
-            r.週開始曜日 = cmbYoubi.SelectedIndex;
+            //r.週開始曜日 = cmbYoubi.SelectedIndex;
+
             r.有給付与月 = int.Parse(txtFuyoTsuki.Text);
             r.備考 = txtMemo.Text;
             r.更新年月日 = DateTime.Now;
+
+            r.短時間勤務 = cmbShortWork.SelectedIndex;   // 2018/10/22
+            r.社員区分 = cmbShain.SelectedIndex;        // 2018/10/22
+            r.農業従事 = cmbFarm.SelectedIndex;         // 2018/10/22
 
             return r;
         }
@@ -405,11 +431,32 @@ namespace JAFA_DATA.Master
                     throw new Exception("有休付与月が正しくありません");
                 }
 
-                // 週開始曜日
-                if (cmbYoubi.SelectedIndex == -1)
+                //// 週開始曜日
+                //if (cmbYoubi.SelectedIndex == -1)
+                //{
+                //    cmbYoubi.Focus();
+                //    throw new Exception("週開始曜日を選択してください");
+                //}
+
+                // 2018/10/19
+                if (cmbShortWork.SelectedIndex == -1)
                 {
-                    cmbYoubi.Focus();
-                    throw new Exception("週開始曜日を選択してください");
+                    cmbShortWork.Focus();
+                    throw new Exception("短時間勤務を選択してください");
+                }
+
+                // 2018/10/19
+                if (cmbShain.SelectedIndex == -1)
+                {
+                    cmbShain.Focus();
+                    throw new Exception("社員区分を選択してください");
+                }
+
+                // 2018/10/19
+                if (cmbFarm.SelectedIndex == -1)
+                {
+                    cmbFarm.Focus();
+                    throw new Exception("農業従事を選択してください");
                 }
 
                 return true;
@@ -439,7 +486,7 @@ namespace JAFA_DATA.Master
                 return;
 
             // 対象となるデータテーブルROWを取得します
-            JAFA_OCRDataSet.メイトマスターRow sQuery = dts.メイトマスター.FindBy職員コード(Utility.StrtoInt(dg[0, fMode.rowIndex].Value.ToString()));
+            JAFA_OCRDataSet.社員マスターRow sQuery = dts.社員マスター.FindBy職員コード(Utility.StrtoInt(dg[0, fMode.rowIndex].Value.ToString()));
 
             if (sQuery != null)
             {
@@ -461,7 +508,7 @@ namespace JAFA_DATA.Master
         /// <param name="sTemp">
         ///     マスターインスタンス</param>
         /// -------------------------------------------------------
-        private void ShowData(JAFA_OCRDataSet.メイトマスターRow s)
+        private void ShowData(JAFA_OCRDataSet.社員マスターRow s)
         {
             fMode.ID = s.職員コード.ToString();
             txtCode.Enabled = false;
@@ -524,7 +571,8 @@ namespace JAFA_DATA.Master
                 rbTaishoku.Checked = true;
             }
 
-            cmbYoubi.SelectedIndex = s.週開始曜日;
+            //cmbYoubi.SelectedIndex = s.週開始曜日;
+
             txtFuyoTsuki.Text = s.有給付与月.ToString();
 
             if (s.Is備考Null())
@@ -534,6 +582,39 @@ namespace JAFA_DATA.Master
             else
             {
                 txtMemo.Text = s.備考;
+            }
+
+            // 2018/10/19
+            if (s.Is短時間勤務Null())
+            {
+                cmbShortWork.SelectedIndex = -1;
+                cmbShortWork.Text = "";
+            }
+            else 
+            {
+                cmbShortWork.SelectedIndex = s.短時間勤務;
+            }
+
+            // 2018/10/22
+            if (s.Is社員区分Null())
+            {
+                cmbShain.SelectedIndex = -1;
+                cmbShain.Text = "";
+            }
+            else
+            {
+                cmbShain.SelectedIndex = s.社員区分;
+            }
+
+            // 2018/10/22
+            if (s.Is農業従事Null())
+            {
+                cmbFarm.SelectedIndex = -1;
+                cmbFarm.Text = "";
+            }
+            else
+            {
+                cmbFarm.SelectedIndex = s.農業従事;
             }
 
             btnDel.Enabled = true;
@@ -554,7 +635,7 @@ namespace JAFA_DATA.Master
         private void frm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //// データセットの内容をデータベースへ反映させます
-            //adp.Update(dts.メイトマスター);
+            //adp.Update(dts.社員マスター);
 
             this.Dispose();
         }
@@ -573,7 +654,7 @@ namespace JAFA_DATA.Master
                     return;
 
                 // 削除データ取得（エラー回避のためDataRowState.Deleted と DataRowState.Detachedは除外して抽出する）
-                var d = dts.メイトマスター.Where(a => a.RowState != DataRowState.Deleted && a.RowState != DataRowState.Detached && a.職員コード == Utility.StrtoInt(fMode.ID));
+                var d = dts.社員マスター.Where(a => a.RowState != DataRowState.Deleted && a.RowState != DataRowState.Detached && a.職員コード == Utility.StrtoInt(fMode.ID));
 
                 // foreach用の配列を作成する
                 var list = d.ToList();
@@ -581,7 +662,7 @@ namespace JAFA_DATA.Master
                 // 削除
                 foreach (var it in list)
                 {
-                    JAFA_OCRDataSet.メイトマスターRow dl = (JAFA_OCRDataSet.メイトマスターRow)dts.メイトマスター.FindBy職員コード(it.職員コード);
+                    JAFA_OCRDataSet.社員マスターRow dl = (JAFA_OCRDataSet.社員マスターRow)dts.社員マスター.FindBy職員コード(it.職員コード);
                     dl.Delete();
                 }
             }
@@ -592,10 +673,10 @@ namespace JAFA_DATA.Master
             finally
             {
                 // 削除をコミット
-                adp.Update(dts.メイトマスター);
+                adp.Update(dts.社員マスター);
 
                 // データテーブルにデータを読み込む
-                adp.Fill(dts.メイトマスター);
+                adp.Fill(dts.社員マスター);
 
                 // 画面データ消去
                 DispInitial();
@@ -656,7 +737,7 @@ namespace JAFA_DATA.Master
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            MyLibrary.CsvOut.GridView(dg, "メイトマスター");
+            MyLibrary.CsvOut.GridView(dg, "社員マスター");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -690,6 +771,11 @@ namespace JAFA_DATA.Master
             {
                 MessageBox.Show("該当データはありませんでした","検索",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

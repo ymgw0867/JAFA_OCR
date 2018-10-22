@@ -12,7 +12,7 @@ namespace JAFA_DATA.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -64,16 +64,6 @@ namespace JAFA_DATA.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\JAHR_DATA\\MDB\\JAHR_DATA.mdb")]
-        public string mdbOlePath {
-            get {
-                return ((string)(this["mdbOlePath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\JAFA_DATA\\MDB\\JAFA_Temp.mdb")]
         public string mdbPathTemp {
             get {
@@ -114,15 +104,6 @@ namespace JAFA_DATA.Properties {
         public string dataMdbPath {
             get {
                 return ((string)(this["dataMdbPath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1988")]
-        public int rekiHosei {
-            get {
-                return ((int)(this["rekiHosei"]));
             }
         }
         
@@ -177,6 +158,16 @@ namespace JAFA_DATA.Properties {
         public string exlYukyuMstPath {
             get {
                 return ((string)(this["exlYukyuMstPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\JAFA_DATA\\MDB\\JAFA_DATA.mdb")]
+        public string mdbOlePath {
+            get {
+                return ((string)(this["mdbOlePath"]));
             }
         }
     }

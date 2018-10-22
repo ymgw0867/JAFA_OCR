@@ -368,7 +368,8 @@ namespace JAFA_DATA.Common
             // 勤務票ヘッダRowへデータをセットします
             JAFA_DATADataSet.勤務票ヘッダRow r = tblSt.勤務票ヘッダ.New勤務票ヘッダRow();
             r.ID = Utility.GetStringSubMax(stCSV[3].Trim(), 17);
-            r.年 = Utility.StrtoInt(Utility.GetStringSubMax(stCSV[4].Trim().Replace("-", ""), 2));
+            //r.年 = Utility.StrtoInt(Utility.GetStringSubMax(stCSV[4].Trim().Replace("-", ""), 2)); 2018/10/19 コメント化
+            r.年 = 2000 + Utility.StrtoInt(Utility.GetStringSubMax(stCSV[4].Trim().Replace("-", ""), 2)); // FA仕様：西暦化 2018/10/19
             r.月 = Utility.StrtoInt(Utility.GetStringSubMax(stCSV[5].Trim().Replace("-", ""), 2));
             r.社員番号 = Utility.StrtoInt(Utility.GetStringSubMax(stCSV[6].Trim().Replace("-", ""), 5));
 
@@ -499,7 +500,7 @@ namespace JAFA_DATA.Common
         public Boolean errCheckMain(int sIx, int eIx, Form frm, JAFA_DATADataSet dts)
         {
             // 2017/11/02 前月の年月を取得
-            int sYY = global.cnfYear + Properties.Settings.Default.rekiHosei;
+            int sYY = global.cnfYear;
             int sMM = global.cnfMonth - 1;
             if (sMM == 0)
             {
@@ -739,7 +740,7 @@ namespace JAFA_DATA.Common
             //int wStYoubi = global.flgOff;
 
             clsGetMst ms = new clsGetMst();
-            JAFA_OCRDataSet.メイトマスターRow mr = ms.getKojinMstRow(r.社員番号);
+            JAFA_OCRDataSet.社員マスターRow mr = ms.getKojinMstRow(r.社員番号);
             if (mr != null)
             {
                 //dtIn = mr.入所年月日;
@@ -749,7 +750,7 @@ namespace JAFA_DATA.Common
                 // 対象年月と入所年月日
                 int inYYMM = mr.入所年月日.Year * 100 + mr.入所年月日.Month;
                 int ouYYMM = mr.退職年月日.Year * 100 + mr.退職年月日.Month;
-                int tYYMM = (r.年 + Properties.Settings.Default.rekiHosei) * 100 + r.月;
+                int tYYMM = r.年 * 100 + r.月;
                 if (tYYMM < inYYMM)
                 {
                     setErrStatus(eShainNo, 0, "入所日以前の出勤簿です");
@@ -784,7 +785,9 @@ namespace JAFA_DATA.Common
             hWorkDays = 0;
             hWorkDaysF = 0;
 
-            kaishiYoubi = mr.週開始曜日;
+            //kaishiYoubi = mr.週開始曜日;   2018/10/22 コメント化
+            kaishiYoubi = 0;    // 週開始曜日は日曜で統一：2018/10/22
+
             int fistDay = 0;
 
             bool fistFlg = true;
@@ -813,10 +816,11 @@ namespace JAFA_DATA.Common
                 iX++;
 
                 // 曜日を取得
-                DateTime sDt = DateTime.Parse((global.cnfYear + Properties.Settings.Default.rekiHosei).ToString() + "/" + global.cnfMonth.ToString() + "/" + m.日付.ToString());
+                DateTime sDt = DateTime.Parse(global.cnfYear.ToString() + "/" + global.cnfMonth.ToString() + "/" + m.日付.ToString());
 
                 // 週開始曜日のとき
-                if (mr.週開始曜日 == int.Parse(sDt.DayOfWeek.ToString("d")))
+                //if (mr.週開始曜日 == int.Parse(sDt.DayOfWeek.ToString("d")))
+                if (int.Parse(sDt.DayOfWeek.ToString("d")) == 0)    // 週開始は日曜日 2018/10/22
                 {
                     // カウント日数を初期化
                     cDays = 0;
@@ -856,14 +860,14 @@ namespace JAFA_DATA.Common
                 if (!errCheckRow(m, "出勤簿明細", iX)) return false;
 
                 // 当月入所のとき入所日以前に勤怠が記入されていたらエラー
-                if (mr.入所年月日.Year == global.cnfYear + Properties.Settings.Default.rekiHosei &&
+                if (mr.入所年月日.Year == global.cnfYear &&
                     mr.入所年月日.Month == global.cnfMonth)
                 {
                     if (!errNDateBeforeWork(m, "", iX, mr.入所年月日)) return false;
                 }
 
                 // 当月退職のとき退職日翌日以降に勤怠が記入されていたらエラー
-                if (mr.退職年月日.Year == global.cnfYear + Properties.Settings.Default.rekiHosei &&
+                if (mr.退職年月日.Year == global.cnfYear &&
                     mr.退職年月日.Month == global.cnfMonth)
                 {
                     if (!errRDateAfterWork(m, "", iX, mr.退職年月日)) return false;
@@ -966,7 +970,7 @@ namespace JAFA_DATA.Common
             //hAdp.Fill(dts.過去勤務票ヘッダ);
             //mAdp.Fill(dts.過去勤務票明細);
 
-            int sYY = global.cnfYear + Properties.Settings.Default.rekiHosei;
+            int sYY = global.cnfYear;
             int sMM = global.cnfMonth - 1;
             if (sMM == 0)
             {
@@ -1046,7 +1050,7 @@ namespace JAFA_DATA.Common
             //int wStYoubi = global.flgOff;
 
             clsGetMst ms = new clsGetMst();
-            JAFA_OCRDataSet.メイトマスターRow mr = ms.getKojinMstRow(r.社員番号);
+            JAFA_OCRDataSet.社員マスターRow mr = ms.getKojinMstRow(r.社員番号);
             if (mr != null)
             {
                 //dtIn = mr.入所年月日;
@@ -1056,7 +1060,7 @@ namespace JAFA_DATA.Common
                 // 対象年月と入所年月日
                 int inYYMM = mr.入所年月日.Year * 100 + mr.入所年月日.Month;
                 int ouYYMM = mr.退職年月日.Year * 100 + mr.退職年月日.Month;
-                int tYYMM = (r.年 + Properties.Settings.Default.rekiHosei) * 100 + r.月;
+                int tYYMM = r.年 * 100 + r.月;
                 if (tYYMM < inYYMM)
                 {
                     setErrStatus(eShainNo, 0, "入所日以前の出勤簿です");
@@ -1114,10 +1118,11 @@ namespace JAFA_DATA.Common
                 iX++;
                 
                 // 曜日を取得
-                DateTime sDt = DateTime.Parse((global.cnfYear + Properties.Settings.Default.rekiHosei).ToString() + "/" + global.cnfMonth.ToString() + "/" + m.日付.ToString());
+                DateTime sDt = DateTime.Parse(global.cnfYear.ToString() + "/" + global.cnfMonth.ToString() + "/" + m.日付.ToString());
 
                 // 週開始曜日のとき
-                if (mr.週開始曜日 == int.Parse(sDt.DayOfWeek.ToString("d")))
+                //if (mr.週開始曜日 == int.Parse(sDt.DayOfWeek.ToString("d"))) 2018/10/22 コメント化
+                if (int.Parse(sDt.DayOfWeek.ToString("d")) == 0)    // 週開始日は日曜日 2018/10/22
                 {
                     // カウント日数を初期化
                     cDays = 0;
@@ -1149,15 +1154,13 @@ namespace JAFA_DATA.Common
                 //if (!errCheckRow(m, "出勤簿明細", iX)) return false;
 
                 // 当月入所のとき入所日以前に勤怠が記入されていたらエラー
-                if (mr.入所年月日.Year == global.cnfYear + Properties.Settings.Default.rekiHosei &&
-                    mr.入所年月日.Month == global.cnfMonth)
+                if (mr.入所年月日.Year == global.cnfYear && mr.入所年月日.Month == global.cnfMonth)
                 {
                     if (!errNDateBeforeWork(m, "", iX, mr.入所年月日)) return false;
                 }
 
                 // 当月退職のとき退職日翌日以降に勤怠が記入されていたらエラー
-                if (mr.退職年月日.Year == global.cnfYear + Properties.Settings.Default.rekiHosei &&
-                    mr.退職年月日.Month == global.cnfMonth)
+                if (mr.退職年月日.Year == global.cnfYear && mr.退職年月日.Month == global.cnfMonth)
                 {
                     if (!errRDateAfterWork(m, "", iX, mr.退職年月日)) return false;
                 }
@@ -1218,17 +1221,17 @@ namespace JAFA_DATA.Common
         /// <param name="dts">
         ///     JAHR_OCRDataSet</param>
         /// <param name="mr">
-        ///     JAHR_OCRDataSet.メイトマスターRow</param>
+        ///     JAHR_OCRDataSet.社員マスターRow</param>
         /// <param name="sYukyu">
         ///     当月有休日数</param>
         /// <returns>
         ///     残日数あり：true, 残日数超過：false </returns>
         /// -------------------------------------------------------------------------------------
-        private bool errCheckYukyuZan(JAFA_OCRDataSet dts, JAFA_OCRDataSet.メイトマスターRow mr, double sYukyu)
+        private bool errCheckYukyuZan(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, double sYukyu)
         {
             bool result = true;
             
-            int pYYMM = (global.cnfYear + Properties.Settings.Default.rekiHosei) * 100 + global.cnfMonth; 
+            int pYYMM = global.cnfYear * 100 + global.cnfMonth; 
             int sNen = 0;
             int sTsuki = 0;
             
@@ -1269,7 +1272,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     当年初有給残日数</returns>
         /// ----------------------------------------------------------------------
-        private double getNenshozan(JAFA_OCRDataSet dts, LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet, JAFA_OCRDataSet.メイトマスターRow mr, int sYYMM, out int sNen, out int sTsuki)
+        private double getNenshozan(JAFA_OCRDataSet dts, LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet, JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, out int sNen, out int sTsuki)
         {
             double zan = 0;
             bool sFms = false;
@@ -1336,7 +1339,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     消化日数</returns>
         /// -----------------------------------------------------------------------------
-        private double getShoukaNissu(JAFA_OCRDataSet dts, LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet, JAFA_OCRDataSet.メイトマスターRow mr, int sYYMM, int eYYMM)
+        private double getShoukaNissu(JAFA_OCRDataSet dts, LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet, JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, int eYYMM)
         {
             double sNissu = 0;
             bool sFms = false;
@@ -1558,7 +1561,7 @@ namespace JAFA_DATA.Common
 
             // 社員番号マスター検証
             clsGetMst ms = new clsGetMst();
-            JAFA_OCRDataSet.メイトマスターRow mr = ms.getKojinMstRow(r.社員番号);
+            JAFA_OCRDataSet.社員マスターRow mr = ms.getKojinMstRow(r.社員番号);
             if (mr == null)
             {
                 setErrStatus(eShainNo, 0, "マスター未登録の社員番号です");
@@ -1587,7 +1590,7 @@ namespace JAFA_DATA.Common
 
             // 社員番号マスター検証
             clsGetMst ms = new clsGetMst();
-            JAFA_OCRDataSet.メイトマスターRow mr = ms.getKojinMstRow(r.社員番号);
+            JAFA_OCRDataSet.社員マスターRow mr = ms.getKojinMstRow(r.社員番号);
             if (mr == null)
             {
                 setErrStatus(eShainNo, 0, "マスター未登録の社員番号です");

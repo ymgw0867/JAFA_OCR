@@ -639,8 +639,7 @@ namespace JAFA_DATA.OCR
                     if (Utility.NumericCheck(dGV[cDay, tempRow].Value.ToString()))
                     {
                         {
-                            sDate = (Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei).ToString()
-                                    + "/" + 
+                            sDate = Utility.StrtoInt(txtYear.Text).ToString() + "/" + 
                                     Utility.EmptytoZero(txtMonth.Text) + "/" +
                                     Utility.EmptytoZero(dGV[cDay, tempRow].Value.ToString());
                             
@@ -861,7 +860,7 @@ namespace JAFA_DATA.OCR
 
         private void frmCorrect_FormClosing(object sender, FormClosingEventArgs e)
         {
-            int yy = Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei;
+            int yy = Utility.StrtoInt(txtYear.Text);
             int mm = Utility.StrtoInt(txtMonth.Text);
             int sNum = Utility.StrtoInt(txtNo.Text);
 
@@ -1144,7 +1143,7 @@ namespace JAFA_DATA.OCR
             }
 
             // 印刷
-            sReport(Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei, Utility.StrtoInt(txtMonth.Text), Utility.StrtoInt(txtNo.Text)); 
+            sReport(Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text), Utility.StrtoInt(txtNo.Text)); 
         }
 
 

@@ -34,7 +34,7 @@ namespace JAFA_DATA.OCR
         string appName = "メイト出勤簿処理実施状況";      // アプリケーション表題
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.確定勤務票明細TableAdapter kmAdp = new JAFA_OCRDataSetTableAdapters.確定勤務票明細TableAdapter();
         JAFA_OCRDataSetTableAdapters.確定勤務票ヘッダTableAdapter khAdp = new JAFA_OCRDataSetTableAdapters.確定勤務票ヘッダTableAdapter();
         JAFA_OCRDataSetTableAdapters.過去勤務票ヘッダTableAdapter phAdp = new JAFA_OCRDataSetTableAdapters.過去勤務票ヘッダTableAdapter();
@@ -50,7 +50,7 @@ namespace JAFA_DATA.OCR
             InitializeComponent();
 
             // データセットへデータを読み込む
-            mAdp.Fill(dts.メイトマスター);
+            mAdp.Fill(dts.社員マスター);
             khAdp.Fill(dts.確定勤務票ヘッダ);
             kmAdp.Fill(dts.確定勤務票明細);
             phAdp.Fill(dts.過去勤務票ヘッダ);
@@ -107,7 +107,7 @@ namespace JAFA_DATA.OCR
 
         private void cmbShozokuLoad()
         {
-            foreach (var t in dts.メイトマスター.OrderBy(a => a.所属コード)
+            foreach (var t in dts.社員マスター.OrderBy(a => a.所属コード)
                                     .GroupBy(a => a.所属名)
                                     .Select(a => a.Key))
             {
@@ -256,11 +256,11 @@ namespace JAFA_DATA.OCR
             try 
 	        {
                 // 対象年月
-                int syymm = (Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei) * 100 + Utility.StrtoInt(txtMonth.Text);
+                int syymm = Utility.StrtoInt(txtYear.Text) * 100 + Utility.StrtoInt(txtMonth.Text);
 
-                // メイトマスター
+                // 社員マスター
                 // 当月以降の退職者も含める 2016/01/08
-                var sss = dts.メイトマスター.Where(a => a.退職区分 == global.flgOff || 
+                var sss = dts.社員マスター.Where(a => a.退職区分 == global.flgOff || 
                                             (a.退職区分 == global.flgOn && 
                                             (a.退職年月日.Year * 100 + a.退職年月日.Month) >= syymm))
                                             .OrderBy(a => a.所属コード).ThenBy(a => a.職員コード);
@@ -270,7 +270,7 @@ namespace JAFA_DATA.OCR
                     sss = sss.Where(a => a.所属名 == cmbBumonS.Text).OrderBy(a => a.職員コード);
                 }
                 
-                foreach (JAFA_OCRDataSet.メイトマスターRow t in sss)
+                foreach (JAFA_OCRDataSet.社員マスターRow t in sss)
                 {
                     // 前半処理
                     int zMode = 0;
@@ -379,12 +379,12 @@ namespace JAFA_DATA.OCR
 
                     // 当月処理済み（JAメイトOCRデータ作成済み）か調べる
                     string kymd = string.Empty;
-                    string yymm = (Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei).ToString() + txtMonth.Text.Trim().PadLeft(2, '0');
+                    string yymm = txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0');
                     string sNum = global.ROK + t.職員コード.ToString().PadLeft(5, '0');
 
                     if (dts.勤怠データ.Any(a => a.対象月度 == yymm && a.対象職員コード == sNum))
                     {
-                        var k = dts.過去勤務票ヘッダ.Where(a => a.年 == Utility.StrtoInt(txtYear.Text) + Properties.Settings.Default.rekiHosei &&
+                        var k = dts.過去勤務票ヘッダ.Where(a => a.年 == Utility.StrtoInt(txtYear.Text) &&
                             a.月 == Utility.StrtoInt(txtMonth.Text) && a.社員番号 == t.職員コード);
 
                         foreach (var tt in k)
@@ -517,7 +517,7 @@ namespace JAFA_DATA.OCR
             }
         }
 
-        private void gridRowAdd(DataGridView d, int iX, int zMode, int kMode, int mMode, JAFA_OCRDataSet.メイトマスターRow t, string kYmd)
+        private void gridRowAdd(DataGridView d, int iX, int zMode, int kMode, int mMode, JAFA_OCRDataSet.社員マスターRow t, string kYmd)
         {
             //データグリッドにデータを表示する
             d.Rows.Add();
@@ -611,7 +611,7 @@ namespace JAFA_DATA.OCR
         /// <param name="tempDGV">datagridviewオブジェクト名</param>
         /// <param name="iX">Row№</param>
         /// <param name="dR">データリーダーオブジェクト名</param>
-        private void GridViewCellData(DataGridView g, int iX, JAFA_OCRDataSet.メイトマスターRow t)
+        private void GridViewCellData(DataGridView g, int iX, JAFA_OCRDataSet.社員マスターRow t)
         {
             g[0, iX].Value = t.所属コード.ToString();
             g[1, iX].Value = t.所属名;
@@ -685,7 +685,7 @@ namespace JAFA_DATA.OCR
             if (ErrCheck() == false) return;
 
             //基準日付
-            sDate = (int.Parse(txtYear.Text) + Properties.Settings.Default.rekiHosei).ToString() + "/" + txtMonth.Text + "/01";
+            sDate = txtYear.Text + "/" + txtMonth.Text + "/01";
 
             // 部門コード取得
             sCode = "";

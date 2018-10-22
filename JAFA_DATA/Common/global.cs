@@ -121,5 +121,18 @@ namespace JAFA_DATA
         // 記号
         public static string ROK = "ROK";
 
+        // 社員区分名配列：2018/10/22
+        public static string[] shainKbnArray =  { "役員" , "正社員", "臨時社員", "外国人技能実習生" };
+
+        public static int SEISHAIN = 1;         // 正社員：2018/10/22
+        public static int RINJISHAIN = 2;       // 臨時員：2018/10/22
+        public static int GAIKOKUJINGINOU = 3;  // 外国人技能実習生：2018/10/22
+
+        public static int YUKYUDAYS_NYUSHO = 5;      // 入所時有給日数 2018/10/22
+        public static int YUKYUDAYS_AFTER6MONTH = 5; // 入所後６カ月有給日数 2018/10/22
+
+        // 正社員：４月付与日数
+        public static int[,] yukyuArray = { { 1, 11 }, { 2, 12 }, { 3, 14 }, { 4, 16 }, { 5, 18 }, { 6, 20 }, { 7, 20 } };
+
     }
 }

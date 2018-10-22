@@ -17,11 +17,11 @@ namespace JAFA_DATA.Master
         {
             InitializeComponent();
 
-            adp.Fill(dts.メイトマスター);
+            adp.Fill(dts.社員マスター);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         
         #region // エクセルシートデータ列定義
         const int COL_CODE = 1;         // 職員コード
@@ -103,7 +103,7 @@ namespace JAFA_DATA.Master
         
         /// ------------------------------------------------------------------
         /// <summary>
-        ///     エクセルシートよりメイトマスターへ新規登録する </summary>
+        ///     エクセルシートより社員マスターへ新規登録する </summary>
         /// ------------------------------------------------------------------
         private bool addMateData(string xlsFile)
         {
@@ -149,7 +149,7 @@ namespace JAFA_DATA.Master
                     }
 
                     // 登録済みか調べる
-                    if (dts.メイトマスター.Any(a => a.職員コード == Utility.StrtoInt(hCode)))
+                    if (dts.社員マスター.Any(a => a.職員コード == Utility.StrtoInt(hCode)))
                     {
                         // 登録済のコードのときは読み飛ばす
                         continue;
@@ -183,7 +183,7 @@ namespace JAFA_DATA.Master
                     dRng = (Excel.Range)oxlsSheet.Cells[i, COL_WEEKDAY];
                     string wWeek = dRng.Text.ToString().Trim();
 
-                    JAFA_OCRDataSet.メイトマスターRow r = dts.メイトマスター.NewメイトマスターRow();
+                    JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.New社員マスターRow();
                     r.職員コード = Utility.StrtoInt(hCode);
                     r.氏名 = sName;
                     r.フリガナ = sFuri;
@@ -205,7 +205,7 @@ namespace JAFA_DATA.Master
                     r.退職年月日 = DateTime.Parse("1900/01/01");
                     r.週所定労働日数 = Utility.StrtoInt(wDays);
                     r.退職区分 = global.flgOff;
-                    r.週開始曜日 = Utility.StrtoInt(wWeek) - 1;
+                    //r.週開始曜日 = Utility.StrtoInt(wWeek) - 1;    // 2018/10/22 コメント化
 
                     int fm = r.調整年月日.Month + 6;
                     if (fm > 12)
@@ -217,14 +217,14 @@ namespace JAFA_DATA.Master
                     r.備考 = string.Empty;
                     r.更新年月日 = DateTime.Now;
                     
-                    // メイトマスター追加登録
-                    dts.メイトマスター.AddメイトマスターRow(r);
+                    // 社員マスター追加登録
+                    dts.社員マスター.Add社員マスターRow(r);
 
                     dCnt++;
                 }
 
                 // データベース更新
-                adp.Update(dts.メイトマスター);
+                adp.Update(dts.社員マスター);
                 
                 //マウスポインタを元に戻す
                 this.Cursor = Cursors.Default;
@@ -239,7 +239,7 @@ namespace JAFA_DATA.Master
                 oXls.DisplayAlerts = false;
 
                 // 終了メッセージ
-                MessageBox.Show("メイトマスターのエクセルからのインポートが終了しました。" + Environment.NewLine + Environment.NewLine + dCnt.ToString() + "件のデータを追加登録しました。","メイトマスター", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("社員マスターのエクセルからのインポートが終了しました。" + Environment.NewLine + Environment.NewLine + dCnt.ToString() + "件のデータを追加登録しました。","社員マスター", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 return true;
             }
@@ -296,7 +296,7 @@ namespace JAFA_DATA.Master
                 sMsg = "差分登録";
             }
 
-            if (MessageBox.Show(label1.Text + "でメイトマスターへ" + sMsg + "します。よろしいですか", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
+            if (MessageBox.Show(label1.Text + "で社員マスターへ" + sMsg + "します。よろしいですか", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
             {
                 return;
             }
@@ -374,7 +374,7 @@ namespace JAFA_DATA.Master
                 }
 
                 // データベースへ反映
-                adp.Update(dts.メイトマスター);
+                adp.Update(dts.社員マスター);
 
                 // 終了
                 MessageBox.Show(cnt.ToString() + "件、処理しました。");
@@ -390,7 +390,7 @@ namespace JAFA_DATA.Master
 
         /// ---------------------------------------------------------------
         /// <summary>
-        ///     メイトマスター更新 </summary>
+        ///     社員マスター更新 </summary>
         /// <param name="c">
         ///     CSVデータ配列</param>
         /// ---------------------------------------------------------------
@@ -398,7 +398,7 @@ namespace JAFA_DATA.Master
         {
             int sCode = Utility.StrtoInt(c[0]);
 
-            if (dts.メイトマスター.Any(a => a.職員コード == sCode))
+            if (dts.社員マスター.Any(a => a.職員コード == sCode))
             {
                 // 登録済みのとき：上書き更新
                 sOverWriteMaster(sCode, c);
@@ -412,7 +412,7 @@ namespace JAFA_DATA.Master
 
         /// ---------------------------------------------------------------
         /// <summary>
-        ///     メイトマスターレコード上書き </summary>
+        ///     社員マスターレコード上書き </summary>
         /// <param name="sCode">
         ///     職員コード</param>
         /// <param name="c">
@@ -420,14 +420,14 @@ namespace JAFA_DATA.Master
         /// ---------------------------------------------------------------
         private void sOverWriteMaster(int sCode, string [] c)
         {
-            JAFA_OCRDataSet.メイトマスターRow r = dts.メイトマスター.Single(a => a.職員コード == sCode);
+            JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.Single(a => a.職員コード == sCode);
 
             setMasterRow(r, c);
         }
 
         /// ---------------------------------------------------------------
         /// <summary>
-        ///     メイトマスターレコード追加 </summary>
+        ///     社員マスターレコード追加 </summary>
         /// <param name="sCode">
         ///     職員コード</param>
         /// <param name="c">
@@ -435,23 +435,23 @@ namespace JAFA_DATA.Master
         /// ---------------------------------------------------------------
         private void sAddMaster(int sCode, string[] c)
         {
-            JAFA_OCRDataSet.メイトマスターRow r = dts.メイトマスター.NewメイトマスターRow();
+            JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.New社員マスターRow();
 
             r.職員コード = sCode;
-            dts.メイトマスター.AddメイトマスターRow(setMasterRow(r, c));
+            dts.社員マスター.Add社員マスターRow(setMasterRow(r, c));
         }
 
         /// ----------------------------------------------------------------------------
         /// <summary>
-        ///     メイトマスターレコードにデータをセットする </summary>
+        ///     社員マスターレコードにデータをセットする </summary>
         /// <param name="r">
-        ///     JAHR_OCRDataSet.メイトマスターRow </param>
+        ///     JAHR_OCRDataSet.社員マスターRow </param>
         /// <param name="c">
         ///     CSVデータ配列</param>
         /// <returns>
-        ///     JAHR_OCRDataSet.メイトマスターRow</returns>
+        ///     JAHR_OCRDataSet.社員マスターRow</returns>
         /// ----------------------------------------------------------------------------
-        private JAFA_OCRDataSet.メイトマスターRow setMasterRow(JAFA_OCRDataSet.メイトマスターRow r, string[] c)
+        private JAFA_OCRDataSet.社員マスターRow setMasterRow(JAFA_OCRDataSet.社員マスターRow r, string[] c)
         {
             DateTime dt;
 
@@ -477,7 +477,7 @@ namespace JAFA_DATA.Master
 
             r.週所定労働日数 = Utility.StrtoInt(c[8]);
             r.退職区分 = Utility.StrtoInt(c[9]);
-            r.週開始曜日 = Utility.StrtoInt(c[10]);
+            //r.週開始曜日 = Utility.StrtoInt(c[10]);    // 2018/10/22 コメント化
             r.有給付与月 = Utility.StrtoInt(c[11]);
             r.備考 = c[12];
             r.更新年月日 = DateTime.Now;

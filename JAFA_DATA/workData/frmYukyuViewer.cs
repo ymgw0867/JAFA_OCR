@@ -25,7 +25,7 @@ namespace JAFA_DATA.workData
             InitializeComponent();
 
             adp.Fill(dts.勤怠データ);
-            mAdp.Fill(dts.メイトマスター);
+            mAdp.Fill(dts.社員マスター);
             fAdp.Fill(dts.有給休暇付与マスター);
 
             // linqToExcel : excel過去１年間有給取得シート
@@ -64,7 +64,7 @@ namespace JAFA_DATA.workData
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
         JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter adp = new JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter fAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
 
         LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
@@ -128,11 +128,11 @@ namespace JAFA_DATA.workData
             GridViewSetting(dg1);
 
             // 年月表示
-            txtYear.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear.Text = global.cnfYear.ToString();
             txtMonth.Text = global.cnfMonth.ToString();
             txtYear.Focus();
 
-            txtYear2.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear2.Text = global.cnfYear.ToString();
             txtMonth2.Text = global.cnfMonth.ToString();
 
             label10.Text = string.Empty;
@@ -322,9 +322,9 @@ namespace JAFA_DATA.workData
                     // 職員コードでブレーク時
                     if (shokuCode != t.対象職員コード.Substring(3, 5))
                     {
-                        if (dts.メイトマスター.Any(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5))))
+                        if (dts.社員マスター.Any(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5))))
                         {
-                            var ss = dts.メイトマスター.Single(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5)));
+                            var ss = dts.社員マスター.Single(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5)));
                             yfMonth = ss.有給付与月;
                         }
 

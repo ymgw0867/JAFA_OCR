@@ -23,12 +23,12 @@ namespace JAFA_DATA.OCR
         {
             InitializeComponent();
 
-            adp.Fill(dts.メイトマスター);
+            adp.Fill(dts.社員マスター);
             hAdp.Fill(dts.過去勤務票ヘッダ);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.過去勤務票ヘッダTableAdapter hAdp = new JAFA_OCRDataSetTableAdapters.過去勤務票ヘッダTableAdapter();
         
         #region グリッドカラム定義
@@ -58,7 +58,7 @@ namespace JAFA_DATA.OCR
             GridViewSetting(dg1);
 
             // 年月表示
-            txtYear.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear.Text = global.cnfYear.ToString();
             txtMonth.Text = global.cnfMonth.ToString();
             txtYear.Focus();
 
@@ -236,7 +236,7 @@ namespace JAFA_DATA.OCR
         /// -------------------------------------------------------------------
         private void cmbShozokuLoad()
         {
-            foreach (var t in dts.メイトマスター.OrderBy(a => a.所属コード)
+            foreach (var t in dts.社員マスター.OrderBy(a => a.所属コード)
                                     .GroupBy(a => a.所属名)
                                     .Select(a => a.Key))
             {

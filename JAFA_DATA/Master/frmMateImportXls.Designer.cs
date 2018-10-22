@@ -135,7 +135,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmMateImportXls";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "メイトマスターExcelデータインポート";
+            this.Text = "社員マスターExcelデータインポート";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMateImportXls_FormClosing);
             this.Load += new System.EventHandler(this.frmMateImportXls_Load);
             this.groupBox1.ResumeLayout(false);

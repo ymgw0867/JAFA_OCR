@@ -27,7 +27,7 @@ namespace JAFA_DATA.workData
             mAdp.Fill(dts.過去勤務票明細);
             wAdp.Fill(dts.週実績);
             wmAdp.Fill(dts.週実績明細);
-            mateAdp.Fill(dts.メイトマスター);
+            mateAdp.Fill(dts.社員マスター);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
@@ -35,7 +35,7 @@ namespace JAFA_DATA.workData
         JAFA_OCRDataSetTableAdapters.過去勤務票明細TableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.過去勤務票明細TableAdapter();
         JAFA_OCRDataSetTableAdapters.週実績TableAdapter wAdp = new JAFA_OCRDataSetTableAdapters.週実績TableAdapter();
         JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter wmAdp = new JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter();
-        JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter mateAdp = new JAFA_OCRDataSetTableAdapters.メイトマスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mateAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
 
         int sWNum = 0;
         int eWNum = 0;
@@ -438,7 +438,7 @@ namespace JAFA_DATA.workData
                     string szName = string.Empty;
                     string sName = string.Empty;
 
-                    foreach (var mate in dts.メイトマスター.Where(a => a.職員コード == m.職員コード))
+                    foreach (var mate in dts.社員マスター.Where(a => a.職員コード == m.職員コード))
                     {
                         szCode = mate.所属コード.ToString();
                         szName = mate.所属名;
@@ -522,7 +522,7 @@ namespace JAFA_DATA.workData
                         string szName = string.Empty;
                         string sName = string.Empty;
 
-                        foreach (var mate in dts.メイトマスター.Where(a => a.職員コード == t.職員コード))
+                        foreach (var mate in dts.社員マスター.Where(a => a.職員コード == t.職員コード))
                         {
                             szCode = mate.所属コード.ToString();
                             szName = mate.所属名;
