@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -10,6 +11,8 @@ using Leadtools;
 using Leadtools.Codecs;
 using System.Data.OleDb;
 using JAFA_OCR.Common;
+using System.IO;
+//using OpenCvSharp;      // 2018/10/23
 
 namespace JAFA_OCR.OCR
 {
@@ -51,7 +54,14 @@ namespace JAFA_OCR.OCR
             this.Hide();
 
             // マルチTiff画像をシングルtifに分解する(SCANフォルダ → TRAYフォルダ)
-            if (!MultiTif(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
+            //if (!MultiTif(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
+            //{
+            //    this.Show();
+            //    return;
+            //}
+
+            // マルチTiff画像をシングルtifに分解する(SCANフォルダ → TRAYフォルダ)：openCVバージョン 2018/10/23
+            if (!MultiTif_New(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
             {
                 this.Show();
                 return;
@@ -382,6 +392,100 @@ namespace JAFA_OCR.OCR
             }
 
             return true;
+        }
+
+        ///------------------------------------------------------------------------------
+        /// <summary>
+        ///     マルチフレームの画像ファイルを頁ごとに分割する：OpenCVバージョン</summary>
+        /// <param name="InPath">
+        ///     画像ファイル入力パス</param>
+        /// <param name="outPath">
+        ///     分割後出力パス</param>
+        /// <returns>
+        ///     true:分割を実施, false:分割ファイルなし</returns>
+        ///------------------------------------------------------------------------------
+        private bool MultiTif_New(string InPath, string outPath)
+        {
+            //スキャン出力画像を確認
+            if (System.IO.Directory.GetFiles(InPath, "*.tif").Count() == 0)
+            {
+                MessageBox.Show("ＯＣＲ変換処理対象の画像ファイルが指定フォルダ " + InPath + " に存在しません", "スキャン画像確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return false;
+            }
+
+            // 出力先フォルダがなければ作成する
+            if (System.IO.Directory.Exists(outPath) == false)
+            {
+                System.IO.Directory.CreateDirectory(outPath);
+            }
+
+            // 出力先フォルダ内の全てのファイルを削除する（通常ファイルは存在しないが例外処理などで残ってしまった場合に備えて念のため）
+            foreach (string files in System.IO.Directory.GetFiles(outPath, "*"))
+            {
+                System.IO.File.Delete(files);
+            }
+
+            int _pageCount = 0;
+            string fnm = string.Empty;
+
+            // マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
+            foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            {
+                using (FileStream tifFS = new FileStream(files, FileMode.Open, FileAccess.Read))
+                {
+                    Image gim = Image.FromStream(tifFS);
+                    FrameDimension gfd = new FrameDimension(gim.FrameDimensionsList[0]);
+
+                    //全体のページ数を得る
+                    int pageCount = gim.GetFrameCount(gfd);
+
+                    for (int i = 0; i < pageCount; i++)
+                    {
+                        gim.SelectActiveFrame(gfd, i);
+
+                        // ファイル名（日付時間部分）
+                        string fName = string.Format("{0:0000}", DateTime.Today.Year) + string.Format("{0:00}", DateTime.Today.Month) +
+                                string.Format("{0:00}", DateTime.Today.Day) + string.Format("{0:00}", DateTime.Now.Hour) +
+                                string.Format("{0:00}", DateTime.Now.Minute) + string.Format("{0:00}", DateTime.Now.Second);
+
+                        _pageCount++;
+
+                        // ファイル名設定
+                        fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
+
+                        // 画像保存
+                        //gim.Save(@"C:\multitif\0902" + i.ToString().PadLeft(3, '0') + ".tif", ImageFormat.Tiff);
+                        gim.Save(fnm, ImageFormat.Tiff);
+                    }
+                }
+            }
+
+            // InPathフォルダの全てのtifファイルを削除する
+            foreach (var files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            {
+                System.IO.File.Delete(files);
+            }
+
+            return true;
+        }
+
+        private void showMultiTiff(string tiffFileName)
+        {
+            FileStream tifFS = new FileStream(tiffFileName, FileMode.Open, FileAccess.Read);
+            Image gim = Image.FromStream(tifFS);
+            FrameDimension gfd = new FrameDimension(gim.FrameDimensionsList[0]);
+
+            //全体のページ数を得る
+            int pageCount = gim.GetFrameCount(gfd); 
+            
+            for (int i = 0; i < pageCount; i++)
+            {
+                gim.SelectActiveFrame(gfd, i);
+
+                gim.Save(@"C:\multitif\0902" + i.ToString().PadLeft(3, '0') + ".tif", ImageFormat.Tiff);
+            }
+
+            MessageBox.Show("finish!!");
         }
 
         private void frmOCR_Load(object sender, EventArgs e)

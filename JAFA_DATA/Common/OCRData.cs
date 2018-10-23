@@ -253,12 +253,12 @@ namespace JAFA_DATA.Common
                 // 勤務表ヘッダデータセット読み込み
                 JAFA_DATADataSetTableAdapters.勤務票ヘッダTableAdapter hAdp = new JAFA_DATADataSetTableAdapters.勤務票ヘッダTableAdapter();
                 adpMn.勤務票ヘッダTableAdapter = hAdp;
-                adpMn.勤務票ヘッダTableAdapter.Fill(tblSt.勤務票ヘッダ);
+                //adpMn.勤務票ヘッダTableAdapter.Fill(tblSt.勤務票ヘッダ);  // 2018/10/23 コメント化
 
                 // 勤務表明細データセット読み込み
                 JAFA_DATADataSetTableAdapters.勤務票明細TableAdapter iAdp = new JAFA_DATADataSetTableAdapters.勤務票明細TableAdapter();
                 adpMn.勤務票明細TableAdapter = iAdp;
-                adpMn.勤務票明細TableAdapter.Fill(tblSt.勤務票明細);
+                //adpMn.勤務票明細TableAdapter.Fill(tblSt.勤務票明細);  // 2018/10/23 コメント化
 
                 // 対象CSVファイル数を取得
                 int cLen = System.IO.Directory.GetFiles(_InPath, "*.csv").Count();

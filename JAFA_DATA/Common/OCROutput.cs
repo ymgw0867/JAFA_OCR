@@ -33,6 +33,7 @@ namespace JAFA_DATA.Common
         JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mateAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.有休付与日数表TableAdapter yuMapAdp = new JAFA_OCRDataSetTableAdapters.有休付与日数表TableAdapter();
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter ymsAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
+        JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter yuBigAdp = new JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter(); // 2018/10/23
 
         LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
         LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
@@ -88,7 +89,7 @@ namespace JAFA_DATA.Common
             mateAdp.Fill(_dts.社員マスター);
             yuMapAdp.Fill(_dts.有休付与日数表);    
             //ymsAdp.Fill(_dts.有給休暇付与マスター);     // 2018/10/22 コメント化
-            ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);   // 前年以降を対象とする 2018/10/22
+            //ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);   // 前年以降を対象とする 2018/10/22
 
             // linqToExcel : excel過去１年間有給取得シート
             if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
@@ -1662,9 +1663,7 @@ namespace JAFA_DATA.Common
                     fuyo = 0;
                     for (int i = 0; i < global.yukyuArray.GetLength(0); i++)
                     {
-                        int yy = global.yukyuArray[i, 0];
-                        
-                        if (wYY == yy)
+                        if (wYY == global.yukyuArray[i, 0])
                         {
                             fuyo = global.yukyuArray[i, 1];
 
@@ -1687,21 +1686,16 @@ namespace JAFA_DATA.Common
                     fuyo = 0;   // 出勤率が80％未満のとき、明示的に当年付与日数を０にする：2018/04/12
                 }
 
-                // 有給休暇付与マスター追加Row取得
-                JAFA_OCRDataSet.有給休暇付与マスターRow r = _dts.有給休暇付与マスター.New有給休暇付与マスターRow();
-                r.社員番号 = s.職員コード;
-                r.年 = fYear;
-                r.月 = fMonth;
-                r.前年初有給残日数 = 0;
+                decimal zenNensho = 0;  // 前年初有給残日数
+                decimal kurikoshi = 0;  // 繰越日数
 
                 // 前年の有給休暇付与マスターのレコードが存在するか
-                if (_dts.有給休暇付与マスター.Any(a => a.社員番号 == s.職員コード && a.年 == fYear - 1 && a.月 == fMonth))
+                if (ymsAdp.FillBySCodeYYMM(_dts.有給休暇付与マスター, s.職員コード, fYear - 1, fMonth) > 0)
                 {
                     // 前年の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
-                    var zy = _dts.有給休暇付与マスター.Where(a => a.社員番号 == s.職員コード && a.年 == fYear - 1 && a.月 == fMonth);
-                    foreach (var z in zy)
+                    foreach (var z in _dts.有給休暇付与マスター)
                     {
-                        r.前年初有給残日数 = z.当年初有給残日数;
+                        zenNensho = (decimal)z.当年初有給残日数;
 
                         // 繰越日数は前年の付与実績から求める：2015/09/30
                         zfuyo = (int)z.当年付与日数;
@@ -1717,7 +1711,7 @@ namespace JAFA_DATA.Common
                         // 前年の有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
                         foreach (var x in mstSheet.Where(a => a.sCode == s.職員コード.ToString() && a.sYY == (fYear - 1).ToString() && a.sMM == fMonth.ToString()))
                         {
-                            r.前年初有給残日数 = Utility.StrtoDouble(x.sNensho);
+                            zenNensho = (decimal)Utility.StrtoDouble(x.sNensho);
 
                             // 繰越日数は前年の付与実績から求める：2015/09/30
                             zfuyo = Utility.StrtoInt(x.sFuyo);
@@ -1726,60 +1720,64 @@ namespace JAFA_DATA.Common
                         }
                     }
                 }
-
-                r.前年有休消化日数 = (double)dd;
-                r.当年付与日数 = fuyo;
+                
+                decimal zan = 0;
 
                 // 有休消化日数より前年初有給残日数が多いとき繰越日数を計算します
-                if (r.前年初有給残日数 >= (double)dd)
+                if (zenNensho >= dd)
                 {
-                    double zan = r.前年初有給残日数 - (double)dd;
+                    zan = zenNensho - dd;
 
                     // 有給残が前年付与日数より多いとき
                     if (zan > zfuyo)
                     {
                         // 繰越日数は前年付与日数とします
-                        r.当年繰越日数 = (double)zfuyo;
+                        //r.当年繰越日数 = (double)zfuyo;
+                        kurikoshi = (decimal)zfuyo;
                     }
                     else
                     {
-                        r.当年繰越日数 = zan;
+                        //r.当年繰越日数 = zan;
+                        kurikoshi = zan;
                     }
                 }
                 else
                 {
-                    r.当年繰越日数 = 0;
+                    kurikoshi = 0;
                 }
+                
+                //----------------------------------------------------------------------
+                //
+                //  有給休暇付与マスター登録処理：2018/10/23
+                //
+                //----------------------------------------------------------------------
 
-                r.当年初有給残日数 = r.当年付与日数 + r.当年繰越日数;
-                r.出勤率算定開始年月日 = DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01");
-                r.出勤率算定終了年月日 = r.出勤率算定開始年月日.AddYears(1).AddDays(-1);
-                r.要出勤日数 = (int)y;
-                r.欠勤日数 = (int)k;
-                r.出勤率 = (double)sRT;
-                r.更新年月日 = DateTime.Now;
+                // 社員番号、年、月で登録済み有給休暇付与マスターを削除：2018/10/23
+                ymsAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
-                // 社員番号、年、月で登録済みデータを取得
-                foreach (var dr in _dts.有給休暇付与マスター.Where(a => a.社員番号 == s.職員コード && a.年 == fYear && a.月 == fMonth))
-                {
-                    // 登録済みデータを削除します
-                    dr.Delete();
-                }
+                // 有給休暇付与マスターを追加登録：2018/10/23
+                ymsAdp.InsertQuery(s.職員コード, fYear, fMonth, zenNensho, dd, fuyo, kurikoshi, fuyo + kurikoshi,
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01"),
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01").AddYears(1).AddDays(-1),
+                    (int)y, (int)k, sRT, DateTime.Now);
 
-                // 有給休暇付与マスターを追加登録
-                _dts.有給休暇付与マスター.Add有給休暇付与マスターRow(r);
+                //------------------------------------------------------------------------
+                //      [BIG給与計算Pro]有休付与データ作成
+                //      有給付与データ追加Row取得：2018/10/23
+                //------------------------------------------------------------------------
 
-                // データベース更新
-                ymsAdp.Update(_dts.有給休暇付与マスター);
+                // 登録済み有給付与データ削除
+                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
 
-                // 再読み込み
-                ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);
+                // 有休付与データ登録
+                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
             }
         }
 
         ///-----------------------------------------------------------
         /// <summary>
-        ///     正社員に入社後6ヶ月経過で付与する日数を計算 </summary>
+        ///     正社員に入社後6ヶ月経過で付与する日数を計算 : 
+        ///     2018/10/22</summary>
         ///-----------------------------------------------------------
         public void sumYukyuAfter6()
         {
@@ -1879,9 +1877,7 @@ namespace JAFA_DATA.Common
             decimal dd;      // 有休＋半休日数
 
             // 有休付与対象者抽出：正社員 2018/10/22
-            foreach (var s in _dts.社員マスター.Where(a => a.調整年月日.Year == nYear &&
-                                                          a.調整年月日.Month == nMonth &&
-                                                          a.社員区分 == global.SEISHAIN))
+            foreach (var s in _dts.社員マスター.Where(a => a.調整年月日.Year == nYear && a.調整年月日.Month == nMonth && a.社員区分 == global.SEISHAIN))
             {
                 // 入社から６カ月間の出勤率が80％以上の正社員を対象とする
                 if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString().PadLeft(5, '0'),
@@ -1894,41 +1890,44 @@ namespace JAFA_DATA.Common
                     fuyo = 0;  // 出勤率が80％未満のとき、明示的に付与日数を０にする：2018/10/22
                 }
 
-                // 有給休暇付与マスター追加Row取得
-                JAFA_OCRDataSet.有給休暇付与マスターRow r = _dts.有給休暇付与マスター.New有給休暇付与マスターRow();
-                r.社員番号 = s.職員コード;
-                r.年 = fYear;
-                r.月 = fMonth;
-                r.前年初有給残日数 = global.YUKYUDAYS_NYUSHO;   // 入所時の有給付与日数                
-                r.前年有休消化日数 = (double)dd;
-                r.当年付与日数 = fuyo;
+                decimal zan = 0; // 繰越日数
 
                 // 有休消化日数より入所時付与日数が多いとき繰越日数を計算します
-                if (r.前年初有給残日数 >= (double)dd)
+                if (global.YUKYUDAYS_NYUSHO >= (decimal)dd)
                 {
-                    double zan = r.前年初有給残日数 - (double)dd;
-                    r.当年繰越日数 = zan;
+                    zan = global.YUKYUDAYS_NYUSHO - (decimal)dd;
                 }
                 else
                 {
-                    r.当年繰越日数 = 0;
+                    zan = 0;
                 }
 
-                // 社員番号、年、月で登録済みデータを取得
-                foreach (var dr in _dts.有給休暇付与マスター.Where(a => a.社員番号 == s.職員コード && a.年 == fYear && a.月 == fMonth))
-                {
-                    // 登録済みデータを削除します
-                    dr.Delete();
-                }
+                //----------------------------------------------------------------------
+                //
+                //  有給休暇付与マスター登録処理：2018/10/23
+                //
+                //----------------------------------------------------------------------
 
-                // 有給休暇付与マスターを追加登録
-                _dts.有給休暇付与マスター.Add有給休暇付与マスターRow(r);
+                // 社員番号、年、月で登録済みデータを削除する
+                ymsAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
-                // データベース更新
-                ymsAdp.Update(_dts.有給休暇付与マスター);
+                // 有給休暇付与マスター追加登録
+                ymsAdp.InsertQuery(s.職員コード, fYear, fMonth, global.YUKYUDAYS_NYUSHO, dd, fuyo, zan, fuyo + zan,
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01"),
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01").AddYears(1).AddDays(-1),
+                    (int)y, (int)k, sRT, DateTime.Now);
 
-                // 再読み込み
-                ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);
+
+                /*--------------------------------------------------------------------------
+                 *      [BIG給与計算Pro]有休付与データ作成
+                 *      有給付与データ追加Row取得：2018/10/23
+                 -------------------------------------------------------------------------*/
+
+                // 登録済み有給付与データ削除
+                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
+
+                // 有休付与データ登録
+                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + zan), 0, zan, 0);
             }
         }
 
@@ -2064,21 +2063,17 @@ namespace JAFA_DATA.Common
                     fuyo = 0;   // 出勤率が80％未満のとき、明示的に当年付与日数を０にする：2018/04/12
                 }
 
-                // 有給休暇付与マスター追加Row取得
-                JAFA_OCRDataSet.有給休暇付与マスターRow r = _dts.有給休暇付与マスター.New有給休暇付与マスターRow();
-                r.社員番号 = s.職員コード;
-                r.年 = fYear;
-                r.月 = fMonth;
-                r.前年初有給残日数 = 0;
+                decimal zenNensho = 0;
+                decimal kurikoshi = 0;
 
                 // 前年の有給休暇付与マスターのレコードが存在するか
-                if (_dts.有給休暇付与マスター.Any(a => a.社員番号 == s.職員コード && a.年 == fYear - 1 && a.月 == fMonth))
+                if (ymsAdp.FillBySCodeYYMM(_dts.有給休暇付与マスター, s.職員コード, fYear - 1, fMonth) > 0)
                 {
                     // 前年の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
-                    var zy = _dts.有給休暇付与マスター.Where(a => a.社員番号 == s.職員コード && a.年 == fYear - 1 && a.月 == fMonth);
-                    foreach (var z in zy)
+                    foreach (var z in _dts.有給休暇付与マスター)
                     {
-                        r.前年初有給残日数 = z.当年初有給残日数;
+                        //r.前年初有給残日数 = z.当年初有給残日数;
+                        zenNensho = (decimal)z.当年初有給残日数;
 
                         // 繰越日数は前年の付与実績から求める：2015/09/30
                         zfuyo = (int)z.当年付与日数;
@@ -2094,7 +2089,8 @@ namespace JAFA_DATA.Common
                         // 前年の有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
                         foreach (var x in mstSheet.Where(a => a.sCode == s.職員コード.ToString() && a.sYY == (fYear - 1).ToString() && a.sMM == fMonth.ToString()))
                         {
-                            r.前年初有給残日数 = Utility.StrtoDouble(x.sNensho);
+                            //r.前年初有給残日数 = Utility.StrtoDouble(x.sNensho);
+                            zenNensho = (decimal)Utility.StrtoDouble(x.sNensho);
 
                             // 繰越日数は前年の付与実績から求める：2015/09/30
                             zfuyo = Utility.StrtoInt(x.sFuyo);
@@ -2103,61 +2099,58 @@ namespace JAFA_DATA.Common
                         }
                     }
                 }
-                
-                r.前年有休消化日数 = (double)dd;
-                r.当年付与日数 = fuyo;
+                decimal zan = 0;
 
                 // 有休消化日数より前年初有給残日数が多いとき繰越日数を計算します
-                if (r.前年初有給残日数 >= (double)dd)
+                if (zenNensho >= dd)
                 {
-                    double zan = r.前年初有給残日数 - (double)dd;
+                    zan = zenNensho - dd;
 
                     // 有給残が前年付与日数より多いとき
                     if (zan > zfuyo)
                     {
                         // 繰越日数は前年付与日数とします
-                        r.当年繰越日数 = (double)zfuyo;
+                        //r.当年繰越日数 = (double)zfuyo;
+                        kurikoshi = (decimal)zfuyo;
                     }
                     else
                     {
-                        r.当年繰越日数 = zan;
+                        //r.当年繰越日数 = zan;
+                        kurikoshi = zan;
                     }
                 }
                 else
                 {
-                    r.当年繰越日数 = 0;
+                    //r.当年繰越日数 = 0;
+                    kurikoshi = 0;
                 }
 
-                r.当年初有給残日数 = r.当年付与日数 + r.当年繰越日数;
-                r.出勤率算定開始年月日 = DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01");
-                r.出勤率算定終了年月日 = r.出勤率算定開始年月日.AddYears(1).AddDays(-1);
-                r.要出勤日数 = (int)y;
-                r.欠勤日数 = (int)k;
-                r.出勤率 = (double)sRT;
-                r.更新年月日 = DateTime.Now;
+                //----------------------------------------------------------------------
+                //
+                //  有給休暇付与マスター登録処理：2018/10/23
+                //
+                //----------------------------------------------------------------------
 
-                // 社員番号、年、月で登録済みデータを取得
-                foreach (var dr in _dts.有給休暇付与マスター.Where(a => a.社員番号 == s.職員コード && a.年 == fYear && a.月 == fMonth))
-                {
-                    // 登録済みデータを削除します
-                    dr.Delete();
-                }
+                // 社員番号、年、月で登録済み有給休暇付与マスターを削除：2018/10/23
+                ymsAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
-                // 有給休暇付与マスターを追加登録
-                _dts.有給休暇付与マスター.Add有給休暇付与マスターRow(r);
+                // 有給休暇付与マスターを追加登録：2018/10/23
+                ymsAdp.InsertQuery(s.職員コード, fYear, fMonth, zenNensho, dd, fuyo, kurikoshi, fuyo + kurikoshi,
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01"),
+                    DateTime.Parse(sYYYYMM.Substring(0, 4) + "/" + sYYYYMM.Substring(4, 2) + "/01").AddYears(1).AddDays(-1),
+                    (int)y, (int)k, sRT, DateTime.Now);
 
-                // データベース更新
-                ymsAdp.Update(_dts.有給休暇付与マスター);
+                /*--------------------------------------------------------------------------
+                 *      [BIG給与計算Pro]有休付与データ作成
+                 *      有給付与データ追加Row取得：2018/10/23
+                 -------------------------------------------------------------------------*/
 
-                // 再読み込み
-                ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);
+                // 登録済み有給付与データ削除
+                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
+
+                // 有休付与データ登録
+                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
             }
-
-            //// データベース更新
-            //ymsAdp.Update(_dts.有給休暇付与マスター);
-
-            //// 再読み込み
-            //ymsAdp.Fill(_dts.有給休暇付与マスター);
         }
 
         /// ----------------------------------------------------------------------

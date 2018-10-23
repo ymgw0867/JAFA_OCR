@@ -116,7 +116,7 @@ namespace JAFA_DATA.workData
                 sb.Append(t.確定勤務票ヘッダRow.月.ToString()).Append(",");
                 sb.Append(t.日付.ToString()).Append(",");
 
-                DateTime eDate = DateTime.Parse((t.確定勤務票ヘッダRow.年 + Properties.Settings.Default.rekiHosei).ToString() + "/" + t.確定勤務票ヘッダRow.月.ToString() + "/" + t.日付.ToString());
+                DateTime eDate = DateTime.Parse(t.確定勤務票ヘッダRow.年.ToString() + "/" + t.確定勤務票ヘッダRow.月.ToString() + "/" + t.日付.ToString());
                 //sb.Append(t.日付.ToString()).Append(","); // 曜日
                 sb.Append(("日月火水木金土").Substring(int.Parse(eDate.DayOfWeek.ToString("d")), 1)).Append(",");
 

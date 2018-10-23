@@ -1417,7 +1417,9 @@ namespace JAFA_DATA.OCR
         {
             // 移動先フォルダがあるか？なければ作成する（TIFフォルダ）
             if (!System.IO.Directory.Exists(Properties.Settings.Default.tifPath))
+            {
                 System.IO.Directory.CreateDirectory(Properties.Settings.Default.tifPath);
+            }
 
             // 出勤簿ヘッダデータを取得する
             //var s = dts.勤務票ヘッダ.OrderBy(a => a.ID);
@@ -1440,10 +1442,16 @@ namespace JAFA_DATA.OCR
                 string toImg = Properties.Settings.Default.tifPath + t.画像名;
 
                 // 同名ファイルが既に登録済みのときは削除する
-                if (System.IO.File.Exists(toImg)) System.IO.File.Delete(toImg);
+                if (System.IO.File.Exists(toImg))
+                {
+                    System.IO.File.Delete(toImg);
+                }
 
                 // ファイルを移動する
-                if (System.IO.File.Exists(fromImg)) System.IO.File.Move(fromImg, toImg);
+                if (System.IO.File.Exists(fromImg))
+                {
+                    System.IO.File.Move(fromImg, toImg);
+                }
 
                 //// 出勤簿ヘッダレコードの画像ファイル名を書き換える
                 //JAFA_DATADataSet.勤務票ヘッダRow r = dts.勤務票ヘッダ.FindByID(t.ID);

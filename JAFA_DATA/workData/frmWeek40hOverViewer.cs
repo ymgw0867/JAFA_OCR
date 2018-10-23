@@ -106,7 +106,7 @@ namespace JAFA_DATA.workData
             GridViewSetting2(dg2);
 
             // 年月表示
-            txtYear.Text = (global.cnfYear + Properties.Settings.Default.rekiHosei).ToString();
+            txtYear.Text = global.cnfYear.ToString();
             txtMonth.Text = global.cnfMonth.ToString();
             txtYear.Focus();
 
@@ -511,7 +511,7 @@ namespace JAFA_DATA.workData
                                                            a.週番号 <= eNum && 
                                                            a.年月日.Year == Utility.StrtoInt(txtYear.Text)).OrderBy(a => a.年月日))
                 {
-                    string hdID = (t.年月日.Year - Properties.Settings.Default.rekiHosei).ToString() + 
+                    string hdID = t.年月日.Year.ToString() + 
                                   t.年月日.Month.ToString().PadLeft(2, '0') + 
                                   t.職員コード.ToString().PadLeft(5, '0');
 
