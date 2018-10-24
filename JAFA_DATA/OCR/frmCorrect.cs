@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Data.OleDb;
 using JAFA_DATA.Common;
 using System.Globalization;
+using OpenCvSharp;
 
 namespace JAFA_DATA.OCR
 {
@@ -36,6 +37,17 @@ namespace JAFA_DATA.OCR
             // 出勤区分マスター
             sAdp.Fill(cDts.出勤区分);
         }
+
+        // openCvSharp 関連　2018/10/23
+        const float B_WIDTH = 0.35f;
+        const float B_HEIGHT = 0.35f;
+        const float A_WIDTH = 0.05f;
+        const float A_HEIGHT = 0.05f;
+
+        float n_width = 0f;
+        float n_height = 0f;
+
+        Mat mMat = new Mat();
 
         // データアダプターオブジェクト
         JAFA_DATADataSetTableAdapters.TableAdapterManager adpMn = new JAFA_DATADataSetTableAdapters.TableAdapterManager();
@@ -134,7 +146,7 @@ namespace JAFA_DATA.OCR
             }
             
             // キャプション
-            this.Text = "メイト出勤簿データ表示";
+            this.Text = "出勤簿データ作成";
 
             // グリッドビュー定義
             GridviewSet gs = new GridviewSet();
@@ -245,18 +257,18 @@ namespace JAFA_DATA.OCR
                         }
 
                         gv.Columns[cKName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                                          
+
                         // 表示位置
-                        if (c.Index < 3 || c.Name == cSE || c.Name == cEE || c.Name == cKSE || 
+                        if (c.Index < 3 || c.Name == cSE || c.Name == cEE || c.Name == cKSE ||
                             c.Name == cWE || c.Name == cTeisei)
-                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
-                        else c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        else c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                         if (c.Name == cSH || c.Name == cEH || c.Name == cKSH || c.Name == cWH) 
-                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                         if (c.Name == cKName || c.Name == cSM || c.Name == cEM || c.Name == cKSM || c.Name == cWM) 
-                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
+                            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                         // 編集可否
                         // 実労時間を編集不可とした 2018/03/27
@@ -308,22 +320,22 @@ namespace JAFA_DATA.OCR
                 gv.EnableHeadersVisualStyles = false;
 
                 // 列ヘッダー表示位置指定
-                gv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+                gv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 // 列ヘッダーフォント指定
                 gv.ColumnHeadersDefaultCellStyle.Font = new Font("Meiryo UI", 9, FontStyle.Regular);
 
                 // データフォント指定
-                gv.DefaultCellStyle.Font = new Font("Meiryo UI", (Single)11, FontStyle.Regular);
+                gv.DefaultCellStyle.Font = new Font("Meiryo UI", (Single)10, FontStyle.Regular);
                 //gv.DefaultCellStyle.Font = new Font("ＭＳＰゴシック", (Single)10, FontStyle.Regular);
 
                 // 行の高さ
                 gv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
                 gv.ColumnHeadersHeight = 20;
-                gv.RowTemplate.Height = 30;
+                gv.RowTemplate.Height = 28;
 
                 // 全体の高さ
-                gv.Height = 502;
+                gv.Height = 470;
 
                 // 全体の幅
                 gv.Width = 495;
@@ -425,7 +437,7 @@ namespace JAFA_DATA.OCR
                 sName = ms.getKojinMst(Utility.StrtoInt(txtNo.Text));
                 lblName.Text = sName[0];
                 lblFuri.Text = sName[1];
-                lblSyoubi.Text = sName[4];
+                //lblSyoubi.Text = sName[4];
                 lblWdays.Text = sName[5];
 
                 // 社員区分 2018/10/22
@@ -609,7 +621,7 @@ namespace JAFA_DATA.OCR
                 global.ChangeValueStatus = true;
             }
 
-            // 出勤時刻、退勤時刻
+            // 出勤時刻、退勤時刻、休憩時間
             if (colName == cSH || colName == cSM || colName == cEH || colName == cEM || 
                 colName == cKSH || colName == cKSM)
             {
@@ -650,6 +662,64 @@ namespace JAFA_DATA.OCR
                             dGV[cWM, e.RowIndex].Value = string.Empty;
                             global.ChangeValueStatus = true;
                         }
+
+                        // 警告表示初期化 : 曜日を表示します（日曜日は色表示のため）
+                        dGV[cKSH, e.RowIndex].Style.BackColor = Color.Empty;
+                        dGV[cKSE, e.RowIndex].Style.BackColor = Color.Empty;
+                        dGV[cKSM, e.RowIndex].Style.BackColor = Color.Empty;
+                        YoubiSet(e.RowIndex);
+
+                        /*  正社員で残業時間２時間につき15分の休憩がないとき警告表示
+                         *  2018/10/22  
+                         */
+                        if (lblShainkbn.Text == global.SEISHAIN.ToString())
+                        {
+                            wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
+                                dGV[cSM, e.RowIndex].Value.ToString(),
+                                dGV[cEH, e.RowIndex].Value.ToString(),
+                                dGV[cEM, e.RowIndex].Value.ToString(), "0", "0");
+
+                            // 始業時刻から終業時刻が11時間超え (労働時間, 残業時間)
+                            // (540, 0)(660,2)(780,4)(900, 6)(1020, 8)
+                            if (wTime >= 660)
+                            {
+                                int z = (int)((wTime - 540) / 60 / 2);  // 残業2時間単位数
+                                int rest = z * 15 + 60; // 計算上の休憩時間・分
+
+                                // 記入休憩時間が計算上の休憩時間未満のとき
+                                if (Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) * 60 + Utility.StrtoInt(Utility.NulltoStr(dGV[cKSM, e.RowIndex].Value)) < rest)
+                                {
+                                    dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                    dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                                }
+                            }
+                        }
+
+
+                        /*  正社員、臨時社員、外国人技能実習生で始業時刻から終業時刻が6時間を超えて
+                         *  休憩時間が1時間未満のとき警告
+                         *  2018/10/22  
+                         */
+                        if (lblShainkbn.Text == global.SEISHAIN.ToString() ||
+                            lblShainkbn.Text == global.RINJISHAIN.ToString() ||
+                            lblShainkbn.Text == global.GAIKOKUJINGINOU.ToString())
+                        {
+                            wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
+                                dGV[cSM, e.RowIndex].Value.ToString(),
+                                dGV[cEH, e.RowIndex].Value.ToString(),
+                                dGV[cEM, e.RowIndex].Value.ToString(), "0", "0");
+
+                            // 始業時刻から終業時刻が6時間超え
+                            if (wTime > 360)
+                            {
+                                // 休憩時間が1時間未満のとき
+                                if (Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) < 1)
+                                {
+                                    dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                    dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -670,35 +740,44 @@ namespace JAFA_DATA.OCR
                 }
             }
 
-            // 警告：休憩時間が1時間以上のときバックカラーを変える 2015/08/31
-            if (colName == cKSH || colName == cKSM)
-            {
-                int kh = 0;
-                int km = 0;
+            // 2018/10/24 コメント化
+            //// 警告：休憩時間が1時間以上のときバックカラーを変える 2015/08/31
+            //if (colName == cKSH || colName == cKSM)
+            //{
+            //    int kh = 0;
+            //    int km = 0;
 
-                if (dGV[cKSH, e.RowIndex].Value != null && dGV[cKSM, e.RowIndex].Value != null)
-                {
-                    kh = Utility.StrtoInt(dGV[cKSH, e.RowIndex].Value.ToString());
-                    km = Utility.StrtoInt(dGV[cKSM, e.RowIndex].Value.ToString());
+            //    if (dGV[cKSH, e.RowIndex].Value != null && dGV[cKSM, e.RowIndex].Value != null)
+            //    {
+            //        kh = Utility.StrtoInt(dGV[cKSH, e.RowIndex].Value.ToString());
+            //        km = Utility.StrtoInt(dGV[cKSM, e.RowIndex].Value.ToString());
 
-                    if ((kh * 60 + km) > 60)
-                    {
-                        dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
-                        dGV[cKSE, e.RowIndex].Style.BackColor = Color.LightPink;
-                        dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
-                    }
-                    else
-                    {
-                        // 2018/03/27 null処理を追加
-                        if (Utility.NulltoStr(dGV[cWeek, e.RowIndex].Value) != "日")
-                        {
-                            dGV[cKSH, e.RowIndex].Style.BackColor = Color.White;
-                            dGV[cKSE, e.RowIndex].Style.BackColor = Color.White;
-                            dGV[cKSM, e.RowIndex].Style.BackColor = Color.White;
-                        }
-                    }
-                }
-            }
+            //        if ((kh * 60 + km) > 60)
+            //        {
+            //            dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+            //            dGV[cKSE, e.RowIndex].Style.BackColor = Color.LightPink;
+            //            dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+            //        }
+            //        else
+            //        {
+            //            // 2018/03/27 null処理を追加
+            //            if (Utility.NulltoStr(dGV[cWeek, e.RowIndex].Value) != "日")
+            //            {
+            //                dGV[cKSH, e.RowIndex].Style.BackColor = Color.White;
+            //                dGV[cKSE, e.RowIndex].Style.BackColor = Color.White;
+            //                dGV[cKSM, e.RowIndex].Style.BackColor = Color.White;
+            //            }
+            //        }
+            //    }
+            //}
+                        
+
+
+
+
+
+
+
 
             // 訂正チェック
             if (colName == cTeisei)
@@ -1488,23 +1567,23 @@ namespace JAFA_DATA.OCR
             }
         }
         
-        private void btnPlus_Click(object sender, EventArgs e)
-        {
-            if (leadImg.ScaleFactor < global.ZOOM_MAX)
-            {
-                leadImg.ScaleFactor += global.ZOOM_STEP;
-            }
-            global.miMdlZoomRate = (float)leadImg.ScaleFactor;
-        }
+        //private void btnPlus_Click(object sender, EventArgs e)
+        //{
+        //    if (leadImg.ScaleFactor < global.ZOOM_MAX)
+        //    {
+        //        leadImg.ScaleFactor += global.ZOOM_STEP;
+        //    }
+        //    global.miMdlZoomRate = (float)leadImg.ScaleFactor;
+        //}
 
-        private void btnMinus_Click(object sender, EventArgs e)
-        {
-            if (leadImg.ScaleFactor > global.ZOOM_MIN)
-            {
-                leadImg.ScaleFactor -= global.ZOOM_STEP;
-            }
-            global.miMdlZoomRate = (float)leadImg.ScaleFactor;
-        }
+        //private void btnMinus_Click(object sender, EventArgs e)
+        //{
+        //    if (leadImg.ScaleFactor > global.ZOOM_MIN)
+        //    {
+        //        leadImg.ScaleFactor -= global.ZOOM_STEP;
+        //    }
+        //    global.miMdlZoomRate = (float)leadImg.ScaleFactor;
+        //}
 
         /// ---------------------------------------------------------------------------------
         /// <summary>
@@ -1991,6 +2070,78 @@ namespace JAFA_DATA.OCR
             }
         }
 
+        private void showImage_openCv(string img)
+        {
+            n_width = B_WIDTH;
+            n_height = B_HEIGHT;
+
+            imgShow(img, n_width, n_height);
+
+            trackBar1.Value = 0;
+        }
+
+        private void imgShow(string filePath, float w, float h)
+        {
+            mMat = new Mat(filePath, ImreadModes.GrayScale);
+            Bitmap bt = MatToBitmap(mMat);
+
+            // Bitmap を生成
+            Bitmap canvas = new Bitmap((int)(bt.Width * w), (int)(bt.Height * h));
+
+            Graphics g = Graphics.FromImage(canvas);
+
+            g.DrawImage(bt, 0, 0, bt.Width * w, bt.Height * h);
+
+            //メモリクリア
+            bt.Dispose();
+            g.Dispose();
+
+            pictureBox1.Image = canvas;
+        }
+
+        private void imgShow(Mat mImg, float w, float h)
+        {
+            int cWidth = 0;
+            int cHeight = 0;
+
+            Bitmap bt = MatToBitmap(mImg);
+
+            // Bitmapサイズ
+            if (panel1.Width < (bt.Width * w) || panel1.Height < (bt.Height * h))
+            {
+                cWidth = (int)(bt.Width * w);
+                cHeight = (int)(bt.Height * h);
+            }
+            else
+            {
+                cWidth = panel1.Width;
+                cHeight = panel1.Height;
+            }
+
+            // Bitmap を生成
+            Bitmap canvas = new Bitmap(cWidth, cHeight);
+
+            // ImageオブジェクトのGraphicsオブジェクトを作成する
+            Graphics g = Graphics.FromImage(canvas);
+
+            // 画像をcanvasの座標(0, 0)の位置に指定のサイズで描画する
+            g.DrawImage(bt, 0, 0, bt.Width * w, bt.Height * h);
+
+            //メモリクリア
+            bt.Dispose();
+            g.Dispose();
+
+            // PictureBox1に表示する
+            pictureBox1.Image = canvas;
+        }
+
+
+        // GUI上に画像を表示するには、OpenCV上で扱うMat形式をBitmap形式に変換する必要がある
+        public static Bitmap MatToBitmap(Mat image)
+        {
+            return OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+        }
+
         /// ------------------------------------------------------------------------------
         /// <summary>
         ///     伝票画像表示 </summary>
@@ -2001,73 +2152,73 @@ namespace JAFA_DATA.OCR
         /// ------------------------------------------------------------------------------
         public void ShowImage(string tempImgName)
         {
-            //修正画面へ組み入れた画像フォームの表示    
-            //画像の出力が無い場合は、画像表示をしない。
-            if (tempImgName == string.Empty)
-            {
-                leadImg.Visible = false;
-                lblNoImage.Visible = false;
-                global.pblImagePath = string.Empty;
-                return;
-            }
+            ////修正画面へ組み入れた画像フォームの表示    
+            ////画像の出力が無い場合は、画像表示をしない。
+            //if (tempImgName == string.Empty)
+            //{
+            //    leadImg.Visible = false;
+            //    lblNoImage.Visible = false;
+            //    global.pblImagePath = string.Empty;
+            //    return;
+            //}
 
-            //画像ファイルがあるとき表示
-            if (File.Exists(tempImgName))
-            {
-                lblNoImage.Visible = false;
-                leadImg.Visible = true;
+            ////画像ファイルがあるとき表示
+            //if (File.Exists(tempImgName))
+            //{
+            //    lblNoImage.Visible = false;
+            //    leadImg.Visible = true;
 
-                // 画像操作ボタン
-                btnPlus.Enabled = true;
-                btnMinus.Enabled = true;
+            //    // 画像操作ボタン
+            //    //btnPlus.Enabled = true;
+            //    //btnMinus.Enabled = true;
 
-                //画像ロード
-                Leadtools.Codecs.RasterCodecs.Startup();
-                Leadtools.Codecs.RasterCodecs cs = new Leadtools.Codecs.RasterCodecs();
+            //    //画像ロード
+            //    Leadtools.Codecs.RasterCodecs.Startup();
+            //    Leadtools.Codecs.RasterCodecs cs = new Leadtools.Codecs.RasterCodecs();
 
-                // 描画時に使用される速度、品質、およびスタイルを制御します。 
-                Leadtools.RasterPaintProperties prop = new Leadtools.RasterPaintProperties();
-                prop = Leadtools.RasterPaintProperties.Default;
-                prop.PaintDisplayMode = Leadtools.RasterPaintDisplayModeFlags.Resample;
-                leadImg.PaintProperties = prop;
+            //    // 描画時に使用される速度、品質、およびスタイルを制御します。 
+            //    Leadtools.RasterPaintProperties prop = new Leadtools.RasterPaintProperties();
+            //    prop = Leadtools.RasterPaintProperties.Default;
+            //    prop.PaintDisplayMode = Leadtools.RasterPaintDisplayModeFlags.Resample;
+            //    leadImg.PaintProperties = prop;
 
-                leadImg.Image = cs.Load(tempImgName, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, 1, 1);
+            //    leadImg.Image = cs.Load(tempImgName, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, 1, 1);
 
-                //画像表示倍率設定
-                if (global.miMdlZoomRate == 0f)
-                {
-                    leadImg.ScaleFactor *= global.ZOOM_RATE;
-                }
-                else
-                {
-                    leadImg.ScaleFactor *= global.miMdlZoomRate;
-                }
+            //    //画像表示倍率設定
+            //    if (global.miMdlZoomRate == 0f)
+            //    {
+            //        leadImg.ScaleFactor *= global.ZOOM_RATE;
+            //    }
+            //    else
+            //    {
+            //        leadImg.ScaleFactor *= global.miMdlZoomRate;
+            //    }
 
-                //画像のマウスによる移動を可能とする
-                leadImg.InteractiveMode = Leadtools.WinForms.RasterViewerInteractiveMode.Pan;
+            //    //画像のマウスによる移動を可能とする
+            //    leadImg.InteractiveMode = Leadtools.WinForms.RasterViewerInteractiveMode.Pan;
 
-                // グレースケールに変換
-                Leadtools.ImageProcessing.GrayscaleCommand grayScaleCommand = new Leadtools.ImageProcessing.GrayscaleCommand();
-                grayScaleCommand.BitsPerPixel = 8;
-                grayScaleCommand.Run(leadImg.Image);
-                leadImg.Refresh();
+            //    // グレースケールに変換
+            //    Leadtools.ImageProcessing.GrayscaleCommand grayScaleCommand = new Leadtools.ImageProcessing.GrayscaleCommand();
+            //    grayScaleCommand.BitsPerPixel = 8;
+            //    grayScaleCommand.Run(leadImg.Image);
+            //    leadImg.Refresh();
 
-                cs.Dispose();
-                Leadtools.Codecs.RasterCodecs.Shutdown();
-                //global.pblImagePath = tempImgName;
-            }
-            else
-            {
-                //画像ファイルがないとき
-                lblNoImage.Visible = true;
+            //    cs.Dispose();
+            //    Leadtools.Codecs.RasterCodecs.Shutdown();
+            //    //global.pblImagePath = tempImgName;
+            //}
+            //else
+            //{
+            //    //画像ファイルがないとき
+            //    lblNoImage.Visible = true;
 
-                // 画像操作ボタン
-                btnPlus.Enabled = false;
-                btnMinus.Enabled = false;
+            //    // 画像操作ボタン
+            //    //btnPlus.Enabled = false;
+            //    //btnMinus.Enabled = false;
 
-                leadImg.Visible = false;
-                //global.pblImagePath = string.Empty;
-            }
+            //    leadImg.Visible = false;
+            //    //global.pblImagePath = string.Empty;
+            //}
         }
 
         private void leadImg_MouseLeave(object sender, EventArgs e)
@@ -2192,6 +2343,20 @@ namespace JAFA_DATA.OCR
         private void maskedTextBox3_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
 
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            n_width = B_WIDTH + (float)trackBar1.Value * 0.05f;
+            n_height = B_HEIGHT + (float)trackBar1.Value * 0.05f;
+
+            //imgShow(@"C:\CONYX_OCR\TIF\201808\201808_87654323_山田　哲人.tif", n_width, n_height);
+             imgShow(mMat, n_width, n_height);
         }
     }
 }

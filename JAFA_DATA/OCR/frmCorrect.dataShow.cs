@@ -166,7 +166,10 @@ namespace JAFA_DATA.OCR
                 // 画像表示
                 if (mRow == 0)
                 {
-                    ShowImage(global.pblImagePath + t.画像名.ToString());
+                    //ShowImage(global.pblImagePath + t.画像名.ToString());
+
+                    // openCV:2018/10/24
+                    showImage_openCv(global.pblImagePath + t.画像名.ToString());
                 }
 
                 // 表示色を初期化
@@ -288,70 +291,6 @@ namespace JAFA_DATA.OCR
                 //}
 
 
-                /*  正社員で残業時間２時間につき15分の休憩がないとき警告
-                 *  2018/10/22  
-                 */
-                if (lblShainkbn.Text == global.SEISHAIN.ToString())
-                {
-                    if (t.開始時 != string.Empty && t.開始分 != string.Empty ||
-                        t.終了時 != string.Empty && t.終了分 != string.Empty)
-                    {
-                        DateTime sDt, eDt;
-                        if (DateTime.TryParse(t.開始時 + ":" + t.開始分, out sDt) &&
-                            DateTime.TryParse(t.終了時 + ":" + t.終了分, out eDt))
-                        {
-                            double wtm = Utility.GetTimeSpan(sDt, eDt).TotalMinutes;
-
-                            // 始業時刻から終業時刻が11時間超え (労働時間, 残業時間)
-                            // (540, 0)(660,2)(780,4)(900, 6)(1020, 8)
-                            if (wtm >= 660)
-                            {
-                                int z = (int)(wtm - 540 / 60 / 2);  // 残業2時間単位数
-                                int rest = z * 15 + 60; // 計算上の休憩時間・分
-
-                                // 記入休憩時間が計算上の休憩時間未満のとき
-                                if ((Utility.StrtoInt(t.休憩開始時) * 60 + Utility.StrtoInt(t.休憩開始分)) < rest)
-                                {
-                                    dGV[cKSH, mRow].Style.BackColor = Color.LightPink;
-                                    dGV[cKSM, mRow].Style.BackColor = Color.LightPink;
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                /*  正社員、臨時社員、外国人技能実習生で始業時刻から終業時刻が6時間を超えて
-                 *  休憩時間が1時間未満のとき警告
-                 *  2018/10/22  
-                 */
-                if (lblShainkbn.Text == global.SEISHAIN.ToString() || 
-                    lblShainkbn.Text == global.RINJISHAIN.ToString() || 
-                    lblShainkbn.Text == global.GAIKOKUJINGINOU.ToString())
-                {
-                    if (t.開始時 != string.Empty && t.開始分 != string.Empty ||
-                        t.終了時 != string.Empty && t.終了分 != string.Empty)
-                    {
-                        DateTime sDt, eDt;
-                        if (DateTime.TryParse(t.開始時 + ":" + t.開始分, out sDt) && 
-                            DateTime.TryParse(t.終了時 + ":" + t.終了分, out eDt))
-                        {
-                            double wtm = Utility.GetTimeSpan(sDt, eDt).TotalMinutes;
-
-                            // 始業時刻から終業時刻が6時間超え
-                            if (wtm > 360)
-                            {
-                                // 休憩時間が1時間未満のとき
-                                if (Utility.StrtoInt(t.休憩開始時) < 1)
-                                {
-                                    dGV[cKSH, mRow].Style.BackColor = Color.LightPink;
-                                    dGV[cKSM, mRow].Style.BackColor = Color.LightPink;
-                                }
-                            }
-                        }
-                    }
-                }
-
 
                 
                 // 行インデックス加算
@@ -418,7 +357,7 @@ namespace JAFA_DATA.OCR
             // 社員情報表示欄
             lblName.Text = string.Empty;
             lblFuri.Text = string.Empty;
-            lblSyoubi.Text = string.Empty;
+            //lblSyoubi.Text = string.Empty;
             lblWdays.Text = string.Empty;
             lblShainkbn.Text = string.Empty;        // 2018/10/22
             lblShainKbnName.Text = string.Empty;    // 2018/10/22
@@ -469,6 +408,14 @@ namespace JAFA_DATA.OCR
 
             //データ数表示
             lblPage.Text = " (" + (cI + 1).ToString() + "/" + dts.勤務票ヘッダ.Rows.Count.ToString() + ")";
+
+            // 2018/10/24
+            trackBar1.Minimum = 0;
+            trackBar1.Maximum = 20;
+            trackBar1.Value = 0;
+
+            trackBar1.SmallChange = 1;
+            trackBar1.LargeChange = 10;
         }
 
         ///------------------------------------------------------------------------------------
