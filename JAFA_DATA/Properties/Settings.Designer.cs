@@ -91,7 +91,7 @@ namespace JAFA_DATA.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\JAFA_OCR\\MDB\\JAHR_OCR.mdb")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\JAFA_OCR\\MDB\\JAFA_OCR.mdb")]
         public string ocrMdbPath {
             get {
                 return ((string)(this["ocrMdbPath"]));
@@ -100,7 +100,7 @@ namespace JAFA_DATA.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\JAFA_DATA\\MDB\\JAHR_DATA.mdb")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\JAFA_DATA\\MDB\\JAFA_DATA.mdb")]
         public string dataMdbPath {
             get {
                 return ((string)(this["dataMdbPath"]));

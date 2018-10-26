@@ -45,7 +45,7 @@ namespace JAFA_DATA.OCR
             txtYear.Text = Utility.EmptytoZero(r.年.ToString());
             txtMonth.Text = Utility.EmptytoZero(r.月.ToString());
 
-            lblZenKou.Text = string.Empty;
+            //lblZenKou.Text = string.Empty;
 
             // 交通費等の入力を可能とする
             txtKoutsuuhi.Enabled = true;
@@ -108,7 +108,10 @@ namespace JAFA_DATA.OCR
                 // 画像表示
                 if (mRow == 0)
                 {
-                    ShowImage(global.pblImagePath + t.画像名.ToString());
+                    //ShowImage(global.pblImagePath + t.画像名.ToString()); // 2018/10/26 コメント化
+
+                    // openCV版：2018/10/26
+                    showImage_openCv(global.pblImagePath + t.画像名.ToString());
                 }
 
                 // 表示色を初期化
@@ -210,7 +213,7 @@ namespace JAFA_DATA.OCR
             // 社員情報表示欄
             lblName.Text = string.Empty;
             lblFuri.Text = string.Empty;
-            lblSyoubi.Text = string.Empty;
+            //lblSyoubi.Text = string.Empty;
             lblWdays.Text = string.Empty;
 
             lblNoImage.Visible = false;
@@ -259,6 +262,14 @@ namespace JAFA_DATA.OCR
 
             //データ数表示
             lblPage.Text = " (" + (cI + 1).ToString() + "/" + dts.確定勤務票ヘッダ.Count.ToString() + ")";
+
+            // 2018/10/26
+            trackBar1.Minimum = 0;
+            trackBar1.Maximum = 20;
+            trackBar1.Value = 0;
+
+            trackBar1.SmallChange = 1;
+            trackBar1.LargeChange = 10;
         }
 
         ///------------------------------------------------------------------------------------

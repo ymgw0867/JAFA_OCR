@@ -39,10 +39,10 @@
       <Value Profile="(Default)">c:\JAFA_OCR\TIF\</Value>
     </Setting>
     <Setting Name="ocrMdbPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">c:\JAFA_OCR\MDB\JAHR_OCR.mdb</Value>
+      <Value Profile="(Default)">c:\JAFA_OCR\MDB\JAFA_OCR.mdb</Value>
     </Setting>
     <Setting Name="dataMdbPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">c:\JAFA_DATA\MDB\JAHR_DATA.mdb</Value>
+      <Value Profile="(Default)">c:\JAFA_DATA\MDB\JAFA_DATA.mdb</Value>
     </Setting>
     <Setting Name="gengou" Type="System.String" Scope="Application">
       <Value Profile="(Default)">平成</Value>

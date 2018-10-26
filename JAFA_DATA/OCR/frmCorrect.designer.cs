@@ -473,7 +473,7 @@
             // 
             this.lblShainKbnName.BackColor = System.Drawing.SystemColors.Control;
             this.lblShainKbnName.Font = new System.Drawing.Font("Meiryo UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblShainKbnName.Location = new System.Drawing.Point(982, 82);
+            this.lblShainKbnName.Location = new System.Drawing.Point(982, 79);
             this.lblShainKbnName.Name = "lblShainKbnName";
             this.lblShainKbnName.Size = new System.Drawing.Size(137, 28);
             this.lblShainKbnName.TabIndex = 284;

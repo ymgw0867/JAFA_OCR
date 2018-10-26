@@ -2070,6 +2070,12 @@ namespace JAFA_DATA.OCR
             }
         }
 
+        ///-----------------------------------------------------------
+        /// <summary>
+        ///     画像表示 openCV：2018/10/24 </summary>
+        /// <param name="img">
+        ///     表示画像ファイル名</param>
+        ///-----------------------------------------------------------
         private void showImage_openCv(string img)
         {
             n_width = B_WIDTH;
@@ -2080,6 +2086,16 @@ namespace JAFA_DATA.OCR
             trackBar1.Value = 0;
         }
 
+        ///---------------------------------------------------------
+        /// <summary>
+        ///     画像表示メイン openCV : 2018/10/24 </summary>
+        /// <param name="mImg">
+        ///     Mat形式イメージ</param>
+        /// <param name="w">
+        ///     width</param>
+        /// <param name="h">
+        ///     height</param>
+        ///---------------------------------------------------------
         private void imgShow(string filePath, float w, float h)
         {
             mMat = new Mat(filePath, ImreadModes.GrayScale);
@@ -2099,6 +2115,16 @@ namespace JAFA_DATA.OCR
             pictureBox1.Image = canvas;
         }
 
+        ///---------------------------------------------------------
+        /// <summary>
+        ///     画像表示メイン openCV : 2018/10/24 </summary>
+        /// <param name="mImg">
+        ///     Mat形式イメージ</param>
+        /// <param name="w">
+        ///     width</param>
+        /// <param name="h">
+        ///     height</param>
+        ///---------------------------------------------------------
         private void imgShow(Mat mImg, float w, float h)
         {
             int cWidth = 0;

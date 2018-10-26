@@ -24,7 +24,7 @@ namespace JAFA_DATA.Common
         /// ---------------------------------------------------------------------
         public static void WindowsMinSize(Form tempFrm, int wSize, int hSize)
         {
-            tempFrm.MinimumSize = new Size(wSize, hSize);
+            tempFrm.MinimumSize = new System.Drawing.Size(wSize, hSize);
         }
         /// ---------------------------------------------------------------------
         /// <summary>
@@ -38,7 +38,7 @@ namespace JAFA_DATA.Common
         /// --------------------------------------------------------------------
         public static void WindowsMaxSize(Form tempFrm, int wSize, int hSize)
         {
-            tempFrm.MaximumSize = new Size(wSize, hSize);
+            tempFrm.MaximumSize = new System.Drawing.Size(wSize, hSize);
         }
 
         /// <summary>
