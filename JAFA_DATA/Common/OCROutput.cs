@@ -78,51 +78,53 @@ namespace JAFA_DATA.Common
             _preForm = preFrm;
             _dts = dts;
 
-            //hAdp.Fill(_dts.確定勤務票ヘッダ);
+            hAdp.Fill(_dts.確定勤務票ヘッダ);
             //mAdp.Fill(_dts.確定勤務票明細);
 
-            jaAdp.Fill(_dts.勤怠データ);
-            nAdp.Fill(_dts.勤怠年休データ);
+            //jaAdp.Fill(_dts.勤怠データ);       // 2018/10/27 コメント化
+            //nAdp.Fill(_dts.勤怠年休データ);    // 2018/10/27 コメント化
             //wAdp.Fill(_dts.週実績明細);    // 2018/10/22 コメント化
             zAdp.Fill(_dts.週実績);
             sAdp.Fill(_dts.残業先払い);
             mateAdp.Fill(_dts.社員マスター);
-            yuMapAdp.Fill(_dts.有休付与日数表);    
+            yuMapAdp.Fill(_dts.有休付与日数表);
             //ymsAdp.Fill(_dts.有給休暇付与マスター);     // 2018/10/22 コメント化
             //ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);   // 前年以降を対象とする 2018/10/22
 
-            // linqToExcel : excel過去１年間有給取得シート
-            if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
-            {
-                // ターゲットのエクセルファイルが存在するとき
-                var excel = new ExcelQueryFactory(Properties.Settings.Default.exlMounthPath);
-                excel.ReadOnly = true;
-                excel.AddMapping<exlMntData>(m => m.sCode, "職員コード");
-                excel.AddMapping<exlMntData>(m => m.sName, "氏名");
-                excel.AddMapping<exlMntData>(m => m.sYYMM, "年月");
-                excel.AddMapping<exlMntData>(m => m.sYouDay, "要出勤日数");
-                excel.AddMapping<exlMntData>(m => m.sKekkin, "欠勤");
-                excel.AddMapping<exlMntData>(m => m.sDay, "有給休暇");
-                excel.AddMapping<exlMntData>(m => m.sHan, "半休");
-                excel.AddMapping<exlMntData>(m => m.sTotal, "合計");
-                workSheet = excel.Worksheet<exlMntData>("sheet1");
-            }
-            
-            // linqToExcel : excel前年有休付与日数シート
-            if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
-            {
-                // ターゲットのエクセルファイルが存在するとき
-                var excelMst = new ExcelQueryFactory(Properties.Settings.Default.exlYukyuMstPath);
-                excelMst.ReadOnly = true;
-                excelMst.AddMapping<exlYukyuMst>(m => m.sCode, "職員コード");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sName, "氏名");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sYY, "年");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sMM, "月");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sFuyo, "当年付与日数");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sKurikoshi, "当年繰越日数");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sNensho, "当年初有給残");
-                mstSheet = excelMst.Worksheet<exlYukyuMst>("sheet1");
-            }
+            // 以下、コメント化 2018/10/27
+            //// linqToExcel : excel過去１年間有給取得シート
+            //if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
+            //{
+            //    // ターゲットのエクセルファイルが存在するとき
+            //    var excel = new ExcelQueryFactory(Properties.Settings.Default.exlMounthPath);
+            //    excel.ReadOnly = true;
+            //    excel.AddMapping<exlMntData>(m => m.sCode, "職員コード");
+            //    excel.AddMapping<exlMntData>(m => m.sName, "氏名");
+            //    excel.AddMapping<exlMntData>(m => m.sYYMM, "年月");
+            //    excel.AddMapping<exlMntData>(m => m.sYouDay, "要出勤日数");
+            //    excel.AddMapping<exlMntData>(m => m.sKekkin, "欠勤");
+            //    excel.AddMapping<exlMntData>(m => m.sDay, "有給休暇");
+            //    excel.AddMapping<exlMntData>(m => m.sHan, "半休");
+            //    excel.AddMapping<exlMntData>(m => m.sTotal, "合計");
+            //    workSheet = excel.Worksheet<exlMntData>("sheet1");
+            //}
+
+            // 以下、コメント化 2018/10/27
+            //// linqToExcel : excel前年有休付与日数シート
+            //if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
+            //{
+            //    // ターゲットのエクセルファイルが存在するとき
+            //    var excelMst = new ExcelQueryFactory(Properties.Settings.Default.exlYukyuMstPath);
+            //    excelMst.ReadOnly = true;
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sCode, "職員コード");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sName, "氏名");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sYY, "年");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sMM, "月");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sFuyo, "当年付与日数");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sKurikoshi, "当年繰越日数");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sNensho, "当年初有給残");
+            //    mstSheet = excelMst.Worksheet<exlYukyuMst>("sheet1");
+            //}
         }
 
         ///--------------------------------------------------------------------------------------
@@ -275,7 +277,7 @@ namespace JAFA_DATA.Common
         //                sCnt++;
         //                setArrayCSV(hDate, "", sNum, "4", r.勤務記号, sCnt);
         //            }
-                    
+
         //            // データ件数加算
         //            rCnt++;
 
@@ -319,8 +321,8 @@ namespace JAFA_DATA.Common
                 setNewWeekDataItem(t);
             }
 
-            // データベース更新
-            wAdp.Update(_dts.週実績明細);
+            //// データベース更新 : 2018/10/22 コメント化
+            //wAdp.Update(_dts.週実績明細);
 
             //// 再読み込み : 2018/10/22 コメント化
             //wAdp.Fill(_dts.週実績明細);
@@ -822,11 +824,11 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // プログレスバー表示
-                    frmP.Text = "JAメイト年休取得データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.Text = "勤怠年休データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
                     frmP.progressValue = rCnt * 100 / h.Count();
                     frmP.ProgressStep();
 
-                    // JAメイト年休取得データ作成
+                    // 勤怠年休データ作成
                     putJAMateNenkyuData(t);
 
                     // 件数カウント
@@ -842,11 +844,11 @@ namespace JAFA_DATA.Common
                 // オーナーのフォームを有効に戻す
                 _preForm.Enabled = true;
 
-                // データベース更新
-                nAdp.Update(_dts.勤怠年休データ);
+                //// データベース更新 コメント化：2018/10/27
+                //nAdp.Update(_dts.勤怠年休データ);
 
-                // 再読み込み
-                nAdp.Fill(_dts.勤怠年休データ);
+                //// 再読み込み コメント化：2018/10/27
+                //nAdp.Fill(_dts.勤怠年休データ);
             }
             catch (Exception e)
             {
@@ -881,23 +883,30 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // プログレスバー表示
-                    frmP.Text = "JAメイトOCRデータ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.Text = "勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
                     frmP.progressValue = rCnt * 100 / h.Count();
                     frmP.ProgressStep();
 
-                    // JAメイトOCRデータ作成
-                    JAFA_OCRDataSet.勤怠データRow jr = putJAMateOCRData(t);
+                    // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/10/27
+                    jaAdp.DeleteQuerySCodeYYMM(t.年.ToString() + t.月.ToString().PadLeft(2, '0'), t.社員番号.ToString().PadLeft(5, '0'));
 
-                    // 対象月度・社員番号で登録済みデータを取得
-                    JAFA_OCRDataSet.勤怠データRow dr = _dts.勤怠データ.FindBy対象月度対象職員コード(jr.対象月度, jr.対象職員コード);
-                    if (dr != null)
-                    {
-                        // 登録済みデータを削除する
-                        dr.Delete();
-                    }
+                    // JAメイトOCRデータ作成　コメント化 2018/10/27
+                    //JAFA_OCRDataSet.勤怠データRow jr = putJAMateOCRData(t);
 
-                    // JAメイトOCRデータ追加
-                    _dts.勤怠データ.Add勤怠データRow(jr);
+                    // 勤怠データ作成：2018/10/27
+                    putJAMateOCRData(t);
+
+                    // 以下、コメント化 2018/10/27
+                    //// 対象月度・社員番号で登録済みデータを取得
+                    //JAFA_OCRDataSet.勤怠データRow dr = _dts.勤怠データ.FindBy対象月度対象職員コード(jr.対象月度, jr.対象職員コード);
+                    //if (dr != null)
+                    //{
+                    //    // 登録済みデータを削除する
+                    //    dr.Delete();
+                    //}
+
+                    //// JAメイトOCRデータ追加 コメント化 2018/10/27
+                    //_dts.勤怠データ.Add勤怠データRow(jr);
 
                     // 件数カウント
                     rCnt++;
@@ -912,19 +921,21 @@ namespace JAFA_DATA.Common
                 // オーナーのフォームを有効に戻す
                 _preForm.Enabled = true;
 
-                // データベース更新
-                jaAdp.Update(_dts.勤怠データ);
-                zAdp.Update(_dts.週実績);
-                sAdp.Update(_dts.残業先払い);
-
-                // 再読み込み
-                jaAdp.Fill(_dts.勤怠データ);
+                // 以下、コメント化 2018/10/27
+                //// データベース更新
+                //jaAdp.Update(_dts.勤怠データ);
                 //zAdp.Update(_dts.週実績);
-                sAdp.Fill(_dts.残業先払い);
+                //sAdp.Update(_dts.残業先払い);
+
+                // 以下、コメント化 2018/10/27
+                //// 再読み込み
+                //jaAdp.Fill(_dts.勤怠データ);
+                ////zAdp.Update(_dts.週実績);
+                //sAdp.Fill(_dts.残業先払い);
             }
             catch (Exception e)
             {
-                MessageBox.Show("JAメイトOCRデータ(MDB)作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
+                MessageBox.Show("勤怠データ(MDB)作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
             }
             finally
             {
@@ -958,8 +969,10 @@ namespace JAFA_DATA.Common
                     fMonth -= 12;
                 }
 
-                // 有休休暇付与マスターを取得
+                // 対象月度の有休休暇付与マスターを取得 : 2018/10/27
+                ymsAdp.FillByYYMM(_dts.有給休暇付与マスター, fYear, fMonth);
                 var h = _dts.有給休暇付与マスター.Where(a => a.年 == fYear && a.月 == fMonth);
+
                 foreach (var t in h)
                 {
                     // プログレスバー表示
@@ -968,22 +981,25 @@ namespace JAFA_DATA.Common
                     frmP.ProgressStep();
 
                     // 対象職員コード
-                    string sShoCode = global.ROK + t.社員番号.ToString().PadLeft(5, '0');
+                    string sShoCode = t.社員番号.ToString().PadLeft(5, '0');
 
                     // 対象月度
                     string sYYYYMM = global.cnfYear.ToString() + global.cnfMonth.ToString().PadLeft(2, '0');
 
-                    // 有休付与マスターを参照し有休付与日数、有休繰越日数を取得する
-                    if (_dts.勤怠データ.Any(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM))
-                    {
-                        JAFA_OCRDataSet.勤怠データRow r = _dts.勤怠データ.Single(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM);
-                        r.有休付与日数 = (int)t.当年付与日数;
-                        r.有休繰越日数 = t.当年繰越日数;
-                        r.有休付与対象フラグ = global.flgOn;
+                    // 勤怠データ更新：2018/10/27
+                    jaAdp.UpdateQueryYukyu((int)t.当年付与日数, (decimal)t.当年繰越日数, global.flgOn, sShoCode, sYYYYMM);
 
-                        // データベース更新
-                        jaAdp.Update(_dts.勤怠データ);
-                    }
+                    //// 有休付与マスターを参照し有休付与日数、有休繰越日数を取得する
+                    //if (_dts.勤怠データ.Any(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM))
+                    //{
+                    //    JAFA_OCRDataSet.勤怠データRow r = _dts.勤怠データ.Single(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM);
+                    //    r.有休付与日数 = (int)t.当年付与日数;
+                    //    r.有休繰越日数 = t.当年繰越日数;
+                    //    r.有休付与対象フラグ = global.flgOn;
+
+                    //    // データベース更新
+                    //    jaAdp.Update(_dts.勤怠データ);
+                    //}
 
                     // 件数カウント
                     rCnt++;
@@ -998,8 +1014,8 @@ namespace JAFA_DATA.Common
                 // オーナーのフォームを有効に戻す
                 _preForm.Enabled = true;
                 
-                // 再読み込み
-                jaAdp.Fill(_dts.勤怠データ);
+                //// 再読み込み  コメント化：2018/10/27
+                //jaAdp.Fill(_dts.勤怠データ);
             }
             catch (Exception e)
             {
@@ -1012,30 +1028,35 @@ namespace JAFA_DATA.Common
 
         /// ---------------------------------------------------------------------------
         /// <summary>
-        ///     JAメイト年休取得データＭＤＢ出力 </summary>
+        ///     JAメイト年休取得データＭＤＢ出力 ：　
+        ///     JAFA　2018/10/27</summary>
         /// <param name="r">
         ///     JAHR_OCRDataSet.確定勤務票ヘッダRow </param>
         /// ---------------------------------------------------------------------------
         private void putJAMateNenkyuData(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
         {
             string tGatsudo = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
-            string tShokuin = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
+            //string tShokuin = global.ROK + r.社員番号.ToString().PadLeft(5, '0'); // コメント化 2018/10/27
+            string tShokuin = r.社員番号.ToString().PadLeft(5, '0');
 
-            // 対象月度、社員番号で登録済みデータを削除する
-            if (_dts.勤怠年休データ.Any(a => a.対象月度 == tGatsudo && a.対象職員コード == tShokuin))
-            {
-                foreach (var item in _dts.勤怠年休データ.Where(a => a.対象月度 == tGatsudo && a.対象職員コード == tShokuin))
-                {
-                    // 登録済みデータを削除する
-                    item.Delete();
-                }
+            // 対象月度、社員番号で登録済み勤怠年休データを削除する
+            nAdp.DeleteQuerySCodeYYMM(tGatsudo, tShokuin);  // 2018/10/27
 
-                // データベース更新
-                nAdp.Update(_dts.勤怠年休データ);
+            // コメント化 2018/10/27
+            //if (_dts.勤怠年休データ.Any(a => a.対象月度 == tGatsudo && a.対象職員コード == tShokuin))
+            //{
+            //    foreach (var item in _dts.勤怠年休データ.Where(a => a.対象月度 == tGatsudo && a.対象職員コード == tShokuin))
+            //    {
+            //        // 登録済みデータを削除する
+            //        item.Delete();
+            //    }
 
-                // 再読み込み
-                nAdp.Fill(_dts.勤怠年休データ);
-            }
+            //    // データベース更新
+            //    nAdp.Update(_dts.勤怠年休データ);
+
+            //    // 再読み込み
+            //    nAdp.Fill(_dts.勤怠年休データ);
+            //}
 
             // 対象期間の確定明細オブジェクトを取得します（入所日～退職日で絞り込み）
             List<JAFA_OCRDataSet.確定勤務票明細Row> mr = getKakuteiItem(r);
@@ -1074,40 +1095,42 @@ namespace JAFA_DATA.Common
                 {
                     YYYYMMDD = r.年.ToString() + r.月.ToString().PadLeft(2, '0') + t.日付.ToString().PadLeft(2, '0');
                     
-                    // ＪＡメイト年休取得データRow新規インスタンス
-                    JAFA_OCRDataSet.勤怠年休データRow jr = _dts.勤怠年休データ.New勤怠年休データRow();
+                    // 以下、コメント化：2018/10/27
+                    //// ＪＡメイト年休取得データRow新規インスタンス
+                    //JAFA_OCRDataSet.勤怠年休データRow jr = _dts.勤怠年休データ.New勤怠年休データRow();
 
-                    jr.対象月度 = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
-                    jr.対象職員コード = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
-                    jr.対象職員名 = r.社員名;
-                    jr.対象職員所属コード = global.ROK + r.所属コード.PadLeft(5, '0');
-                    jr.対象職員所属名 = r.所属名;
-                    jr.取得日 = YYYYMMDD;
-                    jr.取得日数 = nissu;
+                    //jr.対象月度 = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
+                    //jr.対象職員コード = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
+                    //jr.対象職員名 = r.社員名;
+                    //jr.対象職員所属コード = global.ROK + r.所属コード.PadLeft(5, '0');
+                    //jr.対象職員所属名 = r.所属名;
+                    //jr.取得日 = YYYYMMDD;
+                    //jr.取得日数 = nissu;
 
-                    // JAメイト年休取得データ追加
-                    _dts.勤怠年休データ.Add勤怠年休データRow(jr);
+                    //// JAメイト年休取得データ追加
+                    //_dts.勤怠年休データ.Add勤怠年休データRow(jr);
 
-                    // データベース更新
-                    nAdp.Update(_dts.勤怠年休データ);
+                    //// データベース更新
+                    //nAdp.Update(_dts.勤怠年休データ);
 
-                    // 再読み込み
-                    nAdp.Fill(_dts.勤怠年休データ);
+                    //// 再読み込み
+                    //nAdp.Fill(_dts.勤怠年休データ);
+
+                    // 勤怠年休データ新規登録：2018/10/27
+                    nAdp.Insert(r.年.ToString() + r.月.ToString().PadLeft(2, '0'), 
+                                r.社員番号.ToString().PadLeft(5, '0'), r.社員名, 
+                                r.所属コード.PadLeft(5, '0'), r.所属名, YYYYMMDD, nissu);
                 }
             }
         }
 
         /// ---------------------------------------------------------------------------
         /// <summary>
-        ///     JAメイトＯＣＲデータＭＤＢ出力 </summary>
+        ///     勤怠データＭＤＢ出力 ： 2018/10/27</summary>
         /// <param name="r">
         ///     JAHR_OCRDataSet.確定勤務票ヘッダRow </param>
-        /// <param name="m">
-        ///     List : JAHR_OCRDataSet.確定勤務票明細Row </param>
-        /// <returns>
-        ///     JAHR_OCRDataSet.勤怠データRow</returns>
         /// ---------------------------------------------------------------------------
-        private JAFA_OCRDataSet.勤怠データRow putJAMateOCRData(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
+        private void putJAMateOCRData(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
         {
             // 対象期間の確定明細オブジェクトを取得します（入所日～退職日で絞り込み）
             List<JAFA_OCRDataSet.確定勤務票明細Row> mr = getKakuteiItem(r);
@@ -1116,7 +1139,7 @@ namespace JAFA_DATA.Common
             double sSHUKKIN = 0;    // 普通出勤日数
             int sKYUSHU = 0;        // 法定休日出勤日数
             int KYUJITSU = 0;       // 休日日数
-            int sFURIKYU = 0;       // 振替休日日数
+            int sFURIKYU = 0;       // 振替休日日数            
             int sYUKYU = 0;         // 有休
             double sHANKYU = 0;     // 半休
             int kSEIRI = 0;         // 生理休暇
@@ -1246,65 +1269,77 @@ namespace JAFA_DATA.Common
                 workShinya += ocr.getShinyaWorkTime_JA(t.開始時, t.開始分, t.終了時, t.終了分);
             }
 
-            // ＪＡメイトＯＣＲデータRow新規インスタンス
-            JAFA_OCRDataSet.勤怠データRow jr = _dts.勤怠データ.New勤怠データRow();
+            // 以下、コメント化 2018/10/27
+            //// ＪＡメイトＯＣＲデータRow新規インスタンス
+            //JAFA_OCRDataSet.勤怠データRow jr = _dts.勤怠データ.New勤怠データRow();
 
-            jr.対象月度 = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
-            jr.対象職員コード = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
-            jr.対象職員名 = r.社員名;
-            jr.対象職員所属コード = global.ROK + r.所属コード.PadLeft(5, '0');
-            jr.対象職員所属名 = r.所属名;
+            //jr.対象月度 = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
+            //jr.対象職員コード = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
+            //jr.対象職員名 = r.社員名;
+            //jr.対象職員所属コード = global.ROK + r.所属コード.PadLeft(5, '0');
+            //jr.対象職員所属名 = r.所属名;
 
-            jr.普通出勤日数 = sSHUKKIN;
-            jr.実労働時間 = workTimes;
-            jr.残業時間 = getZangyoTime(r.年, r.月, r.社員番号);
-            jr.深夜時間 =(int) workShinya;
-            jr.法定休日出勤日数 = sKYUSHU;
-            jr.休日日数 = KYUJITSU;
-            jr.振替休日日数 = sFURIKYU;
-            jr.有給半日 = sHANKYU;
-            jr.有給休暇 = sYUKYU;
-            jr.欠勤日数 = keKEKKIN;
-            jr.その他休暇休職合計日数 = kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + 
-                                       kKAKURI + kSONOTA + ksKAIGO + kSANZENSANGO + ksIKUJI;
-            jr.結婚休暇日数 = kKEKKON;
-            jr.忌引休暇日数 = kKIBIKI;
-            jr.生理休暇日数 = kSEIRI;
-            jr.看護休暇日数 = kKANGO;
-            jr.介護休暇日数 = kKAIGO;
-            jr.罹災休暇日数 = kRISAI;
-            jr.隔離休暇日数 = kKAKURI;
-            jr.その他の特別休暇日数 = kSONOTA;
-            jr.介護休職日数 = ksKAIGO;
-            jr.産前産後休暇日数 = kSANZENSANGO;
-            jr.育児休職日数 = ksIKUJI;
+            //jr.普通出勤日数 = sSHUKKIN;
+            //jr.実労働時間 = workTimes;
+            //jr.残業時間 = getZangyoTime(r.年, r.月, r.社員番号);
+            //jr.深夜時間 =(int) workShinya;
+            //jr.法定休日出勤日数 = sKYUSHU;
+            //jr.休日日数 = KYUJITSU;
+            //jr.振替休日日数 = sFURIKYU;
+            //jr.有給半日 = sHANKYU;
+            //jr.有給休暇 = sYUKYU;
+            //jr.欠勤日数 = keKEKKIN;
+            //jr.その他休暇休職合計日数 = kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + 
+            //                           kKAKURI + kSONOTA + ksKAIGO + kSANZENSANGO + ksIKUJI;
+            //jr.結婚休暇日数 = kKEKKON;
+            //jr.忌引休暇日数 = kKIBIKI;
+            //jr.生理休暇日数 = kSEIRI;
+            //jr.看護休暇日数 = kKANGO;
+            //jr.介護休暇日数 = kKAIGO;
+            //jr.罹災休暇日数 = kRISAI;
+            //jr.隔離休暇日数 = kKAKURI;
+            //jr.その他の特別休暇日数 = kSONOTA;
+            //jr.介護休職日数 = ksKAIGO;
+            //jr.産前産後休暇日数 = kSANZENSANGO;
+            //jr.育児休職日数 = ksIKUJI;
 
-            //jr.遅刻回数 = string.Empty;
-            //jr.早退回数 = string.Empty;
-            //jr.仕様外出回数 = string.Empty;
-            //jr.育児短時間 = string.Empty;
-            //jr.介護短時間 = string.Empty;
+            ////jr.遅刻回数 = string.Empty;
+            ////jr.早退回数 = string.Empty;
+            ////jr.仕様外出回数 = string.Empty;
+            ////jr.育児短時間 = string.Empty;
+            ////jr.介護短時間 = string.Empty;
 
-            // string.emptyではなく「0」をセットする 2015/08/25
-            jr.遅刻回数 = global.FLGOFF;
-            jr.早退回数 = global.FLGOFF;
-            jr.仕様外出回数 = global.FLGOFF;
-            jr.育児短時間 = global.FLGOFF;
-            jr.介護短時間 = global.FLGOFF;
+            //// string.emptyではなく「0」をセットする 2015/08/25
+            //jr.遅刻回数 = global.FLGOFF;
+            //jr.早退回数 = global.FLGOFF;
+            //jr.仕様外出回数 = global.FLGOFF;
+            //jr.育児短時間 = global.FLGOFF;
+            //jr.介護短時間 = global.FLGOFF;
 
-            jr.交通費 = r.交通費;
-            jr.日当 = r.日当;
-            jr.宿泊費 = r.宿泊費;
+            //jr.交通費 = r.交通費;
+            //jr.日当 = r.日当;
+            //jr.宿泊費 = r.宿泊費;
 
-            //jr.要出勤日数 = mr.Count() - KYUJITSU;     // 2018/06/22 コメント化
-            jr.要出勤日数 = mr.Count() - KYUJITSU - sFURIKYU;    // 2018/06/22 要出勤日数から振替休日数を差し引く
+            ////jr.要出勤日数 = mr.Count() - KYUJITSU;     // 2018/06/22 コメント化
+            //jr.要出勤日数 = mr.Count() - KYUJITSU - sFURIKYU;    // 2018/06/22 要出勤日数から振替休日数を差し引く
 
-            // 有休付与情報を初期化する
-            jr.有休付与日数 = 0;
-            jr.有休繰越日数 = 0;
-            jr.有休付与対象フラグ = 0;
-            
-            return jr;
+            //// 有休付与情報を初期化する
+            //jr.有休付与日数 = 0;
+            //jr.有休繰越日数 = 0;
+            //jr.有休付与対象フラグ = 0;
+
+            //return jr;
+
+            // 勤怠データ新規登録：2018/10/27
+            jaAdp.Insert(r.年.ToString() + r.月.ToString().PadLeft(2, '0'),
+                         r.社員番号.ToString().PadLeft(5, '0'),r.社員名, r.所属コード.PadLeft(5, '0'),
+                         r.所属名, sSHUKKIN, workTimes, getZangyoTime(r.年, r.月, r.社員番号),(int)workShinya,
+                         sKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
+                         (kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + kKAKURI + kSONOTA + 
+                         ksKAIGO + kSANZENSANGO + ksIKUJI), kKEKKON, kKIBIKI, kSEIRI, kKANGO, kKAIGO,
+                         kRISAI, kKAKURI, kSONOTA, ksKAIGO, kSANZENSANGO, ksIKUJI, global.FLGOFF, global.FLGOFF, 
+                         global.FLGOFF, global.FLGOFF, global.FLGOFF, r.交通費, r.日当, r.宿泊費,
+                         (mr.Count() - KYUJITSU - sFURIKYU), 0, 0, 0);
         }
 
         /// -----------------------------------------------------------
@@ -1315,6 +1350,9 @@ namespace JAFA_DATA.Common
         /// -----------------------------------------------------------
         private List<JAFA_OCRDataSet.確定勤務票明細Row> getKakuteiItem(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
         {
+            // 2018/10/27
+            mAdp.FillByHID(_dts.確定勤務票明細, r.ID);
+
             // 明細
             var s = _dts.確定勤務票明細.Where(a => a.ヘッダID == r.ヘッダID).OrderBy(a => a.日付);
             
@@ -1353,7 +1391,7 @@ namespace JAFA_DATA.Common
 
         /// ----------------------------------------------------------------------------
         /// <summary>
-        ///     週実績明細データ登録 </summary>
+        ///     週実績明細データ登録 : 2018/10/27</summary>
         /// <param name="h">
         ///     JAHR_OCRDataSet.確定勤務票ヘッダRow</param>
         /// <param name="c">
@@ -1366,15 +1404,19 @@ namespace JAFA_DATA.Common
 
             foreach (var m in mr)
             {
+                // 登録済みデータ削除 : 2018/10/27
+                wAdp.DeleteQuerySCodeDate(h.社員番号, DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付));
+                
                 JAFA_OCRDataSet.週実績明細Row r = _dts.週実績明細.New週実績明細Row();
 
-                r.職員コード = h.社員番号;
-                r.年月日 = DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付);
-                r.処理年 = h.年;
-                r.処理月 = h.月;
-                r.集計年 = h.年;
-                r.集計月 = h.月;
-                r.週番号 = Utility.StrtoInt(Utility.NulltoStr(m.週番号));
+                // 以下、コメント化 2018/10/27
+                //r.職員コード = h.社員番号;
+                //r.年月日 = DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付);
+                //r.処理年 = h.年;
+                //r.処理月 = h.月;
+                //r.集計年 = h.年;
+                //r.集計月 = h.月;
+                //r.週番号 = Utility.StrtoInt(Utility.NulltoStr(m.週番号));
 
                 //// 2015/12 まで
                 //r.勤務時間 = m.実働時 * 60 + m.実働分;
@@ -1389,41 +1431,72 @@ namespace JAFA_DATA.Common
                 //    r.残業時間 = 0;
                 //}
 
-                // 休日出勤でないとき　2016/01/26
+                int kinmuTM = 0;    // 2018/10/27
+                int zanTM = 0;      // 2018/10/27
+
+                // 以下、コメント化 2018/10/27
+                //// 休日出勤でないとき　2016/01/26
+                //if (m.出勤区分 != SHUKIN_KYUSHU)
+                //{
+                //    r.勤務時間 = m.実働時 * 60 + m.実働分;
+
+                //    int wt = m.実働時 * 60 + m.実働分;
+                //    if (wt > 480)
+                //    {
+                //        r.残業時間 = wt - 480;
+                //    }
+                //    else
+                //    {
+                //        r.残業時間 = 0;
+                //    }
+                //}
+                //else
+                //{
+                //    // 休日出勤のときは残業計算に含めない 2016/01/26
+                //    r.勤務時間 = 0;
+                //    r.残業時間 = 0;
+                //}
+
+                // 2018/10/27
                 if (m.出勤区分 != SHUKIN_KYUSHU)
                 {
-                    r.勤務時間 = m.実働時 * 60 + m.実働分;
+                    kinmuTM = m.実働時 * 60 + m.実働分;
 
                     int wt = m.実働時 * 60 + m.実働分;
                     if (wt > 480)
                     {
-                        r.残業時間 = wt - 480;
+                        zanTM = wt - 480;
                     }
                     else
                     {
-                        r.残業時間 = 0;
+                        zanTM = 0;
                     }
                 }
                 else
                 {
                     // 休日出勤のときは残業計算に含めない 2016/01/26
-                    r.勤務時間 = 0;
-                    r.残業時間 = 0;
+                    kinmuTM = 0;
+                    zanTM = 0;
                 }
 
-                r.更新年月日 = DateTime.Now;
+                //r.更新年月日 = DateTime.Now;
 
-                // 登録済みデータ存在チェック
-                JAFA_OCRDataSet.週実績明細Row c = _dts.週実績明細.FindBy職員コード年月日(r.職員コード, r.年月日);
+                // 週実績明細データ登録：2018/10/27
+                wAdp.InsertQuery(h.社員番号, DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付),
+                                 h.年, h.月, h.年, h.月, Utility.StrtoInt(Utility.NulltoStr(m.週番号)), 
+                                 kinmuTM, zanTM, 0, DateTime.Now);
 
-                if (c != null)
-                {
-                    // 登録済みデータ削除
-                    c.Delete();
-                }
+                //// 登録済みデータ存在チェック
+                //JAFA_OCRDataSet.週実績明細Row c = _dts.週実績明細.FindBy職員コード年月日(r.職員コード, r.年月日);
 
-                // 週実績明細Row追加
-                _dts.週実績明細.Add週実績明細Row(r);                
+                //if (c != null)
+                //{
+                //    // 登録済みデータ削除
+                //    c.Delete();
+                //}
+
+                //// 週実績明細Row追加
+                //_dts.週実績明細.Add週実績明細Row(r);                
             }
         }
 

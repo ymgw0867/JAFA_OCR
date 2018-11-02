@@ -1435,7 +1435,7 @@ namespace JAFA_DATA.Common
 
                     foreach (var t in tbl.DataRange.Rows())
                     {
-                        if (sCode.ToString() == Utility.NulltoStr(t.Cell(1).Value))
+                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
                         {
                             sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
                         }

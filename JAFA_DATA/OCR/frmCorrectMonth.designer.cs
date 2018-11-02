@@ -181,7 +181,7 @@
             // 
             this.btnEnd.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnEnd.Image = ((System.Drawing.Image)(resources.GetObject("btnEnd.Image")));
-            this.btnEnd.Location = new System.Drawing.Point(303, 651);
+            this.btnEnd.Location = new System.Drawing.Point(303, 656);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(26, 33);
             this.btnEnd.TabIndex = 74;
@@ -194,7 +194,7 @@
             // 
             this.btnNext.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnNext.Image = ((System.Drawing.Image)(resources.GetObject("btnNext.Image")));
-            this.btnNext.Location = new System.Drawing.Point(278, 651);
+            this.btnNext.Location = new System.Drawing.Point(278, 656);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(26, 33);
             this.btnNext.TabIndex = 73;
@@ -207,7 +207,7 @@
             // 
             this.btnBefore.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnBefore.Image = ((System.Drawing.Image)(resources.GetObject("btnBefore.Image")));
-            this.btnBefore.Location = new System.Drawing.Point(253, 651);
+            this.btnBefore.Location = new System.Drawing.Point(253, 656);
             this.btnBefore.Name = "btnBefore";
             this.btnBefore.Size = new System.Drawing.Size(26, 33);
             this.btnBefore.TabIndex = 72;
@@ -220,7 +220,7 @@
             // 
             this.btnFirst.Font = new System.Drawing.Font("メイリオ", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnFirst.Image")));
-            this.btnFirst.Location = new System.Drawing.Point(228, 651);
+            this.btnFirst.Location = new System.Drawing.Point(228, 656);
             this.btnFirst.Name = "btnFirst";
             this.btnFirst.Size = new System.Drawing.Size(26, 33);
             this.btnFirst.TabIndex = 71;
@@ -515,15 +515,15 @@
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Location = new System.Drawing.Point(6, 8);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(597, 636);
+            this.panel2.Size = new System.Drawing.Size(597, 642);
             this.panel2.TabIndex = 287;
             // 
             // trackBar1
             // 
             this.trackBar1.AutoSize = false;
-            this.trackBar1.Location = new System.Drawing.Point(8, 654);
+            this.trackBar1.Location = new System.Drawing.Point(8, 658);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(216, 31);
+            this.trackBar1.Size = new System.Drawing.Size(216, 27);
             this.trackBar1.TabIndex = 288;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
             // 
@@ -531,7 +531,7 @@
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.hScrollBar1);
-            this.panel3.Location = new System.Drawing.Point(331, 652);
+            this.panel3.Location = new System.Drawing.Point(331, 656);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(271, 32);
             this.panel3.TabIndex = 289;

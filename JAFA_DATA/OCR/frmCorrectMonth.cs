@@ -1119,19 +1119,19 @@ namespace JAFA_DATA.OCR
 
         private void btnDataMake_Click(object sender, EventArgs e)
         {
-            // ＪＡメイトＯＣＲデータ作成
-            if (MessageBox.Show("汎用データ作成が選択されました。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            // Big給与計算Pro勤怠データ作成
+            if (MessageBox.Show("Ｂｉｇ給与計算Ｐｒｏ勤怠データ作成が選択されました。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 return;
             }
 
-            // ＪＡメイトＯＣＲデータ作成
+            // Big給与計算Pro勤怠データ作成
             textDataMake();
         }
 
         /// -----------------------------------------------------------------------
         /// <summary>
-        ///     ＪＡメイトＯＣＲデータ作成 </summary>
+        ///     Big給与計算Pro勤怠データ作成 </summary>
         /// -----------------------------------------------------------------------
         private void textDataMake()
         {
@@ -1148,7 +1148,7 @@ namespace JAFA_DATA.OCR
             }
 
             // 確認メッセージ
-            if (MessageBox.Show("ＪＡメイトＯＣＲデータを作成します。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+            if (MessageBox.Show("Big給与計算Pro勤怠データを作成します。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
             
             try
             {
@@ -1164,10 +1164,10 @@ namespace JAFA_DATA.OCR
                     // OCROutputクラス インスタンス生成
                     OCROutput kd = new OCROutput(this, dts);
 
-                    // 週実績明細集計
+                    // 週実績明細集計 : 2018/10/27
                     kd.saveWeekData();
 
-                    // JAメイト年休取得データ(mdb)作成
+                    // JAメイト年休取得データ(mdb)作成 : 2018/10/27
                     kd.saveJAMateNenkyuData();
 
                     // JAメイトOCRデータ(mdb)作成
@@ -1190,6 +1190,10 @@ namespace JAFA_DATA.OCR
 
                     // JAメイトOCRデータ(mdb)に有給付与情報を書き込み
                     kd.saveJAMateOCRYukyu();
+
+                    //////////////////////// 2018/10/27 ここまで  ////////////////////
+
+                    // ↓↓↓↓↓↓↓↓↓↓↓↓ 次回ここから　↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
                     // JAメイト年休取得データ CSVファイル出力
                     kd.saveJAMateNenkyuCsv(global.cnfYear, global.cnfMonth);
@@ -1275,7 +1279,7 @@ namespace JAFA_DATA.OCR
             if (sb.ToString() != string.Empty)
             {
                 sb.Append(Environment.NewLine);
-                sb.Append("ＪＡメイトＯＣＲデータを作成してよろしいですか？");
+                sb.Append("Ｂｉｇ給与計算Ｐｒｏデータを作成してよろしいですか？");
             }
 
             return sb.ToString();
