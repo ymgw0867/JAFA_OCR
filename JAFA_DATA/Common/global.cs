@@ -134,5 +134,7 @@ namespace JAFA_DATA
         // 正社員：４月付与日数
         public static int[,] yukyuArray = { { 1, 11 }, { 2, 12 }, { 3, 14 }, { 4, 16 }, { 5, 18 }, { 6, 20 }, { 7, 20 } };
 
+        // 普通残業時間60時間
+        public static int zan60Hour = 3600; 
     }
 }

@@ -676,6 +676,24 @@ namespace JAFA_DATA.Common
             return true;
         }
         
+        ///----------------------------------------------------------------------
+        /// <summary>
+        ///     分から時：分(hh：mm)形式の文字列に変換して返す </summary>
+        /// <param name="minu">
+        ///     分</param>
+        /// <returns>
+        ///     hh：mm形式文字列</returns>
+        ///----------------------------------------------------------------------
+        public static string getHHMM(int minu)
+        {
+            int hh = minu / 60;
+            int mm = minu - (hh * 60);
+
+            return hh + ":" + mm.ToString().PadLeft(2, '0');
+        }
+
+
+
         ///-------------------------------------------------------
         /// <summary>
         ///     このコンピュータの登録名を取得する</summary>

@@ -2481,7 +2481,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     深夜勤務時間</returns>
         /// ------------------------------------------------------------
-        public double getShinyaWorkTime_JA(string sH, string sM, string eH, string eM)
+        public int getShinyaWorkTime_JA(string sH, string sM, string eH, string eM)
         {
             DateTime sTime;
             DateTime eTime;
@@ -2584,7 +2584,7 @@ namespace JAFA_DATA.Common
 
             //}
 
-            return wkShinya;
+            return (int)wkShinya;
         }
 
         ///--------------------------------------------------------------

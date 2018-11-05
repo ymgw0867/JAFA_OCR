@@ -19,8 +19,11 @@ namespace JAFA_DATA.Common
         // 親フォーム
         Form _preForm;
 
+        //private const string CSVFILENAME = "JAメイトOCRデータ";
+        //private const string CSVNENKYUNAME = "JAメイト年休取得データ";
+
         private const string CSVFILENAME = "JAメイトOCRデータ";
-        private const string CSVNENKYUNAME = "JAメイト年休取得データ";
+        private const string CSVNENKYUNAME = "Big給与計算Pro有休付与データ";
 
         JAFA_OCRDataSet _dts = new JAFA_OCRDataSet();
         JAFA_OCRDataSetTableAdapters.確定勤務票ヘッダTableAdapter hAdp = new JAFA_OCRDataSetTableAdapters.確定勤務票ヘッダTableAdapter();
@@ -34,6 +37,7 @@ namespace JAFA_DATA.Common
         JAFA_OCRDataSetTableAdapters.有休付与日数表TableAdapter yuMapAdp = new JAFA_OCRDataSetTableAdapters.有休付与日数表TableAdapter();
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter ymsAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter yuBigAdp = new JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter(); // 2018/10/23
+        JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter bigAdp = new JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter();   // 2018/11/02
 
         LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
         LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
@@ -381,7 +385,8 @@ namespace JAFA_DATA.Common
             StringBuilder sb = new StringBuilder();
             sb.Append("SELECT 週実績明細.職員コード, first(year(週実績明細.年月日)) as 年, 週実績明細.週番号, Count(週実績明細.年月日) AS 日数,");
             sb.Append("Sum(週実績明細.勤務時間) AS 実働, IIf(Sum(勤務時間)>2400,Sum(勤務時間)-2400,0) AS 週40時間超,");
-            sb.Append("Sum(週実績明細.残業時間) AS 週残業, min(週実績明細.年月日) as 開始年月日, max(週実績明細.年月日) as 終了年月日 ");
+            sb.Append("Sum(週実績明細.残業時間) AS 週残業, min(週実績明細.年月日) as 開始年月日, max(週実績明細.年月日) as 終了年月日, ");
+            sb.Append("Sum(週実績明細.深夜8H超) AS 深夜8H超 ");  // 2018/11/05
             sb.Append("FROM 週実績明細 ");
             sb.Append("where 週番号 >= ? and 職員コード = ? and year(年月日) = ? ");
             sb.Append("GROUP BY 週実績明細.職員コード, 週実績明細.週番号 ");
@@ -769,34 +774,46 @@ namespace JAFA_DATA.Common
         /// ------------------------------------------------------------------------------------
         private void saveWeekDataRow(OleDbDataReader dR, int sYear, int sMonth, int zangyo, int sakibarai)
         {
+            int sCode = int.Parse(dR["職員コード"].ToString());
+            int yy = int.Parse(dR["年"].ToString());
+            int weekNum = int.Parse(dR["週番号"].ToString());
+
+            // 週実績登録済みデータ削除（職員コード、年、週番号）
+            zAdp.DeleteQuerySCodeYYWeek(sCode, yy, weekNum);
+
             // 週実績テーブルに登録
-            JAFA_OCRDataSet.週実績Row r = _dts.週実績.New週実績Row();
-            r.職員コード = int.Parse(dR["職員コード"].ToString());
-            r.年 = int.Parse(dR["年"].ToString());
-            r.週番号 = int.Parse(dR["週番号"].ToString());
-            r.週開始曜日 = 0;
-            r.処理年 = sYear;
-            r.処理月 = sMonth;
-            r.集計年 = sYear;
-            r.集計月 = sMonth;
-            r.勤務時間 = int.Parse(dR["実働"].ToString());
-            r.残業時間 = int.Parse(dR["週残業"].ToString());
-            r._40H超時間 = int.Parse(dR["週40時間超"].ToString());
-            r.給与残業時間 = zangyo;
-            r.先払い残業時間 = sakibarai;
-            r.更新年月日 = DateTime.Now;
+            zAdp.Insert(sCode, yy, weekNum, 0, sYear, sMonth, sYear, sMonth, int.Parse(dR["実働"].ToString()),
+                int.Parse(dR["週残業"].ToString()), int.Parse(dR["週40時間超"].ToString()), zangyo, 
+                sakibarai, DateTime.Now, int.Parse(dR["深夜8H超"].ToString()));
 
-            JAFA_OCRDataSet.週実績Row sr = _dts.週実績.FindBy職員コード年週番号(r.職員コード, r.年, r.週番号);
-            if (sr != null)
-            {
-                sr.Delete();
-            }
+            //// 週実績テーブルに登録
+            //JAFA_OCRDataSet.週実績Row r = _dts.週実績.New週実績Row();
+            //r.職員コード = int.Parse(dR["職員コード"].ToString());
+            //r.年 = int.Parse(dR["年"].ToString());
+            //r.週番号 = int.Parse(dR["週番号"].ToString());
+            //r.週開始曜日 = 0;
+            //r.処理年 = sYear;
+            //r.処理月 = sMonth;
+            //r.集計年 = sYear;
+            //r.集計月 = sMonth;
+            //r.勤務時間 = int.Parse(dR["実働"].ToString());
+            //r.残業時間 = int.Parse(dR["週残業"].ToString());
+            //r._40H超時間 = int.Parse(dR["週40時間超"].ToString());
+            //r.給与残業時間 = zangyo;
+            //r.先払い残業時間 = sakibarai;
+            //r.更新年月日 = DateTime.Now;
 
-            // 週実績Row追加
-            _dts.週実績.Add週実績Row(r);
+            //JAFA_OCRDataSet.週実績Row sr = _dts.週実績.FindBy職員コード年週番号(r.職員コード, r.年, r.週番号);
+            //if (sr != null)
+            //{
+            //    sr.Delete();
+            //}
 
-            zAdp.Update(_dts.週実績);
-            zAdp.Fill(_dts.週実績);
+            //// 週実績Row追加
+            //_dts.週実績.Add週実績Row(r);
+
+            //zAdp.Update(_dts.週実績);
+            //zAdp.Fill(_dts.週実績);
         }
 
 
@@ -908,6 +925,74 @@ namespace JAFA_DATA.Common
                     //// JAメイトOCRデータ追加 コメント化 2018/10/27
                     //_dts.勤怠データ.Add勤怠データRow(jr);
 
+                    // 件数カウント
+                    rCnt++;
+                }
+
+                // いったんオーナーをアクティブにする
+                _preForm.Activate();
+
+                // 進行状況ダイアログを閉じる
+                frmP.Close();
+
+                // オーナーのフォームを有効に戻す
+                _preForm.Enabled = true;
+
+                // 以下、コメント化 2018/10/27
+                //// データベース更新
+                //jaAdp.Update(_dts.勤怠データ);
+                //zAdp.Update(_dts.週実績);
+                //sAdp.Update(_dts.残業先払い);
+
+                // 以下、コメント化 2018/10/27
+                //// 再読み込み
+                //jaAdp.Fill(_dts.勤怠データ);
+                ////zAdp.Update(_dts.週実績);
+                //sAdp.Fill(_dts.残業先払い);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("勤怠データ(MDB)作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
+            }
+            finally
+            {
+            }
+        }
+
+        ///--------------------------------------------------------------------------------------
+        /// <summary>
+        ///     BIG給与計算Pro勤怠データ作成(mdb)</summary>
+        ///--------------------------------------------------------------------------------------     
+        public void saveBigProKintaiData()
+        {
+            try
+            {
+                //オーナーフォームを無効にする
+                _preForm.Enabled = false;
+
+                //プログレスバーを表示する
+                frmPrg frmP = new frmPrg();
+                frmP.Owner = _preForm;
+                frmP.Show();
+
+                int rCnt = 1;
+
+                // 確定勤務票ヘッダデータ取得
+                var h = _dts.確定勤務票ヘッダ.OrderBy(a => a.ヘッダID);
+
+                foreach (var t in h)
+                {
+                    // プログレスバー表示
+                    frmP.Text = "勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.progressValue = rCnt * 100 / h.Count();
+                    frmP.ProgressStep();
+
+                    // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/11/02
+                    bigAdp.DeleteQueryYYMMSCode(t.年, t.月, t.社員番号);
+
+                    // BIG給与計算Pro勤怠データ作成：2018/10/27
+                    putJAMateOCRData(t);
+                    
                     // 件数カウント
                     rCnt++;
                 }
@@ -1122,6 +1207,325 @@ namespace JAFA_DATA.Common
                                 r.所属コード.PadLeft(5, '0'), r.所属名, YYYYMMDD, nissu);
                 }
             }
+        }
+
+        /// ---------------------------------------------------------------------------
+        /// <summary>
+        ///     BIG給与計算Pro勤怠データＭＤＢ出力 ： 2018/11/02</summary>
+        /// <param name="r">
+        ///     JAHR_OCRDataSet.確定勤務票ヘッダRow </param>
+        /// ---------------------------------------------------------------------------
+        private void putBigKintaiData(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
+        {
+            // 対象期間の確定明細オブジェクトを取得します（入所日～退職日で絞り込み）
+            List<JAFA_OCRDataSet.確定勤務票明細Row> mr = getKakuteiItem(r);
+
+            // 月間集計値を求める
+            double shugyoDays = 0;      // 就業日数：2018/11/02
+            double sSHUKKIN = 0;        // 出勤日数
+            int workTimes = 0;          // 実労働時間（分単位）
+            int jikyu_1 = 0;            // 時給者１勤務時間
+            int jikyu_2 = 0;            // 時給者２勤務時間
+            int jikyu_3 = 0;            // 時給者３勤務時間
+            int fuZan = 0;              // 普通残業時間　2018/11/02
+            int workShinya = 0;         // 深夜時間
+            int KYUJITSU_Zan = 0;       // 休日残業時間
+            int sKYUSHU = 0;            // 法定休日出勤日数
+            int sonota1_Zan = 0;        // その他１残業時間　2018/11/02
+            int sonota2_Zan = 0;        // その他２残業時間　2018/11/02
+            int keKEKKIN_Ippan = 0;     // 17:自己都合欠勤 + 19:無断欠勤
+            int keKEKKIN_Yukyu = 0;     // 2:有給 + 3:半休
+            int keKEKKIN_Byoketsu = 0;  // 18:病気欠勤
+            int keKEKKIN_Tokubetsu = 0; // 6:生理休暇 + 7:看護休暇 + 8:介護休暇 + 9:結婚休暇 + 10:忌引休暇 + 11:産前産後休暇 + 12:罹災休暇 + 13:隔離休暇 + 14:その他休暇 + 15:育児休職 + 16:介護休職
+            int ovar_Zan = 0;           // 超過残業時間
+
+            int KYUJITSU = 0;           // 休日日数
+            int sFURIKYU = 0;           // 振替休日日数            
+            int sYUKYU = 0;             // 有休
+            double sHANKYU = 0;         // 半休
+
+            // 変形労働時間：2018/11/02
+            string[] henkeiWork = { "31:10626", "30:10284", "29:9942", "28:9600" }; 
+
+            OCRData ocr = new OCRData();
+
+            foreach (var t in mr)
+            {
+                string sk = string.Empty;
+
+                // 休日のとき 2015/08/31
+                if (t.出勤区分 == "")
+                {
+                    sk = t.出勤区分;
+                }
+                else
+                {
+                    // 出勤区分の先頭「０」を数値に変換して除去する 2015/08/25
+                    sk = Utility.StrtoInt(t.出勤区分).ToString();
+                }
+
+                switch (sk)
+                {
+                    case SHUKIN_SHUKIN:     // 出勤日数
+                        sSHUKKIN++;
+                        break;
+
+                    case SHUKIN_HANKYU:     // 普通出勤日数・有休半日
+                        sSHUKKIN++;
+                        keKEKKIN_Yukyu++;
+                        sHANKYU += 0.5;
+                        break;
+
+                    case SHUKIN_KYUSHU:     // 法定休日残業日数
+                        sSHUKKIN++;
+                        sKYUSHU++;
+                        KYUJITSU_Zan += t.実働時 * 60 + t.実働分; // 休日残業時間
+                        break;
+
+                    case "":                // 休日日数
+                        KYUJITSU++;
+                        break;
+
+                    case SHUKIN_FURIKYU:    // 振替休日
+                        sFURIKYU++;
+                        break;
+
+                    case SHUKIN_YUKYU:      // 有給1日
+                        sYUKYU++;
+                        keKEKKIN_Yukyu++;
+                        break;
+
+                    case KYUKA_KEKKON:      // 結婚休暇日数：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_KIBIKI:      // 忌引休暇日数：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_SEIRI:       // 生理休暇日数：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KEKKIN_BYOUKI:     // 欠勤日数（病欠）
+                        keKEKKIN_Byoketsu++;
+                        break;
+
+                    case KEKKIN_JIKO:       // 欠勤日数（一般）
+                        keKEKKIN_Ippan++;
+                        break;
+
+                    case KEKKIN_MUDAN:      // 欠勤日数（一般）
+                        keKEKKIN_Ippan++;
+                        break;
+
+                    case KYUKA_KANGO:   // 看護休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_KAIGO:   // 介護休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_RISAI:   // 罹災休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_KAKURI:  // 隔離休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_SONOTA:  // その他休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUSHOKU_KAIGO:    // 介護休職：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUKA_SANZENSANGO: // 産前産後休暇：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    case KYUSHOKU_IKUJI:    // 育児休職：欠勤日数（特別）
+                        keKEKKIN_Tokubetsu++;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                // 勤務時間（実労働時間）
+                workTimes += t.実働時 * 60 + t.実働分;
+
+                // 日毎の深夜時間計算
+                workShinya += ocr.getShinyaWorkTime_JA(t.開始時, t.開始分, t.終了時, t.終了分);
+            }
+
+            // 就業日数（要出勤日数）
+            shugyoDays = mr.Count() - KYUJITSU - sFURIKYU;
+
+            // 社員情報取得
+            clsGetMst ms = new clsGetMst();
+            string[] sName = ms.getKojinMst(r.社員番号);
+
+            // 普通残業時間
+            // 正社員（非農業従事者）または臨時社員（非農業従事者）
+            if ((Utility.StrtoInt(sName[6]) == global.SEISHAIN ||
+                 Utility.StrtoInt(sName[6]) == global.RINJISHAIN) && 
+                Utility.StrtoInt(sName[7]) == global.flgOff)
+            {
+                fuZan = getZangyoTime(r.年, r.月, r.社員番号);
+            }
+            
+            // 普通残業時間・正社員（農業従事者）
+            if (Utility.StrtoInt(sName[6]) == global.SEISHAIN &&
+                Utility.StrtoInt(sName[7]) == global.flgOn)
+            {
+                if (workTimes > (int)(shugyoDays * 8 * 60))
+                {
+                    fuZan = workTimes - (int)(shugyoDays * 8 * 60);
+                }
+            }
+
+            // 普通残業時間・臨時社員（農業従事者）
+            if (Utility.StrtoInt(sName[6]) == global.RINJISHAIN &&
+                Utility.StrtoInt(sName[7]) == global.flgOn)
+            {
+                fuZan = 0;
+            }
+
+            // 普通残業時間・外国人技能実習生）
+            if (Utility.StrtoInt(sName[6]) == global.GAIKOKUJINGINOU)
+            {
+                int w = 0;
+
+                DateTime dt = new DateTime( r.年, r.月, 1 );
+                int ed = dt.AddMonths(1).AddDays(-1).Day;   // 月末日を取得する
+
+                // 該当月の労働時間の上限を取得する
+                for (int i = 0; i < henkeiWork.Length; i++)
+                {
+                    string[] h = henkeiWork[i].Split(':');
+
+                    if (Utility.StrtoInt(h[0]) == ed)
+                    {
+                        w = Utility.StrtoInt(h[1]);
+                        break;
+                    } 
+                }
+
+                // 該当月の労働時間の上限を超えた場合
+                if (workTimes > w)
+                {
+                    fuZan = workTimes - w;
+                }
+                else
+                {
+                    fuZan = 0;
+                }
+            }
+
+            // 時給者１勤務時間
+            if (Utility.StrtoInt(sName[6]) == global.SEISHAIN)
+            {
+                // 正社員：なし
+                jikyu_1 = 0;
+            }
+            else if (Utility.StrtoInt(sName[6]) == global.RINJISHAIN)
+            {
+                // 臨時社員：勤務時間－普通残業時間
+                jikyu_1 = workTimes - fuZan;
+            }
+            else if (Utility.StrtoInt(sName[6]) == global.GAIKOKUJINGINOU)
+            {
+                // 外国人技能実習生：勤務時間－普通残業時間
+                jikyu_1 = workTimes - fuZan;
+            }
+
+            jikyu_2 = 0;    // 時給者２勤務時間
+            jikyu_3 = 0;    // 時給者３勤務時間
+
+            // その他１残業時間
+            if (Utility.StrtoInt(sName[6]) == global.SEISHAIN)
+            {
+                // 正社員：なし
+                sonota1_Zan = 0;
+            }
+            else if (Utility.StrtoInt(sName[6]) == global.RINJISHAIN)
+            {
+                // 臨時社員
+                if (Utility.StrtoInt(sName[7]) == global.flgOff)
+                {
+                    // 非農業従事者
+                    sonota1_Zan = Utility.StrtoInt(Utility.NulltoStr(wAdp.ScalarQuerySCodeYYMM_ov8Shinya(r.社員番号, r.年, r.月)));
+                }
+                else
+                {
+                    // 農業従事者
+                    sonota1_Zan = 0;
+                }
+            }
+            else if (Utility.StrtoInt(sName[6]) == global.GAIKOKUJINGINOU)
+            {
+                // 外国人技能実習生
+                if (Utility.StrtoInt(sName[7]) == global.flgOff)
+                {
+                    // 非農業従事者
+                    sonota1_Zan = Utility.StrtoInt(Utility.NulltoStr(wAdp.ScalarQuerySCodeYYMM_ov8Shinya(r.社員番号, r.年, r.月)));
+                }
+                else
+                {
+                    // 農業従事者
+                    sonota1_Zan = 0;
+                }
+            }
+
+            // その他２残業時間
+            sonota2_Zan = 0;
+
+            // 超過残業時間
+            if (Utility.StrtoInt(sName[6]) == global.SEISHAIN || 
+                Utility.StrtoInt(sName[6]) == global.RINJISHAIN)
+            {
+                // 正社員または臨時社員（非農業従事）
+                if (Utility.StrtoInt(sName[7]) == global.flgOff)
+                {
+                    // 残業時間60時間超時間
+                    if (fuZan > global.zan60Hour)
+                    {
+                        ovar_Zan = fuZan - global.zan60Hour;
+                    }
+                    else
+                    {
+                        ovar_Zan = 0;
+                    }
+                }
+                else
+                {
+                    // 正社員または臨時社員（農業従事）
+                    ovar_Zan = 0;
+                }
+            }
+            else if (Utility.StrtoInt(sName[6]) == global.GAIKOKUJINGINOU)
+            {
+                // 外国人技能実習生：残業時間60時間超時間
+                if (fuZan > global.zan60Hour)
+                {
+                    ovar_Zan = fuZan - global.zan60Hour;
+                }
+                else
+                {
+                    ovar_Zan = 0;
+                }
+            }
+
+            // 勤怠データ新規登録：2018/10/27
+            bigAdp.Insert(r.年, r.月, r.社員番号, shugyoDays, sSHUKKIN, workTimes, jikyu_1, jikyu_2, jikyu_3,
+                          fuZan, workShinya, KYUJITSU_Zan, KYUJITSU_Zan, sonota1_Zan, sonota2_Zan, keKEKKIN_Ippan, keKEKKIN_Yukyu,
+                          keKEKKIN_Byoketsu, keKEKKIN_Tokubetsu, global.flgOff, global.flgOff, global.flgOff, global.flgOff,
+                          global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff,
+                          ovar_Zan, global.flgOff);            
         }
 
         /// ---------------------------------------------------------------------------
@@ -1409,53 +1813,9 @@ namespace JAFA_DATA.Common
                 
                 JAFA_OCRDataSet.週実績明細Row r = _dts.週実績明細.New週実績明細Row();
 
-                // 以下、コメント化 2018/10/27
-                //r.職員コード = h.社員番号;
-                //r.年月日 = DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付);
-                //r.処理年 = h.年;
-                //r.処理月 = h.月;
-                //r.集計年 = h.年;
-                //r.集計月 = h.月;
-                //r.週番号 = Utility.StrtoInt(Utility.NulltoStr(m.週番号));
-
-                //// 2015/12 まで
-                //r.勤務時間 = m.実働時 * 60 + m.実働分;
-
-                //int wt = m.実働時 * 60 + m.実働分;
-                //if (wt > 480)
-                //{
-                //    r.残業時間 = wt - 480;
-                //}
-                //else
-                //{
-                //    r.残業時間 = 0;
-                //}
-
-                int kinmuTM = 0;    // 2018/10/27
-                int zanTM = 0;      // 2018/10/27
-
-                // 以下、コメント化 2018/10/27
-                //// 休日出勤でないとき　2016/01/26
-                //if (m.出勤区分 != SHUKIN_KYUSHU)
-                //{
-                //    r.勤務時間 = m.実働時 * 60 + m.実働分;
-
-                //    int wt = m.実働時 * 60 + m.実働分;
-                //    if (wt > 480)
-                //    {
-                //        r.残業時間 = wt - 480;
-                //    }
-                //    else
-                //    {
-                //        r.残業時間 = 0;
-                //    }
-                //}
-                //else
-                //{
-                //    // 休日出勤のときは残業計算に含めない 2016/01/26
-                //    r.勤務時間 = 0;
-                //    r.残業時間 = 0;
-                //}
+                int kinmuTM = 0;        // 2018/10/27
+                int zanTM = 0;          // 2018/10/27
+                int over8Shinya = 0;    // 2018/11/05   ８Ｈ超のうち深夜時間に該当する時間
 
                 // 2018/10/27
                 if (m.出勤区分 != SHUKIN_KYUSHU)
@@ -1466,10 +1826,29 @@ namespace JAFA_DATA.Common
                     if (wt > 480)
                     {
                         zanTM = wt - 480;
+
+                        // 8H超のうち深夜時間に該当する時間を取得：2018/11/05
+                        if (!m.Is開始時Null() && !m.Is開始分Null())
+                        {
+                            DateTime sdt = DateTime.Parse(m.開始時 + ":" + m.開始分 + ":00");
+
+                            // 8時間勤務経過時の時刻を取得
+                            DateTime e8dt = sdt.AddHours(Utility.StrtoInt(m.休憩開始時)).AddMinutes(Utility.StrtoInt(m.休憩開始分));
+                            string sh = (e8dt.Hour + 8).ToString();
+                            string sm = e8dt.Minute.ToString();
+
+                            OCRData cr = new OCRData();
+                            over8Shinya = cr.getShinyaWorkTime_JA(sh, sm, m.終了時, m.終了分);
+                        }
+                        else
+                        {
+                            over8Shinya = 0;
+                        }
                     }
                     else
                     {
                         zanTM = 0;
+                        over8Shinya = 0;
                     }
                 }
                 else
@@ -1477,6 +1856,7 @@ namespace JAFA_DATA.Common
                     // 休日出勤のときは残業計算に含めない 2016/01/26
                     kinmuTM = 0;
                     zanTM = 0;
+                    over8Shinya = 0;
                 }
 
                 //r.更新年月日 = DateTime.Now;
@@ -1484,19 +1864,7 @@ namespace JAFA_DATA.Common
                 // 週実績明細データ登録：2018/10/27
                 wAdp.InsertQuery(h.社員番号, DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付),
                                  h.年, h.月, h.年, h.月, Utility.StrtoInt(Utility.NulltoStr(m.週番号)), 
-                                 kinmuTM, zanTM, 0, DateTime.Now);
-
-                //// 登録済みデータ存在チェック
-                //JAFA_OCRDataSet.週実績明細Row c = _dts.週実績明細.FindBy職員コード年月日(r.職員コード, r.年月日);
-
-                //if (c != null)
-                //{
-                //    // 登録済みデータ削除
-                //    c.Delete();
-                //}
-
-                //// 週実績明細Row追加
-                //_dts.週実績明細.Add週実績明細Row(r);                
+                                 kinmuTM, zanTM, 0, DateTime.Now, over8Shinya);    
             }
         }
 
@@ -1516,7 +1884,7 @@ namespace JAFA_DATA.Common
             Array.Resize(ref array, cnt);   // 配列のサイズ拡張
             array[cnt - 1] = txtData;       // 文字列のセット
         }
-        
+
         ///----------------------------------------------------------------------------
         /// <summary>
         ///     CSVファイルを出力する</summary>
@@ -1550,6 +1918,72 @@ namespace JAFA_DATA.Common
         //    // CSVファイル出力
         //    File.WriteAllLines(outFileName, arrayData, System.Text.Encoding.GetEncoding(932));
         //}
+
+        /// -------------------------------------------------------------------------
+        /// <summary>
+        ///     Big給与計算Pro勤怠データ CSVファイル出力　</summary>
+        /// <param name="sYear">
+        ///     対象年</param>
+        /// <param name="sMonth">
+        ///     対象月</param>
+        /// -------------------------------------------------------------------------
+        public void saveBigProOcrCsv(int sYear, int sMonth)
+        {
+            // 出力配列
+            string[] arrayCsv = null;
+
+            // 対象月度
+            string YYYYMM = sYear.ToString() + sMonth.ToString().PadLeft(2, '0');
+
+            StringBuilder sb = new StringBuilder();
+            int cnt = 0;
+
+            bigAdp.FillByYYMM(_dts.BIG給与計算Pro勤怠データ, sYear, sMonth);
+
+            foreach (var t in _dts.BIG給与計算Pro勤怠データ.OrderBy(a => a.社員番号))
+            {
+                cnt++;
+
+                sb.Clear();
+                sb.Append(t.社員番号).Append(",");
+                sb.Append(t.就業日数).Append(",");
+                sb.Append(t.出勤日数).Append(",");
+                sb.Append(Utility.getHHMM(t.勤務時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.時給者1勤務時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.時給者2勤務時間)).Append(","); // 0
+                sb.Append(Utility.getHHMM(t.時給者3勤務時間)).Append(","); // 0
+                sb.Append(Utility.getHHMM(t.普通残業時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.深夜残業時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.休日残業時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.休日残業時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.その他1残業時間)).Append(",");
+                sb.Append(Utility.getHHMM(t.その他2残業時間)).Append(",");
+                sb.Append(t.欠勤日数一般).Append(",");
+                sb.Append(t.欠勤日数有給).Append(",");
+                sb.Append(t.欠勤日数病欠).Append(",");
+                sb.Append(t.欠勤日数特別).Append(",");
+                sb.Append(t.欠勤日数代休).Append(",");
+                sb.Append("0,");    // 遅刻時間
+                sb.Append("0,");    // 早退時間
+                sb.Append("0,");    // 遅刻回数
+                sb.Append("0,");    // 早退回数
+                sb.Append("0,");    // 変動支給項目・金額項目
+                sb.Append("0,");    // 変動支給項目・回数項目
+                sb.Append("0,");    // 変動控除項目・金額項目
+                sb.Append("0,");    // 変動控除項目・回数項目
+                sb.Append("0,");    // 前渡／現物
+                sb.Append("0,");    // 繰越／貸越
+                sb.Append(Utility.getHHMM(t.超過残業時間)).Append(",");
+                sb.Append("0");     // 欠勤時間・有給
+                
+                // 配列にセット
+                Array.Resize(ref arrayCsv, cnt);        // 配列のサイズ拡張
+                arrayCsv[cnt - 1] = sb.ToString();      // 文字列のセット
+            }
+
+            // CSVファイル出力
+            Utility.csvFileWrite(global.cnfPath, arrayCsv, CSVFILENAME);
+        }
 
         /// -------------------------------------------------------------------------
         /// <summary>
@@ -1623,7 +2057,51 @@ namespace JAFA_DATA.Common
             // CSVファイル出力
             Utility.csvFileWrite(global.cnfPath, arrayCsv, CSVFILENAME);
         }
-        
+
+        /// -------------------------------------------------------------------------
+        /// <summary>
+        ///     Big給与計算Pro有休付与データ CSVファイル出力 ：
+        ///     2018/11/02 </summary>
+        /// <param name="sYear">
+        ///     対象年</param>
+        /// <param name="sMonth">
+        ///     対象月</param>
+        /// -------------------------------------------------------------------------
+        public void saveBigProNenkyuCsv(int sYear, int sMonth)
+        {
+            // 該当年月の有給付与データを取得
+            yuBigAdp.FillByYYMM(_dts.有休付与データ, sYear, sMonth);
+
+            // 出力配列
+            string[] arrayCsv = null;
+            
+            StringBuilder sb = new StringBuilder();
+            int cnt = 0;
+
+            foreach (var t in _dts.有休付与データ.OrderBy(a => a.社員番号))
+            {
+                cnt++;
+
+                sb.Clear();
+                sb.Append(t.社員番号).Append(",");
+                sb.Append(t.支給月).Append(",");
+                sb.Append(t.月初有給残日数).Append(",");
+                sb.Append(t.月初有給残時間).Append(",");
+                sb.Append(t.月末有給残日数).Append(",");
+                sb.Append(t.月末有給残時間);
+
+                // 配列にセット
+                Array.Resize(ref arrayCsv, cnt);        // 配列のサイズ拡張
+                arrayCsv[cnt - 1] = sb.ToString();      // 文字列のセット
+            }
+
+            // CSVファイル出力
+            if (cnt > 0)
+            {
+                Utility.csvFileWrite(global.cnfPath, arrayCsv, CSVNENKYUNAME);
+            }
+        }
+
         /// -------------------------------------------------------------------------
         /// <summary>
         ///     JAメイト年休取得データ CSVファイル出力　</summary>
@@ -1840,10 +2318,10 @@ namespace JAFA_DATA.Common
                 //------------------------------------------------------------------------
 
                 // 登録済み有給付与データ削除
-                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
+                yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
             }
         }
 
@@ -1997,10 +2475,10 @@ namespace JAFA_DATA.Common
                  -------------------------------------------------------------------------*/
 
                 // 登録済み有給付与データ削除
-                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
+                yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + zan), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + zan), 0, zan, 0);
             }
         }
 
@@ -2219,10 +2697,10 @@ namespace JAFA_DATA.Common
                  -------------------------------------------------------------------------*/
 
                 // 登録済み有給付与データ削除
-                yuBigAdp.DeleteQuerySCodeMM(s.職員コード, fMonth);
+                yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
             }
         }
 

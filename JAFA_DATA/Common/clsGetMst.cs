@@ -33,14 +33,16 @@ namespace JAFA_DATA.Common
         /// -------------------------------------------------------------------------
         public string[] getKojinMst(int code)
         {
-            string[] sName = new string[7];
+            string[] sName = new string[9];
             sName[0] = global.NOT_FOUND;
             sName[1] = global.NOT_FOUND;
             sName[2] = global.NOT_FOUND;
             sName[3] = global.NOT_FOUND;
             sName[4] = global.NOT_FOUND;
             sName[5] = global.NOT_FOUND;
-            sName[6] = global.NOT_FOUND;    // 社員区分追加：2018/10/22
+            sName[6] = global.NOT_FOUND;    // 社員区分：2018/10/22
+            sName[7] = global.NOT_FOUND;    // 農業従事：2018/11/02
+            sName[8] = global.NOT_FOUND;    // 短時間勤務：2018/11/02
 
             var s = dts.社員マスター.Where(a => a.職員コード == code);
 
@@ -57,6 +59,18 @@ namespace JAFA_DATA.Common
                 if (!t.Is調整年月日Null())
                 {
                     sName[6] = t.社員区分.ToString();   // 2018/10/22
+                }
+
+                // 2018/11/02
+                if (!t.Is農業従事Null())
+                {
+                    sName[7] = t.農業従事.ToString();   // 2018/11/02
+                }
+
+                // 2018/11/02
+                if (!t.Is短時間勤務Null())
+                {
+                    sName[8] = t.短時間勤務.ToString();  // 2018/11/02
                 }
 
                 break;

@@ -1191,15 +1191,24 @@ namespace JAFA_DATA.OCR
                     // JAメイトOCRデータ(mdb)に有給付与情報を書き込み
                     kd.saveJAMateOCRYukyu();
 
-                    //////////////////////// 2018/10/27 ここまで  ////////////////////
+                    //// JAメイト年休取得データ CSVファイル出力：2018/11/02 コメント化
+                    //kd.saveJAMateNenkyuCsv(global.cnfYear, global.cnfMonth);
+
+                    // Big給与計算Pro有休付与データ CSVファイル出力
+                    kd.saveBigProNenkyuCsv(global.cnfYear, global.cnfMonth);
+
+                    // Big給与計算Pro勤怠データ(mdb)作成 : 2018/11/05
+                    kd.saveBigProKintaiData();
+
+                    //// JAメイトOCRデータ CSVファイル出力 2018/11/05 コメント化
+                    //kd.saveJAMateOcrCsv(global.cnfYear, global.cnfMonth);
+
+                    // Big給与計算勤怠ProデータJAメイトOCRデータ CSVファイル出力
+                    kd.saveBigProOcrCsv(global.cnfYear, global.cnfMonth);
+
+                    //////////////////////// 2018/11/05 ここまで  ////////////////////
 
                     // ↓↓↓↓↓↓↓↓↓↓↓↓ 次回ここから　↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-                    // JAメイト年休取得データ CSVファイル出力
-                    kd.saveJAMateNenkyuCsv(global.cnfYear, global.cnfMonth);
-
-                    // JAメイトOCRデータ CSVファイル出力
-                    kd.saveJAMateOcrCsv(global.cnfYear, global.cnfMonth);
 
                     // バックアップ用画像コピー
                     tifFileBackup();
