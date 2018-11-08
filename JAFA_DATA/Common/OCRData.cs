@@ -654,11 +654,6 @@ namespace JAFA_DATA.Common
                 //データ件数加算
                 rCnt++;
 
-                //プログレスバー表示
-                frmP.Text = "エラーチェック実行中　" + rCnt.ToString() + "/" + cTotal.ToString();
-                frmP.progressValue = rCnt * 100 / cTotal;
-                frmP.ProgressStep();
-
                 //指定範囲ならエラーチェックを実施する：（i:行index）
                 if (i >= sIx && i <= eIx)
                 {
@@ -674,7 +669,21 @@ namespace JAFA_DATA.Common
                         break;
                     }
                 }
+
+                System.Threading.Thread.Sleep(100);
+                Application.DoEvents();
+
+                //プログレスバー表示
+                frmP.Text = "エラーチェック実行中　" + rCnt.ToString() + "/" + cTotal.ToString();
+                frmP.progressValue = rCnt * 100 / cTotal;
+                frmP.ProgressStep();
+
+                System.Threading.Thread.Sleep(500);
+                Application.DoEvents();
             }
+
+            System.Threading.Thread.Sleep(1000);
+            Application.DoEvents();
 
             // いったんオーナーをアクティブにする
             frm.Activate();
@@ -1063,6 +1072,7 @@ namespace JAFA_DATA.Common
                 int inYYMM = mr.入所年月日.Year * 100 + mr.入所年月日.Month;
                 int ouYYMM = mr.退職年月日.Year * 100 + mr.退職年月日.Month;
                 int tYYMM = r.年 * 100 + r.月;
+
                 if (tYYMM < inYYMM)
                 {
                     setErrStatus(eShainNo, 0, "入所日以前の出勤簿です");

@@ -417,6 +417,36 @@ namespace JAFA_DATA.OCR
                 lblFuri.Text = sName[1];
                 //lblSyoubi.Text = sName[4];
                 lblWdays.Text = sName[5];
+
+                // 社員区分 2018/11/08
+                if (sName[6] != global.NOT_FOUND)
+                {
+                    lblShainkbn.Text = sName[6];
+                    lblShainKbnName.Text = global.shainKbnArray[Utility.StrtoInt(sName[6])];
+                }
+                else
+                {
+                    lblShainkbn.Text = string.Empty;
+                    lblShainKbnName.Text = string.Empty;
+                }
+
+                // 農業従事区分 2018/11/07
+                if (sName[7] != global.NOT_FOUND)
+                {
+                    if (sName[7] == global.FLGON)
+                    {
+                        lblNougyou.Text = "農業従事";
+                    }
+                    else
+                    {
+                        lblNougyou.Text = "農業非従事";
+                    }
+                }
+                else
+                {
+                    lblNougyou.Text = string.Empty;
+                    lblNougyou.Text = string.Empty;
+                }
             }
         }
 
@@ -1119,11 +1149,11 @@ namespace JAFA_DATA.OCR
 
         private void btnDataMake_Click(object sender, EventArgs e)
         {
-            // Big給与計算Pro勤怠データ作成
-            if (MessageBox.Show("Ｂｉｇ給与計算Ｐｒｏ勤怠データ作成が選択されました。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
-                return;
-            }
+            //// Big給与計算Pro勤怠データ作成：2018/11/07 コメント化
+            //if (MessageBox.Show("Big給与計算Pro勤怠データ作成が選択されました。よろしいですか", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            //{
+            //    return;
+            //}
 
             // Big給与計算Pro勤怠データ作成
             textDataMake();
@@ -1173,17 +1203,17 @@ namespace JAFA_DATA.OCR
                     // JAメイトOCRデータ(mdb)作成
                     kd.saveJAMateOCRData();
 
-                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                    /* 有給休暇付与日数計算・有給付与マスター・有休付与データ登録：
                      * 臨時社員、外国人技能実習生 
                      */
                     kd.addYukyuData();
 
-                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                    /* 有給休暇付与日数計算・有給付与マスター・有休付与データ登録：
                      * 正社員：入社後６ヶ月経過時
                      */
                     kd.sumYukyuAfter6();
 
-                    /* 有給休暇付与日数計算・有給付与マスター登録：
+                    /* 有給休暇付与日数計算・有給付与マスター・有休付与データ登録：
                      * 正社員：４月付与
                      */
                     kd.sumYukyu04Month();
@@ -1221,13 +1251,13 @@ namespace JAFA_DATA.OCR
                     deleteArchived();
 
                     // 確定勤務票データ削除
-                    deleteDataAll();
+                    //deleteDataAll();
 
                     // MDBファイル最適化
                     mdbCompact();
 
                     //終了
-                    MessageBox.Show("終了しました。給与計算システムでJAメイトOCRデータ受け入れを行ってください。", "給与計算受け入れデータ作成", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("終了しました。Big給与計算Proシステムで勤怠データと有給付与データ受け入れを行ってください。", "給与計算受け入れデータ作成", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Tag = END_MAKEDATA;
                     this.Close();
                 }

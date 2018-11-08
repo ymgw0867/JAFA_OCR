@@ -216,6 +216,10 @@ namespace JAFA_DATA.OCR
             //lblSyoubi.Text = string.Empty;
             lblWdays.Text = string.Empty;
 
+            lblShainkbn.Text = string.Empty;        // 2018/11/07
+            lblShainKbnName.Text = string.Empty;    // 2018/11/07
+            lblNougyou.Text = string.Empty;         // 2018/11/07
+
             lblNoImage.Visible = false;
 
             // 勤務票データ編集のとき

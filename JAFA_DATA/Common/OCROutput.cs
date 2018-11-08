@@ -87,8 +87,8 @@ namespace JAFA_DATA.Common
 
             //jaAdp.Fill(_dts.勤怠データ);       // 2018/10/27 コメント化
             //nAdp.Fill(_dts.勤怠年休データ);    // 2018/10/27 コメント化
-            //wAdp.Fill(_dts.週実績明細);    // 2018/10/22 コメント化
-            zAdp.Fill(_dts.週実績);
+            //wAdp.Fill(_dts.週実績明細);          // 2018/10/22 コメント化
+            //zAdp.Fill(_dts.週実績);              // 2018/11/06 コメント化
             sAdp.Fill(_dts.残業先払い);
             mateAdp.Fill(_dts.社員マスター);
             yuMapAdp.Fill(_dts.有休付与日数表);
@@ -316,6 +316,16 @@ namespace JAFA_DATA.Common
         /// -----------------------------------------------------------------------
         public void saveWeekData()
         {
+            //オーナーフォームを無効にする
+            _preForm.Enabled = false;
+
+            //プログレスバーを表示する
+            frmPrg frmP = new frmPrg();
+            frmP.Owner = _preForm;
+            frmP.Show();
+
+            int rCnt = 1;
+
             // 確定勤務票ヘッダデータ取得
             var h = _dts.確定勤務票ヘッダ.OrderBy(a => a.ヘッダID);
 
@@ -323,7 +333,33 @@ namespace JAFA_DATA.Common
             {
                 // 週実績明細データ追加
                 setNewWeekDataItem(t);
+
+                System.Threading.Thread.Sleep(100);
+                Application.DoEvents();
+
+                // プログレスバー表示
+                frmP.Text = "週実績明細データ作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                frmP.progressValue = rCnt * 100 / h.Count();
+                frmP.ProgressStep();
+
+                System.Threading.Thread.Sleep(500);
+                Application.DoEvents();
+
+
+                rCnt++;
             }
+
+            System.Threading.Thread.Sleep(1000);
+            Application.DoEvents();
+
+            // いったんオーナーをアクティブにする
+            _preForm.Activate();
+
+            // 進行状況ダイアログを閉じる
+            frmP.Close();
+
+            // オーナーのフォームを有効に戻す
+            _preForm.Enabled = true;
 
             //// データベース更新 : 2018/10/22 コメント化
             //wAdp.Update(_dts.週実績明細);
@@ -840,17 +876,27 @@ namespace JAFA_DATA.Common
 
                 foreach (var t in h)
                 {
+                    // 勤怠年休データ作成
+                    putJAMateNenkyuData(t);
+
+                    System.Threading.Thread.Sleep(100);
+                    Application.DoEvents();
+
                     // プログレスバー表示
                     frmP.Text = "勤怠年休データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
                     frmP.progressValue = rCnt * 100 / h.Count();
                     frmP.ProgressStep();
 
-                    // 勤怠年休データ作成
-                    putJAMateNenkyuData(t);
+                    System.Threading.Thread.Sleep(500);
+                    Application.DoEvents();
 
                     // 件数カウント
                     rCnt++;
                 }
+
+                System.Threading.Thread.Sleep(1000);
+                Application.DoEvents();
+
 
                 // いったんオーナーをアクティブにする
                 _preForm.Activate();
@@ -899,35 +945,29 @@ namespace JAFA_DATA.Common
 
                 foreach (var t in h)
                 {
-                    // プログレスバー表示
-                    frmP.Text = "勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
-                    frmP.progressValue = rCnt * 100 / h.Count();
-                    frmP.ProgressStep();
-
                     // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/10/27
                     jaAdp.DeleteQuerySCodeYYMM(t.年.ToString() + t.月.ToString().PadLeft(2, '0'), t.社員番号.ToString().PadLeft(5, '0'));
-
-                    // JAメイトOCRデータ作成　コメント化 2018/10/27
-                    //JAFA_OCRDataSet.勤怠データRow jr = putJAMateOCRData(t);
-
+                    
                     // 勤怠データ作成：2018/10/27
                     putJAMateOCRData(t);
 
-                    // 以下、コメント化 2018/10/27
-                    //// 対象月度・社員番号で登録済みデータを取得
-                    //JAFA_OCRDataSet.勤怠データRow dr = _dts.勤怠データ.FindBy対象月度対象職員コード(jr.対象月度, jr.対象職員コード);
-                    //if (dr != null)
-                    //{
-                    //    // 登録済みデータを削除する
-                    //    dr.Delete();
-                    //}
+                    System.Threading.Thread.Sleep(100);
+                    Application.DoEvents();
 
-                    //// JAメイトOCRデータ追加 コメント化 2018/10/27
-                    //_dts.勤怠データ.Add勤怠データRow(jr);
+                    // プログレスバー表示
+                    frmP.Text = "ＪＡ仕様勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.progressValue = rCnt * 100 / h.Count();
+                    frmP.ProgressStep();
+
+                    System.Threading.Thread.Sleep(500);
+                    Application.DoEvents();
 
                     // 件数カウント
                     rCnt++;
                 }
+
+                System.Threading.Thread.Sleep(1000);
+                Application.DoEvents();
 
                 // いったんオーナーをアクティブにする
                 _preForm.Activate();
@@ -982,20 +1022,29 @@ namespace JAFA_DATA.Common
 
                 foreach (var t in h)
                 {
-                    // プログレスバー表示
-                    frmP.Text = "勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
-                    frmP.progressValue = rCnt * 100 / h.Count();
-                    frmP.ProgressStep();
-
                     // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/11/02
                     bigAdp.DeleteQueryYYMMSCode(t.年, t.月, t.社員番号);
 
                     // BIG給与計算Pro勤怠データ作成：2018/10/27
-                    putJAMateOCRData(t);
-                    
+                    putBigKintaiData(t);
+
+                    System.Threading.Thread.Sleep(100);
+                    Application.DoEvents();
+
+                    // プログレスバー表示
+                    frmP.Text = "Big給与計算Pro勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.progressValue = rCnt * 100 / h.Count();
+                    frmP.ProgressStep();
+
+                    System.Threading.Thread.Sleep(500);
+                    Application.DoEvents();
+
                     // 件数カウント
                     rCnt++;
                 }
+
+                System.Threading.Thread.Sleep(1000);
+                Application.DoEvents();
 
                 // いったんオーナーをアクティブにする
                 _preForm.Activate();
@@ -1060,11 +1109,6 @@ namespace JAFA_DATA.Common
 
                 foreach (var t in h)
                 {
-                    // プログレスバー表示
-                    frmP.Text = "JAメイトOCRデータ(MDB)に有休付与データを書き込み中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
-                    frmP.progressValue = rCnt * 100 / h.Count();
-                    frmP.ProgressStep();
-
                     // 対象職員コード
                     string sShoCode = t.社員番号.ToString().PadLeft(5, '0');
 
@@ -1073,22 +1117,24 @@ namespace JAFA_DATA.Common
 
                     // 勤怠データ更新：2018/10/27
                     jaAdp.UpdateQueryYukyu((int)t.当年付与日数, (decimal)t.当年繰越日数, global.flgOn, sShoCode, sYYYYMM);
+                    
+                    System.Threading.Thread.Sleep(100);
+                    Application.DoEvents();
 
-                    //// 有休付与マスターを参照し有休付与日数、有休繰越日数を取得する
-                    //if (_dts.勤怠データ.Any(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM))
-                    //{
-                    //    JAFA_OCRDataSet.勤怠データRow r = _dts.勤怠データ.Single(a => a.対象職員コード == sShoCode && a.対象月度 == sYYYYMM);
-                    //    r.有休付与日数 = (int)t.当年付与日数;
-                    //    r.有休繰越日数 = t.当年繰越日数;
-                    //    r.有休付与対象フラグ = global.flgOn;
+                    // プログレスバー表示
+                    frmP.Text = "JAメイトOCRデータ(MDB)に有休付与データを書き込み中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.progressValue = rCnt * 100 / h.Count();
+                    frmP.ProgressStep();
 
-                    //    // データベース更新
-                    //    jaAdp.Update(_dts.勤怠データ);
-                    //}
+                    System.Threading.Thread.Sleep(500);
+                    Application.DoEvents();
 
                     // 件数カウント
                     rCnt++;
                 }
+
+                System.Threading.Thread.Sleep(1000);
+                Application.DoEvents();
 
                 // いったんオーナーをアクティブにする
                 _preForm.Activate();
@@ -1525,7 +1571,7 @@ namespace JAFA_DATA.Common
                           fuZan, workShinya, KYUJITSU_Zan, KYUJITSU_Zan, sonota1_Zan, sonota2_Zan, keKEKKIN_Ippan, keKEKKIN_Yukyu,
                           keKEKKIN_Byoketsu, keKEKKIN_Tokubetsu, global.flgOff, global.flgOff, global.flgOff, global.flgOff,
                           global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff, global.flgOff,
-                          ovar_Zan, global.flgOff);            
+                          ovar_Zan, global.flgOff, DateTime.Now);            
         }
 
         /// ---------------------------------------------------------------------------
@@ -1755,7 +1801,7 @@ namespace JAFA_DATA.Common
         private List<JAFA_OCRDataSet.確定勤務票明細Row> getKakuteiItem(JAFA_OCRDataSet.確定勤務票ヘッダRow r)
         {
             // 2018/10/27
-            mAdp.FillByHID(_dts.確定勤務票明細, r.ID);
+            mAdp.FillByHID(_dts.確定勤務票明細, r.ヘッダID);
 
             // 明細
             var s = _dts.確定勤務票明細.Where(a => a.ヘッダID == r.ヘッダID).OrderBy(a => a.日付);
@@ -1859,8 +1905,6 @@ namespace JAFA_DATA.Common
                     over8Shinya = 0;
                 }
 
-                //r.更新年月日 = DateTime.Now;
-
                 // 週実績明細データ登録：2018/10/27
                 wAdp.InsertQuery(h.社員番号, DateTime.Parse(h.年.ToString() + "/" + h.月 + "/" + m.日付),
                                  h.年, h.月, h.年, h.月, Utility.StrtoInt(Utility.NulltoStr(m.週番号)), 
@@ -1868,7 +1912,7 @@ namespace JAFA_DATA.Common
             }
         }
 
-        
+
         ///----------------------------------------------------------------------------
         /// <summary>
         ///     配列にテキストデータをセットする </summary>
@@ -2069,6 +2113,17 @@ namespace JAFA_DATA.Common
         /// -------------------------------------------------------------------------
         public void saveBigProNenkyuCsv(int sYear, int sMonth)
         {
+            // 勤怠対象月＋１が有給支給月
+            if (sMonth >= 12)
+            {
+                sMonth = 1;
+                sYear++;
+            }
+            else
+            {
+                sMonth++;
+            }
+
             // 該当年月の有給付与データを取得
             yuBigAdp.FillByYYMM(_dts.有休付与データ, sYear, sMonth);
 
@@ -2321,7 +2376,7 @@ namespace JAFA_DATA.Common
                 yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0, DateTime.Now);
             }
         }
 
@@ -2478,7 +2533,7 @@ namespace JAFA_DATA.Common
                 yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + zan), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + zan), 0, zan, 0, DateTime.Now);
             }
         }
 
@@ -2700,7 +2755,7 @@ namespace JAFA_DATA.Common
                 yuBigAdp.DeleteQuerySCodeYYMM(s.職員コード, fYear, fMonth);
 
                 // 有休付与データ登録
-                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0);
+                yuBigAdp.InsertQuery(s.職員コード, fYear, fMonth, (decimal)(fuyo + kurikoshi), 0, zan, 0, DateTime.Now);
             }
         }
 

@@ -7862,19 +7862,17 @@ namespace JAFA_DATA {
             
             private global::System.Data.DataColumn column支給月;
             
-            private global::System.Data.DataColumn column月初有給残日数;
-            
             private global::System.Data.DataColumn column月初有給残時間;
-            
-            private global::System.Data.DataColumn column月末有給残日数;
             
             private global::System.Data.DataColumn column月末有給残時間;
             
             private global::System.Data.DataColumn column支給年;
             
-            private global::System.Data.DataColumn column月初有給残日数1;
+            private global::System.Data.DataColumn column更新年月日;
             
-            private global::System.Data.DataColumn column月末有給残日数1;
+            private global::System.Data.DataColumn column月初有給残日数;
+            
+            private global::System.Data.DataColumn column月末有給残日数;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -7935,25 +7933,9 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn 月初有給残日数Column {
-                get {
-                    return this.column月初有給残日数;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn 月初有給残時間Column {
                 get {
                     return this.column月初有給残時間;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn 月末有給残日数Column {
-                get {
-                    return this.column月末有給残日数;
                 }
             }
             
@@ -7975,17 +7957,25 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn 月初有給残日数1Column {
+            public global::System.Data.DataColumn 更新年月日Column {
                 get {
-                    return this.column月初有給残日数1;
+                    return this.column更新年月日;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn 月末有給残日数1Column {
+            public global::System.Data.DataColumn 月初有給残日数Column {
                 get {
-                    return this.column月末有給残日数1;
+                    return this.column月初有給残日数;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn 月末有給残日数Column {
+                get {
+                    return this.column月末有給残日数;
                 }
             }
             
@@ -8026,19 +8016,18 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public 有休付与データRow Add有休付与データRow(int 社員番号, int 支給月, decimal 月初有給残日数, int 月初有給残時間, decimal 月末有給残日数, int 月末有給残時間, int 支給年, double 月初有給残日数1, double 月末有給残日数1) {
+            public 有休付与データRow Add有休付与データRow(int 社員番号, int 支給月, int 月初有給残時間, int 月末有給残時間, int 支給年, System.DateTime 更新年月日, double 月初有給残日数, double 月末有給残日数) {
                 有休付与データRow row有休付与データRow = ((有休付与データRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         社員番号,
                         支給月,
-                        月初有給残日数,
                         月初有給残時間,
-                        月末有給残日数,
                         月末有給残時間,
                         支給年,
-                        月初有給残日数1,
-                        月末有給残日数1};
+                        更新年月日,
+                        月初有給残日数,
+                        月末有給残日数};
                 row有休付与データRow.ItemArray = columnValuesArray;
                 this.Rows.Add(row有休付与データRow);
                 return row有休付与データRow;
@@ -8071,13 +8060,12 @@ namespace JAFA_DATA {
                 this.columnID = base.Columns["ID"];
                 this.column社員番号 = base.Columns["社員番号"];
                 this.column支給月 = base.Columns["支給月"];
-                this.column月初有給残日数 = base.Columns["月初有給残日数"];
                 this.column月初有給残時間 = base.Columns["月初有給残時間"];
-                this.column月末有給残日数 = base.Columns["月末有給残日数"];
                 this.column月末有給残時間 = base.Columns["月末有給残時間"];
                 this.column支給年 = base.Columns["支給年"];
-                this.column月初有給残日数1 = base.Columns["月初有給残日数1"];
-                this.column月末有給残日数1 = base.Columns["月末有給残日数1"];
+                this.column更新年月日 = base.Columns["更新年月日"];
+                this.column月初有給残日数 = base.Columns["月初有給残日数"];
+                this.column月末有給残日数 = base.Columns["月末有給残日数"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8089,20 +8077,18 @@ namespace JAFA_DATA {
                 base.Columns.Add(this.column社員番号);
                 this.column支給月 = new global::System.Data.DataColumn("支給月", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.column支給月);
-                this.column月初有給残日数 = new global::System.Data.DataColumn("月初有給残日数", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column月初有給残日数);
                 this.column月初有給残時間 = new global::System.Data.DataColumn("月初有給残時間", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.column月初有給残時間);
-                this.column月末有給残日数 = new global::System.Data.DataColumn("月末有給残日数", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column月末有給残日数);
                 this.column月末有給残時間 = new global::System.Data.DataColumn("月末有給残時間", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.column月末有給残時間);
                 this.column支給年 = new global::System.Data.DataColumn("支給年", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.column支給年);
-                this.column月初有給残日数1 = new global::System.Data.DataColumn("月初有給残日数1", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column月初有給残日数1);
-                this.column月末有給残日数1 = new global::System.Data.DataColumn("月末有給残日数1", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column月末有給残日数1);
+                this.column更新年月日 = new global::System.Data.DataColumn("更新年月日", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column更新年月日);
+                this.column月初有給残日数 = new global::System.Data.DataColumn("月初有給残日数", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column月初有給残日数);
+                this.column月末有給残日数 = new global::System.Data.DataColumn("月末有給残日数", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column月末有給残日数);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID}, true));
                 this.columnID.AutoIncrement = true;
@@ -8110,8 +8096,6 @@ namespace JAFA_DATA {
                 this.columnID.AutoIncrementStep = -1;
                 this.columnID.AllowDBNull = false;
                 this.columnID.Unique = true;
-                this.column月初有給残日数1.Caption = "月初有給残日数";
-                this.column月末有給残日数1.Caption = "月末有給残日数";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8655,6 +8639,8 @@ namespace JAFA_DATA {
             
             private global::System.Data.DataColumn column欠勤時間有給;
             
+            private global::System.Data.DataColumn column更新年月日;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public BIG給与計算Pro勤怠データDataTable() {
@@ -8954,6 +8940,14 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn 更新年月日Column {
+                get {
+                    return this.column更新年月日;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -9021,7 +9015,8 @@ namespace JAFA_DATA {
                         int 前渡現物, 
                         int 繰越貸越, 
                         int 超過残業時間, 
-                        int 欠勤時間有給) {
+                        int 欠勤時間有給, 
+                        System.DateTime 更新年月日) {
                 BIG給与計算Pro勤怠データRow rowBIG給与計算Pro勤怠データRow = ((BIG給与計算Pro勤怠データRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -9056,7 +9051,8 @@ namespace JAFA_DATA {
                         前渡現物,
                         繰越貸越,
                         超過残業時間,
-                        欠勤時間有給};
+                        欠勤時間有給,
+                        更新年月日};
                 rowBIG給与計算Pro勤怠データRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowBIG給与計算Pro勤怠データRow);
                 return rowBIG給与計算Pro勤怠データRow;
@@ -9119,6 +9115,7 @@ namespace JAFA_DATA {
                 this.column繰越貸越 = base.Columns["繰越貸越"];
                 this.column超過残業時間 = base.Columns["超過残業時間"];
                 this.column欠勤時間有給 = base.Columns["欠勤時間有給"];
+                this.column更新年月日 = base.Columns["更新年月日"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9190,6 +9187,8 @@ namespace JAFA_DATA {
                 base.Columns.Add(this.column超過残業時間);
                 this.column欠勤時間有給 = new global::System.Data.DataColumn("欠勤時間有給", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.column欠勤時間有給);
+                this.column更新年月日 = new global::System.Data.DataColumn("更新年月日", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column更新年月日);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID}, true));
                 this.columnID.AutoIncrement = true;
@@ -15370,22 +15369,6 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal 月初有給残日数 {
-                get {
-                    try {
-                        return ((decimal)(this[this.table有休付与データ.月初有給残日数Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月初有給残日数\' の値は DBNull です。", e);
-                    }
-                }
-                set {
-                    this[this.table有休付与データ.月初有給残日数Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int 月初有給残時間 {
                 get {
                     try {
@@ -15397,22 +15380,6 @@ namespace JAFA_DATA {
                 }
                 set {
                     this[this.table有休付与データ.月初有給残時間Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal 月末有給残日数 {
-                get {
-                    try {
-                        return ((decimal)(this[this.table有休付与データ.月末有給残日数Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月末有給残日数\' の値は DBNull です。", e);
-                    }
-                }
-                set {
-                    this[this.table有休付与データ.月末有給残日数Column] = value;
                 }
             }
             
@@ -15450,33 +15417,49 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double 月初有給残日数1 {
+            public System.DateTime 更新年月日 {
                 get {
                     try {
-                        return ((double)(this[this.table有休付与データ.月初有給残日数1Column]));
+                        return ((global::System.DateTime)(this[this.table有休付与データ.更新年月日Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月初有給残日数1\' の値は DBNull です。", e);
+                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'更新年月日\' の値は DBNull です。", e);
                     }
                 }
                 set {
-                    this[this.table有休付与データ.月初有給残日数1Column] = value;
+                    this[this.table有休付与データ.更新年月日Column] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double 月末有給残日数1 {
+            public double 月初有給残日数 {
                 get {
                     try {
-                        return ((double)(this[this.table有休付与データ.月末有給残日数1Column]));
+                        return ((double)(this[this.table有休付与データ.月初有給残日数Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月末有給残日数1\' の値は DBNull です。", e);
+                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月初有給残日数\' の値は DBNull です。", e);
                     }
                 }
                 set {
-                    this[this.table有休付与データ.月末有給残日数1Column] = value;
+                    this[this.table有休付与データ.月初有給残日数Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double 月末有給残日数 {
+                get {
+                    try {
+                        return ((double)(this[this.table有休付与データ.月末有給残日数Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("テーブル \'有休付与データ\' にある列 \'月末有給残日数\' の値は DBNull です。", e);
+                    }
+                }
+                set {
+                    this[this.table有休付与データ.月末有給残日数Column] = value;
                 }
             }
             
@@ -15506,18 +15489,6 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is月初有給残日数Null() {
-                return this.IsNull(this.table有休付与データ.月初有給残日数Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set月初有給残日数Null() {
-                this[this.table有休付与データ.月初有給残日数Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is月初有給残時間Null() {
                 return this.IsNull(this.table有休付与データ.月初有給残時間Column);
             }
@@ -15526,18 +15497,6 @@ namespace JAFA_DATA {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set月初有給残時間Null() {
                 this[this.table有休付与データ.月初有給残時間Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is月末有給残日数Null() {
-                return this.IsNull(this.table有休付与データ.月末有給残日数Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set月末有給残日数Null() {
-                this[this.table有休付与データ.月末有給残日数Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -15566,26 +15525,38 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is月初有給残日数1Null() {
-                return this.IsNull(this.table有休付与データ.月初有給残日数1Column);
+            public bool Is更新年月日Null() {
+                return this.IsNull(this.table有休付与データ.更新年月日Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set月初有給残日数1Null() {
-                this[this.table有休付与データ.月初有給残日数1Column] = global::System.Convert.DBNull;
+            public void Set更新年月日Null() {
+                this[this.table有休付与データ.更新年月日Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is月末有給残日数1Null() {
-                return this.IsNull(this.table有休付与データ.月末有給残日数1Column);
+            public bool Is月初有給残日数Null() {
+                return this.IsNull(this.table有休付与データ.月初有給残日数Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set月末有給残日数1Null() {
-                this[this.table有休付与データ.月末有給残日数1Column] = global::System.Convert.DBNull;
+            public void Set月初有給残日数Null() {
+                this[this.table有休付与データ.月初有給残日数Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Is月末有給残日数Null() {
+                return this.IsNull(this.table有休付与データ.月末有給残日数Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Set月末有給残日数Null() {
+                this[this.table有休付与データ.月末有給残日数Column] = global::System.Convert.DBNull;
             }
         }
         
@@ -16322,6 +16293,22 @@ namespace JAFA_DATA {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime 更新年月日 {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableBIG給与計算Pro勤怠データ.更新年月日Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("テーブル \'BIG給与計算Pro勤怠データ\' にある列 \'更新年月日\' の値は DBNull です。", e);
+                    }
+                }
+                set {
+                    this[this.tableBIG給与計算Pro勤怠データ.更新年月日Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is年Null() {
                 return this.IsNull(this.tableBIG給与計算Pro勤怠データ.年Column);
             }
@@ -16702,6 +16689,18 @@ namespace JAFA_DATA {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set欠勤時間有給Null() {
                 this[this.tableBIG給与計算Pro勤怠データ.欠勤時間有給Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Is更新年月日Null() {
+                return this.IsNull(this.tableBIG給与計算Pro勤怠データ.更新年月日Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Set更新年月日Null() {
+                this[this.tableBIG給与計算Pro勤怠データ.更新年月日Column] = global::System.Convert.DBNull;
             }
         }
         
@@ -30974,12 +30973,13 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("月初有給残時間", "月初有給残時間");
             tableMapping.ColumnMappings.Add("月末有給残時間", "月末有給残時間");
             tableMapping.ColumnMappings.Add("支給年", "支給年");
-            tableMapping.ColumnMappings.Add("月初有給残日数", "月初有給残日数1");
-            tableMapping.ColumnMappings.Add("月末有給残日数", "月末有給残日数1");
+            tableMapping.ColumnMappings.Add("更新年月日", "更新年月日");
+            tableMapping.ColumnMappings.Add("月初有給残日数", "月初有給残日数");
+            tableMapping.ColumnMappings.Add("月末有給残日数", "月末有給残日数");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `有休付与データ` WHERE ((`ID` = ?) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AND ((? = 1 AND `支給年` IS NULL) OR (`支給年` = ?)) AND ((? = 1 AND `支給月` IS NULL) OR (`支給月` = ?)) AND ((? = 1 AND `月初有給残日数` IS NULL) OR (`月初有給残日数` = ?)) AND ((? = 1 AND `月初有給残時間` IS NULL) OR (`月初有給残時間` = ?)) AND ((? = 1 AND `月末有給残日数` IS NULL) OR (`月末有給残日数` = ?)) AND ((? = 1 AND `月末有給残時間` IS NULL) OR (`月末有給残時間` = ?)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `有休付与データ` WHERE ((`ID` = ?) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AND ((? = 1 AND `支給年` IS NULL) OR (`支給年` = ?)) AND ((? = 1 AND `支給月` IS NULL) OR (`支給月` = ?)) AND ((? = 1 AND `月初有給残時間` IS NULL) OR (`月初有給残時間` = ?)) AND ((? = 1 AND `月末有給残時間` IS NULL) OR (`月末有給残時間` = ?)) AND ((? = 1 AND `更新年月日` IS NULL) OR (`更新年月日` = ?)) AND ((? = 1 AND `月初有給残日数` IS NULL) OR (`月初有給残日数` = ?)) AND ((? = 1 AND `月末有給残日数` IS NULL) OR (`月末有給残日数` = ?)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_ID", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ID", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Original, true, null));
@@ -30988,37 +30988,41 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_更新年月日", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.InsertCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO `有休付与データ` (`社員番号`, `支給年`, `支給月`, `月初有給残日数`, `月初有給残時間`, `月末有給残日数`, `月末" +
-                "有給残時間`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO `有休付与データ` (`社員番号`, `支給年`, `支給月`, `月初有給残時間`, `月末有給残時間`, `更新年月日`, `月初有給" +
+                "残日数`, `月末有給残日数`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE `有休付与データ` SET `社員番号` = ?, `支給年` = ?, `支給月` = ?, `月初有給残日数` = ?, `月初有給残時間` = ?, `月末有給残日数` = ?, `月末有給残時間` = ? WHERE ((`ID` = ?) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AND ((? = 1 AND `支給年` IS NULL) OR (`支給年` = ?)) AND ((? = 1 AND `支給月` IS NULL) OR (`支給月` = ?)) AND ((? = 1 AND `月初有給残日数` IS NULL) OR (`月初有給残日数` = ?)) AND ((? = 1 AND `月初有給残時間` IS NULL) OR (`月初有給残時間` = ?)) AND ((? = 1 AND `月末有給残日数` IS NULL) OR (`月末有給残日数` = ?)) AND ((? = 1 AND `月末有給残時間` IS NULL) OR (`月末有給残時間` = ?)))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE `有休付与データ` SET `社員番号` = ?, `支給年` = ?, `支給月` = ?, `月初有給残時間` = ?, `月末有給残時間` = ?, `更新年月日` = ?, `月初有給残日数` = ?, `月末有給残日数` = ? WHERE ((`ID` = ?) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AND ((? = 1 AND `支給年` IS NULL) OR (`支給年` = ?)) AND ((? = 1 AND `支給月` IS NULL) OR (`支給月` = ?)) AND ((? = 1 AND `月初有給残時間` IS NULL) OR (`月初有給残時間` = ?)) AND ((? = 1 AND `月末有給残時間` IS NULL) OR (`月末有給残時間` = ?)) AND ((? = 1 AND `更新年月日` IS NULL) OR (`更新年月日` = ?)) AND ((? = 1 AND `月初有給残日数` IS NULL) OR (`月初有給残日数` = ?)) AND ((? = 1 AND `月末有給残日数` IS NULL) OR (`月末有給残日数` = ?)))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_ID", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ID", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Original, false, null));
@@ -31026,14 +31030,16 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_更新年月日", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月初有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月初有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残日数", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_月末有給残日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Original, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -31049,26 +31055,27 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection = new global::System.Data.OleDb.OleDbCommand[4];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, 社員番号, 支給年, 支給月, 月初有給残日数, 月初有給残時間, 月末有給残日数, 月末有給残時間 FROM 有休付与データ";
+            this._commandCollection[0].CommandText = "SELECT ID, 社員番号, 支給年, 支給月, 月初有給残時間, 月末有給残時間, 更新年月日, 月初有給残日数, 月末有給残日数 FROM 有休付与データ" +
+                "";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "DELETE FROM `有休付与データ` WHERE (社員番号 = ?  AND 支給月 = ? and 支給月 = ?)";
+            this._commandCollection[1].CommandText = "DELETE FROM `有休付与データ` WHERE (社員番号 = ?  AND 支給年 = ? and 支給月 = ?)";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Original, false, null));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, false, null));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給月1", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "SELECT ID, 社員番号, 支給年, 支給月, 月初有給残日数, 月初有給残時間, 月末有給残日数, 月末有給残時間 FROM 有休付与データ where " +
-                "支給年 = ? and  支給月 = ?";
+            this._commandCollection[2].CommandText = "SELECT ID, 支給年, 支給月, 更新年月日, 月初有給残日数, 月初有給残時間, 月末有給残日数, 月末有給残時間, 社員番号 FROM 有休付与データ" +
+                " WHERE (支給年 = ?) AND (支給月 = ?)";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給月", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[3].Connection = this.Connection;
             this._commandCollection[3].CommandText = "INSERT INTO `有休付与データ` (`社員番号`, `支給年`, `支給月`, `月初有給残日数`, `月初有給残時間`, `月末有給残日数`, `月末" +
-                "有給残時間`) VALUES (?, ?, ?, ?, ?, ?,?)";
+                "有給残時間`, 更新年月日) VALUES (?, ?, ?, ?, ?, ?,?,?)";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("支給年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "支給年", global::System.Data.DataRowVersion.Current, false, null));
@@ -31077,6 +31084,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月初有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月初有給残時間", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(15)), ((byte)(0)), "月末有給残日数", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月末有給残時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月末有給残時間", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -31184,7 +31192,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ID, global::System.Nullable<int> Original_社員番号, global::System.Nullable<int> Original_支給年, global::System.Nullable<int> Original_支給月, global::System.Nullable<double> Original_月初有給残日数, global::System.Nullable<int> Original_月初有給残時間, global::System.Nullable<double> Original_月末有給残日数, global::System.Nullable<int> Original_月末有給残時間) {
+        public virtual int Delete(int Original_ID, global::System.Nullable<int> Original_社員番号, global::System.Nullable<int> Original_支給年, global::System.Nullable<int> Original_支給月, global::System.Nullable<int> Original_月初有給残時間, global::System.Nullable<int> Original_月末有給残時間, global::System.Nullable<global::System.DateTime> Original_更新年月日, global::System.Nullable<double> Original_月初有給残日数, global::System.Nullable<double> Original_月末有給残日数) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
             if ((Original_社員番号.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(0));
@@ -31210,37 +31218,45 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
-            if ((Original_月初有給残日数.HasValue == true)) {
+            if ((Original_月初有給残時間.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[8].Value = ((double)(Original_月初有給残日数.Value));
+                this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_月初有給残時間.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
-            if ((Original_月初有給残時間.HasValue == true)) {
+            if ((Original_月末有給残時間.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[9].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_月初有給残時間.Value));
+                this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_月末有給残時間.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[9].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
-            if ((Original_月末有給残日数.HasValue == true)) {
+            if ((Original_更新年月日.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[11].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[12].Value = ((double)(Original_月末有給残日数.Value));
+                this.Adapter.DeleteCommand.Parameters[12].Value = ((System.DateTime)(Original_更新年月日.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[11].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[12].Value = global::System.DBNull.Value;
             }
-            if ((Original_月末有給残時間.HasValue == true)) {
+            if ((Original_月初有給残日数.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[13].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[14].Value = ((int)(Original_月末有給残時間.Value));
+                this.Adapter.DeleteCommand.Parameters[14].Value = ((double)(Original_月初有給残日数.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[13].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((Original_月末有給残日数.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[15].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[16].Value = ((double)(Original_月末有給残日数.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[15].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -31262,7 +31278,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月, global::System.Nullable<double> 月初有給残日数, global::System.Nullable<int> 月初有給残時間, global::System.Nullable<double> 月末有給残日数, global::System.Nullable<int> 月末有給残時間) {
+        public virtual int Insert(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月, global::System.Nullable<int> 月初有給残時間, global::System.Nullable<int> 月末有給残時間, global::System.Nullable<global::System.DateTime> 更新年月日, global::System.Nullable<double> 月初有給残日数, global::System.Nullable<double> 月末有給残日数) {
             if ((社員番号.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = ((int)(社員番号.Value));
             }
@@ -31281,29 +31297,35 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             else {
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
-            if ((月初有給残日数.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((double)(月初有給残日数.Value));
+            if ((月初有給残時間.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(月初有給残時間.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((月初有給残時間.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(月初有給残時間.Value));
+            if ((月末有給残時間.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(月末有給残時間.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((月末有給残日数.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((double)(月末有給残日数.Value));
+            if ((更新年月日.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[5].Value = ((System.DateTime)(更新年月日.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
-            if ((月末有給残時間.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(月末有給残時間.Value));
+            if ((月初有給残日数.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[6].Value = ((double)(月初有給残日数.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((月末有給残日数.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[7].Value = ((double)(月末有給残日数.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -31325,7 +31347,24 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月, global::System.Nullable<double> 月初有給残日数, global::System.Nullable<int> 月初有給残時間, global::System.Nullable<double> 月末有給残日数, global::System.Nullable<int> 月末有給残時間, int Original_ID, global::System.Nullable<int> Original_社員番号, global::System.Nullable<int> Original_支給年, global::System.Nullable<int> Original_支給月, global::System.Nullable<double> Original_月初有給残日数, global::System.Nullable<int> Original_月初有給残時間, global::System.Nullable<double> Original_月末有給残日数, global::System.Nullable<int> Original_月末有給残時間) {
+        public virtual int Update(
+                    global::System.Nullable<int> 社員番号, 
+                    global::System.Nullable<int> 支給年, 
+                    global::System.Nullable<int> 支給月, 
+                    global::System.Nullable<int> 月初有給残時間, 
+                    global::System.Nullable<int> 月末有給残時間, 
+                    global::System.Nullable<global::System.DateTime> 更新年月日, 
+                    global::System.Nullable<double> 月初有給残日数, 
+                    global::System.Nullable<double> 月末有給残日数, 
+                    int Original_ID, 
+                    global::System.Nullable<int> Original_社員番号, 
+                    global::System.Nullable<int> Original_支給年, 
+                    global::System.Nullable<int> Original_支給月, 
+                    global::System.Nullable<int> Original_月初有給残時間, 
+                    global::System.Nullable<int> Original_月末有給残時間, 
+                    global::System.Nullable<global::System.DateTime> Original_更新年月日, 
+                    global::System.Nullable<double> Original_月初有給残日数, 
+                    global::System.Nullable<double> Original_月末有給残日数) {
             if ((社員番号.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(社員番号.Value));
             }
@@ -31344,86 +31383,100 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             else {
                 this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
-            if ((月初有給残日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((double)(月初有給残日数.Value));
+            if ((月初有給残時間.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(月初有給残時間.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((月初有給残時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(月初有給残時間.Value));
+            if ((月末有給残時間.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(月末有給残時間.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((月末有給残日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((double)(月末有給残日数.Value));
+            if ((更新年月日.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[5].Value = ((System.DateTime)(更新年月日.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
-            if ((月末有給残時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(月末有給残時間.Value));
+            if ((月初有給残日数.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[6].Value = ((double)(月初有給残日数.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_ID));
-            if ((Original_社員番号.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_社員番号.Value));
+            if ((月末有給残日数.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((double)(月末有給残日数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_ID));
+            if ((Original_社員番号.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(Original_社員番号.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
             if ((Original_支給年.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(Original_支給年.Value));
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((int)(Original_支給年.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
             }
             if ((Original_支給月.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Original_支給月.Value));
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[14].Value = ((int)(Original_支給月.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((Original_月初有給残日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((double)(Original_月初有給残日数.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
             }
             if ((Original_月初有給残時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((int)(Original_月初有給残時間.Value));
+                this.Adapter.UpdateCommand.Parameters[15].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((int)(Original_月初有給残時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
-            }
-            if ((Original_月末有給残日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[19].Value = ((double)(Original_月末有給残日数.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[15].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             if ((Original_月末有給残時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[20].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[21].Value = ((int)(Original_月末有給残時間.Value));
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((int)(Original_月末有給残時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[20].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[21].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
+            }
+            if ((Original_更新年月日.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[20].Value = ((System.DateTime)(Original_更新年月日.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[20].Value = global::System.DBNull.Value;
+            }
+            if ((Original_月初有給残日数.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[21].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[22].Value = ((double)(Original_月初有給残日数.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[21].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[22].Value = global::System.DBNull.Value;
+            }
+            if ((Original_月末有給残日数.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[23].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[24].Value = ((double)(Original_月末有給残日数.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[23].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[24].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -31445,7 +31498,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, false)]
-        public virtual int DeleteQuerySCodeYYMM(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給月, global::System.Nullable<int> 支給月1) {
+        public virtual int DeleteQuerySCodeYYMM(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月) {
             global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[1];
             if ((社員番号.HasValue == true)) {
                 command.Parameters[0].Value = ((int)(社員番号.Value));
@@ -31453,14 +31506,14 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             else {
                 command.Parameters[0].Value = global::System.DBNull.Value;
             }
-            if ((支給月.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(支給月.Value));
+            if ((支給年.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(支給年.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((支給月1.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(支給月1.Value));
+            if ((支給月.HasValue == true)) {
+                command.Parameters[2].Value = ((int)(支給月.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -31486,7 +31539,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, false)]
-        public virtual int InsertQuery(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月, global::System.Nullable<decimal> 月初有給残日数, global::System.Nullable<int> 月初有給残時間, global::System.Nullable<decimal> 月末有給残日数, global::System.Nullable<int> 月末有給残時間) {
+        public virtual int InsertQuery(global::System.Nullable<int> 社員番号, global::System.Nullable<int> 支給年, global::System.Nullable<int> 支給月, global::System.Nullable<decimal> 月初有給残日数, global::System.Nullable<int> 月初有給残時間, global::System.Nullable<decimal> 月末有給残日数, global::System.Nullable<int> 月末有給残時間, global::System.Nullable<global::System.DateTime> 更新年月日) {
             global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[3];
             if ((社員番号.HasValue == true)) {
                 command.Parameters[0].Value = ((int)(社員番号.Value));
@@ -31529,6 +31582,12 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             }
             else {
                 command.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((更新年月日.HasValue == true)) {
+                command.Parameters[7].Value = ((System.DateTime)(更新年月日.Value));
+            }
+            else {
+                command.Parameters[7].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
             if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -32220,6 +32279,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("繰越貸越", "繰越貸越");
             tableMapping.ColumnMappings.Add("超過残業時間", "超過残業時間");
             tableMapping.ColumnMappings.Add("欠勤時間有給", "欠勤時間有給");
+            tableMapping.ColumnMappings.Add("更新年月日", "更新年月日");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
@@ -32244,7 +32304,8 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                 "IS NULL) OR (`変動控除項目金額項目` = ?)) AND ((? = 1 AND `変動控除項目回数項目` IS NULL) OR (`変動控除項" +
                 "目回数項目` = ?)) AND ((? = 1 AND `前渡現物` IS NULL) OR (`前渡現物` = ?)) AND ((? = 1 AND `繰" +
                 "越貸越` IS NULL) OR (`繰越貸越` = ?)) AND ((? = 1 AND `超過残業時間` IS NULL) OR (`超過残業時間` = " +
-                "?)) AND ((? = 1 AND `欠勤時間有給` IS NULL) OR (`欠勤時間有給` = ?)))";
+                "?)) AND ((? = 1 AND `欠勤時間有給` IS NULL) OR (`欠勤時間有給` = ?)) AND ((? = 1 AND `更新年月日`" +
+                " IS NULL) OR (`更新年月日` = ?)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_ID", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ID", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Original, true, null));
@@ -32311,9 +32372,11 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_超過残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "超過残業時間", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_更新年月日", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.InsertCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO `BIG給与計算Pro勤怠データ` (`年`, `月`, `社員番号`, `就業日数`, `出勤日数`, `勤務時間`, `時給者1勤務時間`, `時給者2勤務時間`, `時給者3勤務時間`, `普通残業時間`, `深夜残業時間`, `休日残業時間`, `法定休日残業数`, `その他1残業時間`, `その他2残業時間`, `欠勤日数一般`, `欠勤日数有給`, `欠勤日数病欠`, `欠勤日数特別`, `欠勤日数代休`, `遅刻時間`, `早退時間`, `遅刻回数`, `早退回数`, `変動支給項目金額項目`, `変動支給項目回数項目`, `変動控除項目金額項目`, `変動控除項目回数項目`, `前渡現物`, `繰越貸越`, `超過残業時間`, `欠勤時間有給`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO `BIG給与計算Pro勤怠データ` (`年`, `月`, `社員番号`, `就業日数`, `出勤日数`, `勤務時間`, `時給者1勤務時間`, `時給者2勤務時間`, `時給者3勤務時間`, `普通残業時間`, `深夜残業時間`, `休日残業時間`, `法定休日残業数`, `その他1残業時間`, `その他2残業時間`, `欠勤日数一般`, `欠勤日数有給`, `欠勤日数病欠`, `欠勤日数特別`, `欠勤日数代休`, `遅刻時間`, `早退時間`, `遅刻回数`, `早退回数`, `変動支給項目金額項目`, `変動支給項目回数項目`, `変動控除項目金額項目`, `変動控除項目回数項目`, `前渡現物`, `繰越貸越`, `超過残業時間`, `欠勤時間有給`, `更新年月日`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
@@ -32347,6 +32410,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("繰越貸越", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "繰越貸越", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("超過残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "超過残業時間", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
             this._adapter.UpdateCommand.CommandText = "UPDATE `BIG給与計算Pro勤怠データ` SET `年` = ?, `月` = ?, `社員番号` = ?, `就業日数` = ?, `出勤日数` = ?" +
@@ -32354,29 +32418,30 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                 "業時間` = ?, `休日残業時間` = ?, `法定休日残業数` = ?, `その他1残業時間` = ?, `その他2残業時間` = ?, `欠勤日数一般` " +
                 "= ?, `欠勤日数有給` = ?, `欠勤日数病欠` = ?, `欠勤日数特別` = ?, `欠勤日数代休` = ?, `遅刻時間` = ?, `早退時間` " +
                 "= ?, `遅刻回数` = ?, `早退回数` = ?, `変動支給項目金額項目` = ?, `変動支給項目回数項目` = ?, `変動控除項目金額項目` = " +
-                "?, `変動控除項目回数項目` = ?, `前渡現物` = ?, `繰越貸越` = ?, `超過残業時間` = ?, `欠勤時間有給` = ? WHERE ((" +
-                "`ID` = ?) AND ((? = 1 AND `年` IS NULL) OR (`年` = ?)) AND ((? = 1 AND `月` IS NULL" +
-                ") OR (`月` = ?)) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AND ((? = 1 AND" +
-                " `就業日数` IS NULL) OR (`就業日数` = ?)) AND ((? = 1 AND `出勤日数` IS NULL) OR (`出勤日数` = ?" +
-                ")) AND ((? = 1 AND `勤務時間` IS NULL) OR (`勤務時間` = ?)) AND ((? = 1 AND `時給者1勤務時間` I" +
-                "S NULL) OR (`時給者1勤務時間` = ?)) AND ((? = 1 AND `時給者2勤務時間` IS NULL) OR (`時給者2勤務時間` " +
-                "= ?)) AND ((? = 1 AND `時給者3勤務時間` IS NULL) OR (`時給者3勤務時間` = ?)) AND ((? = 1 AND `" +
-                "普通残業時間` IS NULL) OR (`普通残業時間` = ?)) AND ((? = 1 AND `深夜残業時間` IS NULL) OR (`深夜残業時" +
-                "間` = ?)) AND ((? = 1 AND `休日残業時間` IS NULL) OR (`休日残業時間` = ?)) AND ((? = 1 AND `法" +
-                "定休日残業数` IS NULL) OR (`法定休日残業数` = ?)) AND ((? = 1 AND `その他1残業時間` IS NULL) OR (`その" +
-                "他1残業時間` = ?)) AND ((? = 1 AND `その他2残業時間` IS NULL) OR (`その他2残業時間` = ?)) AND ((? =" +
-                " 1 AND `欠勤日数一般` IS NULL) OR (`欠勤日数一般` = ?)) AND ((? = 1 AND `欠勤日数有給` IS NULL) OR" +
-                " (`欠勤日数有給` = ?)) AND ((? = 1 AND `欠勤日数病欠` IS NULL) OR (`欠勤日数病欠` = ?)) AND ((? = " +
-                "1 AND `欠勤日数特別` IS NULL) OR (`欠勤日数特別` = ?)) AND ((? = 1 AND `欠勤日数代休` IS NULL) OR " +
-                "(`欠勤日数代休` = ?)) AND ((? = 1 AND `遅刻時間` IS NULL) OR (`遅刻時間` = ?)) AND ((? = 1 AND" +
-                " `早退時間` IS NULL) OR (`早退時間` = ?)) AND ((? = 1 AND `遅刻回数` IS NULL) OR (`遅刻回数` = ?" +
-                ")) AND ((? = 1 AND `早退回数` IS NULL) OR (`早退回数` = ?)) AND ((? = 1 AND `変動支給項目金額項目`" +
-                " IS NULL) OR (`変動支給項目金額項目` = ?)) AND ((? = 1 AND `変動支給項目回数項目` IS NULL) OR (`変動支給" +
-                "項目回数項目` = ?)) AND ((? = 1 AND `変動控除項目金額項目` IS NULL) OR (`変動控除項目金額項目` = ?)) AND (" +
-                "(? = 1 AND `変動控除項目回数項目` IS NULL) OR (`変動控除項目回数項目` = ?)) AND ((? = 1 AND `前渡現物` I" +
-                "S NULL) OR (`前渡現物` = ?)) AND ((? = 1 AND `繰越貸越` IS NULL) OR (`繰越貸越` = ?)) AND ((" +
-                "? = 1 AND `超過残業時間` IS NULL) OR (`超過残業時間` = ?)) AND ((? = 1 AND `欠勤時間有給` IS NULL)" +
-                " OR (`欠勤時間有給` = ?)))";
+                "?, `変動控除項目回数項目` = ?, `前渡現物` = ?, `繰越貸越` = ?, `超過残業時間` = ?, `欠勤時間有給` = ?, `更新年月日`" +
+                " = ? WHERE ((`ID` = ?) AND ((? = 1 AND `年` IS NULL) OR (`年` = ?)) AND ((? = 1 AN" +
+                "D `月` IS NULL) OR (`月` = ?)) AND ((? = 1 AND `社員番号` IS NULL) OR (`社員番号` = ?)) AN" +
+                "D ((? = 1 AND `就業日数` IS NULL) OR (`就業日数` = ?)) AND ((? = 1 AND `出勤日数` IS NULL) O" +
+                "R (`出勤日数` = ?)) AND ((? = 1 AND `勤務時間` IS NULL) OR (`勤務時間` = ?)) AND ((? = 1 AND" +
+                " `時給者1勤務時間` IS NULL) OR (`時給者1勤務時間` = ?)) AND ((? = 1 AND `時給者2勤務時間` IS NULL) OR" +
+                " (`時給者2勤務時間` = ?)) AND ((? = 1 AND `時給者3勤務時間` IS NULL) OR (`時給者3勤務時間` = ?)) AND " +
+                "((? = 1 AND `普通残業時間` IS NULL) OR (`普通残業時間` = ?)) AND ((? = 1 AND `深夜残業時間` IS NUL" +
+                "L) OR (`深夜残業時間` = ?)) AND ((? = 1 AND `休日残業時間` IS NULL) OR (`休日残業時間` = ?)) AND (" +
+                "(? = 1 AND `法定休日残業数` IS NULL) OR (`法定休日残業数` = ?)) AND ((? = 1 AND `その他1残業時間` IS " +
+                "NULL) OR (`その他1残業時間` = ?)) AND ((? = 1 AND `その他2残業時間` IS NULL) OR (`その他2残業時間` = " +
+                "?)) AND ((? = 1 AND `欠勤日数一般` IS NULL) OR (`欠勤日数一般` = ?)) AND ((? = 1 AND `欠勤日数有給" +
+                "` IS NULL) OR (`欠勤日数有給` = ?)) AND ((? = 1 AND `欠勤日数病欠` IS NULL) OR (`欠勤日数病欠` = ?" +
+                ")) AND ((? = 1 AND `欠勤日数特別` IS NULL) OR (`欠勤日数特別` = ?)) AND ((? = 1 AND `欠勤日数代休`" +
+                " IS NULL) OR (`欠勤日数代休` = ?)) AND ((? = 1 AND `遅刻時間` IS NULL) OR (`遅刻時間` = ?)) AN" +
+                "D ((? = 1 AND `早退時間` IS NULL) OR (`早退時間` = ?)) AND ((? = 1 AND `遅刻回数` IS NULL) O" +
+                "R (`遅刻回数` = ?)) AND ((? = 1 AND `早退回数` IS NULL) OR (`早退回数` = ?)) AND ((? = 1 AND" +
+                " `変動支給項目金額項目` IS NULL) OR (`変動支給項目金額項目` = ?)) AND ((? = 1 AND `変動支給項目回数項目` IS NU" +
+                "LL) OR (`変動支給項目回数項目` = ?)) AND ((? = 1 AND `変動控除項目金額項目` IS NULL) OR (`変動控除項目金額項目" +
+                "` = ?)) AND ((? = 1 AND `変動控除項目回数項目` IS NULL) OR (`変動控除項目回数項目` = ?)) AND ((? = 1" +
+                " AND `前渡現物` IS NULL) OR (`前渡現物` = ?)) AND ((? = 1 AND `繰越貸越` IS NULL) OR (`繰越貸越`" +
+                " = ?)) AND ((? = 1 AND `超過残業時間` IS NULL) OR (`超過残業時間` = ?)) AND ((? = 1 AND `欠勤時" +
+                "間有給` IS NULL) OR (`欠勤時間有給` = ?)) AND ((? = 1 AND `更新年月日` IS NULL) OR (`更新年月日` = " +
+                "?)))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
@@ -32410,6 +32475,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("繰越貸越", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "繰越貸越", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("超過残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "超過残業時間", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_ID", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ID", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Original, false, null));
@@ -32475,6 +32541,8 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_超過残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "超過残業時間", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_欠勤時間有給", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "欠勤時間有給", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_更新年月日", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Original, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -32490,7 +32558,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection = new global::System.Data.OleDb.OleDbCommand[3];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT ID, 年, 月, 社員番号, 就業日数, 出勤日数, 勤務時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 深夜残業時間, 休日残業時間, 法定休日残業数, その他1残業時間, その他2残業時間, 欠勤日数一般, 欠勤日数有給, 欠勤日数病欠, 欠勤日数特別, 欠勤日数代休, 遅刻時間, 早退時間, 遅刻回数, 早退回数, 変動支給項目金額項目, 変動支給項目回数項目, 変動控除項目金額項目, 変動控除項目回数項目, 前渡現物, 繰越貸越, 超過残業時間, 欠勤時間有給 FROM BIG給与計算Pro勤怠データ";
+            this._commandCollection[0].CommandText = @"SELECT ID, 年, 月, 社員番号, 就業日数, 出勤日数, 勤務時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 深夜残業時間, 休日残業時間, 法定休日残業数, その他1残業時間, その他2残業時間, 欠勤日数一般, 欠勤日数有給, 欠勤日数病欠, 欠勤日数特別, 欠勤日数代休, 遅刻時間, 早退時間, 遅刻回数, 早退回数, 変動支給項目金額項目, 変動支給項目回数項目, 変動控除項目金額項目, 変動控除項目回数項目, 前渡現物, 繰越貸越, 超過残業時間, 欠勤時間有給, 更新年月日 FROM BIG給与計算Pro勤怠データ";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -32501,7 +32569,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = @"SELECT ID, 年, 月, 社員番号, 就業日数, 出勤日数, 勤務時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 深夜残業時間, 休日残業時間, 法定休日残業数, その他1残業時間, その他2残業時間, 欠勤日数一般, 欠勤日数有給, 欠勤日数病欠, 欠勤日数特別, 欠勤日数代休, 遅刻時間, 早退時間, 遅刻回数, 早退回数, 変動支給項目金額項目, 変動支給項目回数項目, 変動控除項目金額項目, 変動控除項目回数項目, 前渡現物, 繰越貸越, 超過残業時間, 欠勤時間有給 FROM BIG給与計算Pro勤怠データ where 年=? and 月=?";
+            this._commandCollection[2].CommandText = @"SELECT ID, その他1残業時間, その他2残業時間, 休日残業時間, 出勤日数, 前渡現物, 勤務時間, 変動控除項目回数項目, 変動控除項目金額項目, 変動支給項目回数項目, 変動支給項目金額項目, 就業日数, 年, 早退回数, 早退時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 更新年月日, 月, 欠勤日数一般, 欠勤日数代休, 欠勤日数有給, 欠勤日数特別, 欠勤日数病欠, 欠勤時間有給, 法定休日残業数, 深夜残業時間, 社員番号, 繰越貸越, 超過残業時間, 遅刻回数, 遅刻時間, 更新年月日 FROM BIG給与計算Pro勤怠データ WHERE (年 = ?) AND (月 = ?)";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
@@ -32645,7 +32713,8 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     global::System.Nullable<int> Original_前渡現物, 
                     global::System.Nullable<int> Original_繰越貸越, 
                     global::System.Nullable<int> Original_超過残業時間, 
-                    global::System.Nullable<int> Original_欠勤時間有給) {
+                    global::System.Nullable<int> Original_欠勤時間有給, 
+                    global::System.Nullable<global::System.DateTime> Original_更新年月日) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
             if ((Original_年.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(0));
@@ -32903,6 +32972,14 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                 this.Adapter.DeleteCommand.Parameters[63].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[64].Value = global::System.DBNull.Value;
             }
+            if ((Original_更新年月日.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[65].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[66].Value = ((System.DateTime)(Original_更新年月日.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[65].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[66].Value = global::System.DBNull.Value;
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -32955,7 +33032,8 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     global::System.Nullable<int> 前渡現物, 
                     global::System.Nullable<int> 繰越貸越, 
                     global::System.Nullable<int> 超過残業時間, 
-                    global::System.Nullable<int> 欠勤時間有給) {
+                    global::System.Nullable<int> 欠勤時間有給, 
+                    global::System.Nullable<global::System.DateTime> 更新年月日) {
             if ((年.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = ((int)(年.Value));
             }
@@ -33148,6 +33226,12 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             else {
                 this.Adapter.InsertCommand.Parameters[31].Value = global::System.DBNull.Value;
             }
+            if ((更新年月日.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[32].Value = ((System.DateTime)(更新年月日.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -33201,6 +33285,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     global::System.Nullable<int> 繰越貸越, 
                     global::System.Nullable<int> 超過残業時間, 
                     global::System.Nullable<int> 欠勤時間有給, 
+                    global::System.Nullable<global::System.DateTime> 更新年月日, 
                     int Original_ID, 
                     global::System.Nullable<int> Original_年, 
                     global::System.Nullable<int> Original_月, 
@@ -33233,7 +33318,8 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     global::System.Nullable<int> Original_前渡現物, 
                     global::System.Nullable<int> Original_繰越貸越, 
                     global::System.Nullable<int> Original_超過残業時間, 
-                    global::System.Nullable<int> Original_欠勤時間有給) {
+                    global::System.Nullable<int> Original_欠勤時間有給, 
+                    global::System.Nullable<global::System.DateTime> Original_更新年月日) {
             if ((年.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(年.Value));
             }
@@ -33426,262 +33512,276 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             else {
                 this.Adapter.UpdateCommand.Parameters[31].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[32].Value = ((int)(Original_ID));
-            if ((Original_年.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[33].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[34].Value = ((int)(Original_年.Value));
+            if ((更新年月日.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[32].Value = ((System.DateTime)(更新年月日.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[33].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[34].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[33].Value = ((int)(Original_ID));
+            if ((Original_年.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[34].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[35].Value = ((int)(Original_年.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[34].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[35].Value = global::System.DBNull.Value;
             }
             if ((Original_月.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[35].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[36].Value = ((int)(Original_月.Value));
+                this.Adapter.UpdateCommand.Parameters[36].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[37].Value = ((int)(Original_月.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[35].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[36].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[36].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[37].Value = global::System.DBNull.Value;
             }
             if ((Original_社員番号.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[37].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[38].Value = ((int)(Original_社員番号.Value));
+                this.Adapter.UpdateCommand.Parameters[38].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[39].Value = ((int)(Original_社員番号.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[37].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[38].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[38].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[39].Value = global::System.DBNull.Value;
             }
             if ((Original_就業日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[39].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[40].Value = ((double)(Original_就業日数.Value));
+                this.Adapter.UpdateCommand.Parameters[40].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[41].Value = ((double)(Original_就業日数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[39].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[40].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[40].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[41].Value = global::System.DBNull.Value;
             }
             if ((Original_出勤日数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[41].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[42].Value = ((double)(Original_出勤日数.Value));
+                this.Adapter.UpdateCommand.Parameters[42].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[43].Value = ((double)(Original_出勤日数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[41].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[42].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[42].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[43].Value = global::System.DBNull.Value;
             }
             if ((Original_勤務時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[43].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[44].Value = ((int)(Original_勤務時間.Value));
+                this.Adapter.UpdateCommand.Parameters[44].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[45].Value = ((int)(Original_勤務時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[43].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[44].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[44].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[45].Value = global::System.DBNull.Value;
             }
             if ((Original_時給者1勤務時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[45].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[46].Value = ((int)(Original_時給者1勤務時間.Value));
+                this.Adapter.UpdateCommand.Parameters[46].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[47].Value = ((int)(Original_時給者1勤務時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[45].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[46].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[46].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[47].Value = global::System.DBNull.Value;
             }
             if ((Original_時給者2勤務時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[47].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[48].Value = ((int)(Original_時給者2勤務時間.Value));
+                this.Adapter.UpdateCommand.Parameters[48].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[49].Value = ((int)(Original_時給者2勤務時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[47].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[48].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[48].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[49].Value = global::System.DBNull.Value;
             }
             if ((Original_時給者3勤務時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[49].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[50].Value = ((int)(Original_時給者3勤務時間.Value));
+                this.Adapter.UpdateCommand.Parameters[50].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[51].Value = ((int)(Original_時給者3勤務時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[49].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[50].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[50].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[51].Value = global::System.DBNull.Value;
             }
             if ((Original_普通残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[51].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[52].Value = ((int)(Original_普通残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[52].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[53].Value = ((int)(Original_普通残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[51].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[52].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[52].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[53].Value = global::System.DBNull.Value;
             }
             if ((Original_深夜残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[53].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[54].Value = ((int)(Original_深夜残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[54].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[55].Value = ((int)(Original_深夜残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[53].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[54].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[54].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[55].Value = global::System.DBNull.Value;
             }
             if ((Original_休日残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[55].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[56].Value = ((int)(Original_休日残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[56].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[57].Value = ((int)(Original_休日残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[55].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[56].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[56].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[57].Value = global::System.DBNull.Value;
             }
             if ((Original_法定休日残業数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[57].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[58].Value = ((int)(Original_法定休日残業数.Value));
+                this.Adapter.UpdateCommand.Parameters[58].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[59].Value = ((int)(Original_法定休日残業数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[57].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[58].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[58].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[59].Value = global::System.DBNull.Value;
             }
             if ((Original_その他1残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[59].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[60].Value = ((int)(Original_その他1残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[60].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[61].Value = ((int)(Original_その他1残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[59].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[60].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[60].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[61].Value = global::System.DBNull.Value;
             }
             if ((Original_その他2残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[61].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[62].Value = ((int)(Original_その他2残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[62].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[63].Value = ((int)(Original_その他2残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[61].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[62].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[62].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[63].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤日数一般.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[63].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[64].Value = ((double)(Original_欠勤日数一般.Value));
+                this.Adapter.UpdateCommand.Parameters[64].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[65].Value = ((double)(Original_欠勤日数一般.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[63].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[64].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[64].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[65].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤日数有給.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[65].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[66].Value = ((double)(Original_欠勤日数有給.Value));
+                this.Adapter.UpdateCommand.Parameters[66].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[67].Value = ((double)(Original_欠勤日数有給.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[65].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[66].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[66].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[67].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤日数病欠.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[67].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[68].Value = ((double)(Original_欠勤日数病欠.Value));
+                this.Adapter.UpdateCommand.Parameters[68].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[69].Value = ((double)(Original_欠勤日数病欠.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[67].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[68].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[68].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[69].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤日数特別.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[69].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[70].Value = ((double)(Original_欠勤日数特別.Value));
+                this.Adapter.UpdateCommand.Parameters[70].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[71].Value = ((double)(Original_欠勤日数特別.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[69].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[70].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[70].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[71].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤日数代休.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[71].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[72].Value = ((double)(Original_欠勤日数代休.Value));
+                this.Adapter.UpdateCommand.Parameters[72].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[73].Value = ((double)(Original_欠勤日数代休.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[71].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[72].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[72].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[73].Value = global::System.DBNull.Value;
             }
             if ((Original_遅刻時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[73].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[74].Value = ((int)(Original_遅刻時間.Value));
+                this.Adapter.UpdateCommand.Parameters[74].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[75].Value = ((int)(Original_遅刻時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[73].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[74].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[74].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[75].Value = global::System.DBNull.Value;
             }
             if ((Original_早退時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[75].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[76].Value = ((int)(Original_早退時間.Value));
+                this.Adapter.UpdateCommand.Parameters[76].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[77].Value = ((int)(Original_早退時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[75].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[76].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[76].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[77].Value = global::System.DBNull.Value;
             }
             if ((Original_遅刻回数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[77].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[78].Value = ((int)(Original_遅刻回数.Value));
+                this.Adapter.UpdateCommand.Parameters[78].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[79].Value = ((int)(Original_遅刻回数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[77].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[78].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[78].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[79].Value = global::System.DBNull.Value;
             }
             if ((Original_早退回数.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[79].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[80].Value = ((int)(Original_早退回数.Value));
+                this.Adapter.UpdateCommand.Parameters[80].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[81].Value = ((int)(Original_早退回数.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[79].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[80].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[80].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[81].Value = global::System.DBNull.Value;
             }
             if ((Original_変動支給項目金額項目.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[81].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[82].Value = ((int)(Original_変動支給項目金額項目.Value));
+                this.Adapter.UpdateCommand.Parameters[82].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[83].Value = ((int)(Original_変動支給項目金額項目.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[81].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[82].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[82].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[83].Value = global::System.DBNull.Value;
             }
             if ((Original_変動支給項目回数項目.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[83].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[84].Value = ((int)(Original_変動支給項目回数項目.Value));
+                this.Adapter.UpdateCommand.Parameters[84].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[85].Value = ((int)(Original_変動支給項目回数項目.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[83].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[84].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[84].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[85].Value = global::System.DBNull.Value;
             }
             if ((Original_変動控除項目金額項目.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[85].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[86].Value = ((int)(Original_変動控除項目金額項目.Value));
+                this.Adapter.UpdateCommand.Parameters[86].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[87].Value = ((int)(Original_変動控除項目金額項目.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[85].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[86].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[86].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[87].Value = global::System.DBNull.Value;
             }
             if ((Original_変動控除項目回数項目.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[87].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[88].Value = ((int)(Original_変動控除項目回数項目.Value));
+                this.Adapter.UpdateCommand.Parameters[88].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[89].Value = ((int)(Original_変動控除項目回数項目.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[87].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[88].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[88].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[89].Value = global::System.DBNull.Value;
             }
             if ((Original_前渡現物.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[89].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[90].Value = ((int)(Original_前渡現物.Value));
+                this.Adapter.UpdateCommand.Parameters[90].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[91].Value = ((int)(Original_前渡現物.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[89].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[90].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[90].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[91].Value = global::System.DBNull.Value;
             }
             if ((Original_繰越貸越.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[91].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[92].Value = ((int)(Original_繰越貸越.Value));
+                this.Adapter.UpdateCommand.Parameters[92].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[93].Value = ((int)(Original_繰越貸越.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[91].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[92].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[92].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[93].Value = global::System.DBNull.Value;
             }
             if ((Original_超過残業時間.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[93].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[94].Value = ((int)(Original_超過残業時間.Value));
+                this.Adapter.UpdateCommand.Parameters[94].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[95].Value = ((int)(Original_超過残業時間.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[93].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[94].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[94].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[95].Value = global::System.DBNull.Value;
             }
             if ((Original_欠勤時間有給.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[95].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[96].Value = ((int)(Original_欠勤時間有給.Value));
+                this.Adapter.UpdateCommand.Parameters[96].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[97].Value = ((int)(Original_欠勤時間有給.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[95].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[96].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[96].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[97].Value = global::System.DBNull.Value;
+            }
+            if ((Original_更新年月日.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[98].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[99].Value = ((System.DateTime)(Original_更新年月日.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[98].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[99].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
