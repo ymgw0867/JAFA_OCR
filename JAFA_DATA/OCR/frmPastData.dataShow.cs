@@ -45,10 +45,10 @@ namespace JAFA_DATA.OCR
             txtYear.Text = Utility.EmptytoZero(r.年.ToString());
             txtMonth.Text = Utility.EmptytoZero(r.月.ToString());
 
-            // 交通費等の入力を不可とする
-            txtKoutsuuhi.ReadOnly = true;
-            txtNittou.ReadOnly = true;
-            txtShukuhakuhi.ReadOnly = true;
+            // 交通費等の入力を不可とする ← 可とする 2018/11/11
+            //txtKoutsuuhi.ReadOnly = true;
+            //txtNittou.ReadOnly = true;
+            //txtShukuhakuhi.ReadOnly = true;
 
             global.ChangeValueStatus = false;   // チェンジバリューステータス
             txtNo.Text = string.Empty;
@@ -92,6 +92,7 @@ namespace JAFA_DATA.OCR
             int mRow = 0;
 
             // 日別勤務実績表示
+            adpM.FillByHID(dts.過去勤務票明細, hID);   // 2018/11/11
             var h = dts.過去勤務票明細.Where(a => a.ヘッダID == hID).OrderBy(a => a.日付);
 
             foreach (var t in h)
@@ -103,7 +104,10 @@ namespace JAFA_DATA.OCR
                 // 画像表示
                 if (mRow == 0)
                 {
-                    ShowImage(global.pblImagePath + t.画像名.ToString());
+                    //ShowImage(global.pblImagePath + t.画像名.ToString());
+
+                    // openCV版：2018/11/11
+                    showImage_openCv(global.pblImagePath + t.画像名.ToString());
                 }
 
                 // 表示色を初期化
@@ -194,8 +198,10 @@ namespace JAFA_DATA.OCR
         private void showJaMateData(int sYY, int sMM, int sID)
         {
             string yymm = sYY.ToString() + sMM.ToString().PadLeft(2, '0');
-            string shainID = global.ROK + sID.ToString().PadLeft(5, '0');
-            
+            string shainID = sID.ToString();
+
+
+            adpJ.FillBySCodeDateSpan(dts.勤怠データ, sID.ToString(), yymm, yymm);    // 2018/11/11
             foreach (var t in dts.勤怠データ.Where(a => a.対象月度 == yymm && a.対象職員コード == shainID))
             {
                 dgvJa[cja, 0].Value = t.普通出勤日数;
@@ -277,7 +283,7 @@ namespace JAFA_DATA.OCR
             // 社員情報表示欄
             lblName.Text = string.Empty;
             //lblFuri.Text = string.Empty;
-            lblSyoubi.Text = string.Empty;
+            //lblSyoubi.Text = string.Empty;    // 2018/11/11 コメント化
             lblWdays.Text = string.Empty;
 
             lblNoImage.Visible = false;
@@ -287,6 +293,13 @@ namespace JAFA_DATA.OCR
             txtMonth.ReadOnly = true;
             txtNo.ReadOnly = true;
 
+            // 2018/11/11
+            trackBar1.Minimum = 0;
+            trackBar1.Maximum = 20;
+            trackBar1.Value = 0;
+
+            trackBar1.SmallChange = 1;
+            trackBar1.LargeChange = 10;
         }
     }
 }

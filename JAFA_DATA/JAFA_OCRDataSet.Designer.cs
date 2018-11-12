@@ -17547,7 +17547,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[4];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[5];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT 職員コード, 年月日, 処理年, 処理月, 集計年, 集計月, 週番号, 勤務時間, 残業時間, 残業, 更新年月日, 深夜8H超 FROM 週実績" +
@@ -17555,34 +17555,39 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "DELETE FROM 週実績明細 WHERE 職員コード = ? and 年月日 = ?";
+            this._commandCollection[1].CommandText = "DELETE FROM 週実績明細 WHERE 年月日 <  ?";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("職員コード", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "職員コード", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年月日", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "INSERT INTO `週実績明細` (`職員コード`, `年月日`, `処理年`, `処理月`, `集計年`, `集計月`, `週番号`, `勤務時間`, `" +
-                "残業時間`, `残業`, `更新年月日`, 深夜8H超) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            this._commandCollection[2].CommandText = "DELETE FROM 週実績明細 WHERE 職員コード = ? and 年月日 = ?";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("職員コード", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "職員コード", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年月日", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理年", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理月", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("集計年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "集計年", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("集計月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "集計月", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("週番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "週番号", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("勤務時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "勤務時間", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "残業時間", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("残業", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "残業", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("深夜8H超", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "深夜8H超", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("職員コード", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "職員コード", global::System.Data.DataRowVersion.Original, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年月日", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[3] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "SELECT sum(深夜8H超) as ov8 FROM 週実績明細 \r\nwhere 職員コード= ? and 処理年=? and 処理月 = ?";
+            this._commandCollection[3].CommandText = "INSERT INTO `週実績明細` (`職員コード`, `年月日`, `処理年`, `処理月`, `集計年`, `集計月`, `週番号`, `勤務時間`, `" +
+                "残業時間`, `残業`, `更新年月日`, 深夜8H超) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("職員コード", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "職員コード", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年月日", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理年", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理月", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("集計年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "集計年", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("集計月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "集計月", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("週番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "週番号", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("勤務時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "勤務時間", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("残業時間", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "残業時間", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("残業", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "残業", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("更新年月日", global::System.Data.OleDb.OleDbType.Date, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "更新年月日", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("深夜8H超", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "深夜8H超", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[4].Connection = this.Connection;
+            this._commandCollection[4].CommandText = "SELECT sum(深夜8H超) as ov8 FROM 週実績明細 \r\nwhere 職員コード= ? and 処理年=? and 処理月 = ?";
+            this._commandCollection[4].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("職員コード", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "職員コード", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理年", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("処理月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "処理月", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -18087,8 +18092,37 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, false)]
-        public virtual int DeleteQuerySCodeDate(int 職員コード, System.DateTime 年月日) {
+        public virtual int DeleteQueryPastymd(global::System.Nullable<global::System.DateTime> 年月日) {
             global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[1];
+            if ((年月日.HasValue == true)) {
+                command.Parameters[0].Value = ((System.DateTime)(年月日.Value));
+            }
+            else {
+                command.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, false)]
+        public virtual int DeleteQuerySCodeDate(int 職員コード, System.DateTime 年月日) {
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[2];
             command.Parameters[0].Value = ((int)(職員コード));
             command.Parameters[1].Value = ((System.DateTime)(年月日));
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
@@ -18113,7 +18147,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, false)]
         public virtual int InsertQuery(global::System.Nullable<int> 職員コード, global::System.Nullable<global::System.DateTime> 年月日, global::System.Nullable<int> 処理年, global::System.Nullable<int> 処理月, global::System.Nullable<int> 集計年, global::System.Nullable<int> 集計月, global::System.Nullable<int> 週番号, global::System.Nullable<int> 勤務時間, global::System.Nullable<int> 残業時間, global::System.Nullable<int> 残業, global::System.Nullable<global::System.DateTime> 更新年月日, global::System.Nullable<int> 深夜8H超) {
-            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[2];
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[3];
             if ((職員コード.HasValue == true)) {
                 command.Parameters[0].Value = ((int)(職員コード.Value));
             }
@@ -18207,7 +18241,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual global::System.Nullable<double> ScalarQuerySCodeYYMM_ov8Shinya(global::System.Nullable<int> 職員コード, global::System.Nullable<int> 処理年, global::System.Nullable<int> 処理月) {
-            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[3];
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[4];
             if ((職員コード.HasValue == true)) {
                 command.Parameters[0].Value = ((int)(職員コード.Value));
             }
@@ -19891,12 +19925,16 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[1];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, ヘッダID, 年, 月, 社員番号, 社員名, 所属コード, 所属名, 交通費, 日当, 宿泊費, データ領域名, 前半処理, 後半処理, " +
                 "確定, 更新年月日 FROM 確定勤務票ヘッダ";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "DELETE FROM 確定勤務票ヘッダ";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -20561,6 +20599,29 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     global::System.Nullable<global::System.DateTime> Original_更新年月日) {
             return this.Update(Original_ID, ヘッダID, 年, 月, 社員番号, 社員名, 所属コード, 所属名, 交通費, 日当, 宿泊費, データ領域名, 前半処理, 後半処理, 確定, 更新年月日, Original_ID, Original_ヘッダID, Original_年, Original_月, Original_社員番号, Original_社員名, Original_所属コード, Original_所属名, Original_交通費, Original_日当, Original_宿泊費, Original_データ領域名, Original_前半処理, Original_後半処理, Original_確定, Original_更新年月日);
         }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, false)]
+        public virtual int DeleteQueryAll() {
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[1];
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
     }
     
     /// <summary>
@@ -20906,7 +20967,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[4];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, " +
@@ -20915,11 +20976,19 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT ID, ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, " +
+            this._commandCollection[1].CommandText = "DELETE FROM 確定勤務票明細";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "SELECT ID, ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, " +
                 "休憩終了分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 週番号, 訂正, 画像名, 更新年月日 FRO" +
                 "M 確定勤務票明細 where ヘッダID = ?";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("ヘッダID", global::System.Data.OleDb.OleDbType.WChar, 17, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ヘッダID", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("ヘッダID", global::System.Data.OleDb.OleDbType.WChar, 17, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ヘッダID", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[3].Connection = this.Connection;
+            this._commandCollection[3].CommandText = "SELECT distinct ヘッダID,  画像名 FROM 確定勤務票明細";
+            this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -20951,7 +21020,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
         public virtual int FillByHID(JAFA_OCRDataSet.確定勤務票明細DataTable dataTable, string ヘッダID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
+            this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((ヘッダID == null)) {
                 this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
@@ -20970,13 +21039,37 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual JAFA_OCRDataSet.確定勤務票明細DataTable GetDataByHID(string ヘッダID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
+            this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((ヘッダID == null)) {
                 this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.SelectCommand.Parameters[0].Value = ((string)(ヘッダID));
             }
+            JAFA_OCRDataSet.確定勤務票明細DataTable dataTable = new JAFA_OCRDataSet.確定勤務票明細DataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByImg(JAFA_OCRDataSet.確定勤務票明細DataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.確定勤務票明細DataTable GetDataByImg() {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             JAFA_OCRDataSet.確定勤務票明細DataTable dataTable = new JAFA_OCRDataSet.確定勤務票明細DataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
@@ -21876,6 +21969,29 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                     this.Adapter.UpdateCommand.Connection.Close();
                 }
             }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, false)]
+        public virtual int DeleteQueryAll() {
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[1];
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
         }
     }
     
@@ -23470,7 +23586,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[3];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, ヘッダID, 年, 月, 社員番号, 社員名, 所属コード, 所属名, 交通費, 日当, 宿泊費, データ領域名, 前半処理, 後半処理, " +
@@ -23482,6 +23598,14 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
                 "確定, 更新年月日 FROM 過去勤務票ヘッダ where (過去勤務票ヘッダ.年 * 100 + 過去勤務票ヘッダ.月) >= ?";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Param1", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "SELECT ID, ヘッダID, 年, 月, 社員番号, 社員名, 所属コード, 所属名, 交通費, 日当, 宿泊費, データ領域名, 前半処理, 後半処理, " +
+                "確定, 更新年月日 FROM 過去勤務票ヘッダ where 年 = ? and 月 = ? and 社員番号 = ?";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -23529,6 +23653,66 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         public virtual JAFA_OCRDataSet.過去勤務票ヘッダDataTable GetDataByYYMM(int Param1) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             this.Adapter.SelectCommand.Parameters[0].Value = ((int)(Param1));
+            JAFA_OCRDataSet.過去勤務票ヘッダDataTable dataTable = new JAFA_OCRDataSet.過去勤務票ヘッダDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByYYMMSCode(JAFA_OCRDataSet.過去勤務票ヘッダDataTable dataTable, global::System.Nullable<int> 年, global::System.Nullable<int> 月, global::System.Nullable<int> 社員番号) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((社員番号.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(社員番号.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.過去勤務票ヘッダDataTable GetDataByYYMMSCode(global::System.Nullable<int> 年, global::System.Nullable<int> 月, global::System.Nullable<int> 社員番号) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((社員番号.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(社員番号.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
             JAFA_OCRDataSet.過去勤務票ヘッダDataTable dataTable = new JAFA_OCRDataSet.過去勤務票ヘッダDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
@@ -24517,7 +24701,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[3];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, " +
@@ -24526,9 +24710,16 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = @"SELECT 過去勤務票明細.ID, 過去勤務票明細.ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, 休憩終了分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 週番号, 訂正, 画像名, 過去勤務票明細.更新年月日 FROM 過去勤務票明細 inner join 過去勤務票ヘッダ on 過去勤務票明細.ヘッダID = 過去勤務票ヘッダ.ヘッダID where (過去勤務票ヘッダ.年 * 100 + 過去勤務票ヘッダ.月) >= ? ";
+            this._commandCollection[1].CommandText = "SELECT ID, ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, " +
+                "休憩終了分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 週番号, 訂正, 画像名, 更新年月日 FRO" +
+                "M 過去勤務票明細 where  ヘッダID = ?";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Param1", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("ヘッダID", global::System.Data.OleDb.OleDbType.WChar, 17, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ヘッダID", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = @"SELECT 過去勤務票明細.ID, 過去勤務票明細.ヘッダID, 日付, 出勤区分, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩開始時, 休憩開始分, 休憩終了時, 休憩終了分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 週番号, 訂正, 画像名, 過去勤務票明細.更新年月日 FROM 過去勤務票明細 inner join 過去勤務票ヘッダ on 過去勤務票明細.ヘッダID = 過去勤務票ヘッダ.ヘッダID where (過去勤務票ヘッダ.年 * 100 + 過去勤務票ヘッダ.月) >= ? ";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Param1", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -24559,8 +24750,44 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByYYMM(JAFA_OCRDataSet.過去勤務票明細DataTable dataTable, int Param1) {
+        public virtual int FillByHID(JAFA_OCRDataSet.過去勤務票明細DataTable dataTable, string ヘッダID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((ヘッダID == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(ヘッダID));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.過去勤務票明細DataTable GetDataByHID(string ヘッダID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((ヘッダID == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(ヘッダID));
+            }
+            JAFA_OCRDataSet.過去勤務票明細DataTable dataTable = new JAFA_OCRDataSet.過去勤務票明細DataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByYYMM(JAFA_OCRDataSet.過去勤務票明細DataTable dataTable, int Param1) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
             this.Adapter.SelectCommand.Parameters[0].Value = ((int)(Param1));
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -24574,7 +24801,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual JAFA_OCRDataSet.過去勤務票明細DataTable GetDataByYYMM(int Param1) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
+            this.Adapter.SelectCommand = this.CommandCollection[2];
             this.Adapter.SelectCommand.Parameters[0].Value = ((int)(Param1));
             JAFA_OCRDataSet.過去勤務票明細DataTable dataTable = new JAFA_OCRDataSet.過去勤務票明細DataTable();
             this.Adapter.Fill(dataTable);
@@ -28323,7 +28550,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[4];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[6];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT 対象月度, 対象職員コード, 対象職員名, 対象職員所属コード, 対象職員所属名, 普通出勤日数, 実労働時間, 残業時間, 深夜時間, 法定休日出勤日数, 休日日数, 振替休日日数, 有給半日, 有給休暇, 欠勤日数, その他休暇休職合計日数, 結婚休暇日数, 忌引休暇日数, 生理休暇日数, 看護休暇日数, 介護休暇日数, 罹災休暇日数, 隔離休暇日数, その他の特別休暇日数, 介護休職日数, 産前産後休暇日数, 育児休職日数, 遅刻回数, 早退回数, 仕様外出回数, 育児短時間, 介護短時間, 交通費, 日当, 宿泊費, 要出勤日数, 有休付与日数, 有休繰越日数, 有休付与対象フラグ FROM 勤怠データ";
@@ -28336,19 +28563,34 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Original, false, null));
             this._commandCollection[2] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = @"SELECT 対象月度, 対象職員コード, 対象職員名, 対象職員所属コード, 対象職員所属名, 普通出勤日数, 実労働時間, 残業時間, 深夜時間, 法定休日出勤日数, 休日日数, 振替休日日数, 有給半日, 有給休暇, 欠勤日数, その他休暇休職合計日数, 結婚休暇日数, 忌引休暇日数, 生理休暇日数, 看護休暇日数, 介護休暇日数, 罹災休暇日数, 隔離休暇日数, その他の特別休暇日数, 介護休職日数, 産前産後休暇日数, 育児休職日数, 遅刻回数, 早退回数, 仕様外出回数, 育児短時間, 介護短時間, 交通費, 日当, 宿泊費, 要出勤日数, 有休付与日数, 有休繰越日数, 有休付与対象フラグ FROM 勤怠データ where 対象職員コード = ?";
+            this._commandCollection[2].CommandText = @"SELECT 対象月度, 対象職員コード, 対象職員名, 対象職員所属コード, 対象職員所属名, 普通出勤日数, 実労働時間, 残業時間, 深夜時間, 法定休日出勤日数, 休日日数, 振替休日日数, 有給半日, 有給休暇, 欠勤日数, その他休暇休職合計日数, 結婚休暇日数, 忌引休暇日数, 生理休暇日数, 看護休暇日数, 介護休暇日数, 罹災休暇日数, 隔離休暇日数, その他の特別休暇日数, 介護休職日数, 産前産後休暇日数, 育児休職日数, 遅刻回数, 早退回数, 仕様外出回数, 育児短時間, 介護短時間, 交通費, 日当, 宿泊費, 要出勤日数, 有休付与日数, 有休繰越日数, 有休付与対象フラグ FROM 勤怠データ 
+where 対象月度 >= ? and 対象月度 <= ?";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象月度", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象月度1", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[3] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "UPDATE 勤怠データ SET 有休付与日数 = ? , 有休繰越日数 = ?, 有休付与対象フラグ = ? where 対象職員コード = ?  and 対象" +
-                "月度 = ?";
+            this._commandCollection[3].CommandText = @"SELECT 対象月度, 対象職員コード, 対象職員名, 対象職員所属コード, 対象職員所属名, 普通出勤日数, 実労働時間, 残業時間, 深夜時間, 法定休日出勤日数, 休日日数, 振替休日日数, 有給半日, 有給休暇, 欠勤日数, その他休暇休職合計日数, 結婚休暇日数, 忌引休暇日数, 生理休暇日数, 看護休暇日数, 介護休暇日数, 罹災休暇日数, 隔離休暇日数, その他の特別休暇日数, 介護休職日数, 産前産後休暇日数, 育児休職日数, 遅刻回数, 早退回数, 仕様外出回数, 育児短時間, 介護短時間, 交通費, 日当, 宿泊費, 要出勤日数, 有休付与日数, 有休繰越日数, 有休付与対象フラグ FROM 勤怠データ where 対象職員コード = ?";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休付与日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "有休付与日数", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休繰越日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(15)), ((byte)(0)), "有休繰越日数", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休付与対象フラグ", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "有休付与対象フラグ", global::System.Data.DataRowVersion.Current, false, null));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Original, false, null));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_対象月度", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Original, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[4].Connection = this.Connection;
+            this._commandCollection[4].CommandText = @"SELECT 対象月度, 対象職員コード, 対象職員名, 対象職員所属コード, 対象職員所属名, 普通出勤日数, 実労働時間, 残業時間, 深夜時間, 法定休日出勤日数, 休日日数, 振替休日日数, 有給半日, 有給休暇, 欠勤日数, その他休暇休職合計日数, 結婚休暇日数, 忌引休暇日数, 生理休暇日数, 看護休暇日数, 介護休暇日数, 罹災休暇日数, 隔離休暇日数, その他の特別休暇日数, 介護休職日数, 産前産後休暇日数, 育児休職日数, 遅刻回数, 早退回数, 仕様外出回数, 育児短時間, 介護短時間, 交通費, 日当, 宿泊費, 要出勤日数, 有休付与日数, 有休繰越日数, 有休付与対象フラグ FROM 勤怠データ 
+where 対象職員コード = ? and 対象月度>= ? and 対象月度 <= ?";
+            this._commandCollection[4].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象月度", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("対象月度1", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[5] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[5].Connection = this.Connection;
+            this._commandCollection[5].CommandText = "UPDATE 勤怠データ SET 有休付与日数 = ? , 有休繰越日数 = ?, 有休付与対象フラグ = ? where 対象職員コード = ?  and 対象" +
+                "月度 = ?";
+            this._commandCollection[5].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[5].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休付与日数", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "有休付与日数", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休繰越日数", global::System.Data.OleDb.OleDbType.Double, 0, global::System.Data.ParameterDirection.Input, ((byte)(15)), ((byte)(0)), "有休繰越日数", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("有休付与対象フラグ", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "有休付与対象フラグ", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_対象職員コード", global::System.Data.OleDb.OleDbType.WChar, 50, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象職員コード", global::System.Data.DataRowVersion.Original, false, null));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_対象月度", global::System.Data.OleDb.OleDbType.WChar, 6, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "対象月度", global::System.Data.DataRowVersion.Original, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -28379,8 +28621,56 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillBySCode(JAFA_OCRDataSet.勤怠データDataTable dataTable, string 対象職員コード) {
+        public virtual int FillByDateSpan(JAFA_OCRDataSet.勤怠データDataTable dataTable, string 対象月度, string 対象月度1) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((対象月度 == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(対象月度));
+            }
+            if ((対象月度1 == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(対象月度1));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.勤怠データDataTable GetDataByDateSpan(string 対象月度, string 対象月度1) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((対象月度 == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(対象月度));
+            }
+            if ((対象月度1 == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(対象月度1));
+            }
+            JAFA_OCRDataSet.勤怠データDataTable dataTable = new JAFA_OCRDataSet.勤怠データDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillBySCode(JAFA_OCRDataSet.勤怠データDataTable dataTable, string 対象職員コード) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((対象職員コード == null)) {
                 this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
@@ -28399,12 +28689,72 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual JAFA_OCRDataSet.勤怠データDataTable GetDataBySCode(string 対象職員コード) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((対象職員コード == null)) {
                 this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.SelectCommand.Parameters[0].Value = ((string)(対象職員コード));
+            }
+            JAFA_OCRDataSet.勤怠データDataTable dataTable = new JAFA_OCRDataSet.勤怠データDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillBySCodeDateSpan(JAFA_OCRDataSet.勤怠データDataTable dataTable, string 対象職員コード, string 対象月度, string 対象月度1) {
+            this.Adapter.SelectCommand = this.CommandCollection[4];
+            if ((対象職員コード == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(対象職員コード));
+            }
+            if ((対象月度 == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(対象月度));
+            }
+            if ((対象月度1 == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(対象月度1));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.勤怠データDataTable GetDataBySCodeDateSpan(string 対象職員コード, string 対象月度, string 対象月度1) {
+            this.Adapter.SelectCommand = this.CommandCollection[4];
+            if ((対象職員コード == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(対象職員コード));
+            }
+            if ((対象月度 == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(対象月度));
+            }
+            if ((対象月度1 == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(対象月度1));
             }
             JAFA_OCRDataSet.勤怠データDataTable dataTable = new JAFA_OCRDataSet.勤怠データDataTable();
             this.Adapter.Fill(dataTable);
@@ -29867,7 +30217,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, false)]
         public virtual int UpdateQueryYukyu(global::System.Nullable<int> 有休付与日数, global::System.Nullable<decimal> 有休繰越日数, global::System.Nullable<int> 有休付与対象フラグ, string Original_対象職員コード, string Original_対象月度) {
-            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[3];
+            global::System.Data.OleDb.OleDbCommand command = this.CommandCollection[5];
             if ((有休付与日数.HasValue == true)) {
                 command.Parameters[0].Value = ((int)(有休付与日数.Value));
             }
@@ -30174,12 +30524,18 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[1];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT 職員コード, 氏名, フリガナ, 所属コード, 所属名, 入所年月日, 調整年月日, 退職年月日, 週所定労働日数, 退職区分, 有給付与月, 備考" +
                 ", 更新年月日, 社員区分, 農業従事, 短時間勤務 FROM 社員マスター";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "SELECT 職員コード, 氏名, フリガナ, 所属コード, 所属名, 入所年月日, 調整年月日, 退職年月日, 週所定労働日数, 退職区分, 有給付与月, 備考" +
+                ", 更新年月日, 社員区分, 農業従事, 短時間勤務 FROM 社員マスター where 社員区分 = ?";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員区分", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員区分", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -30201,6 +30557,42 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
         public virtual JAFA_OCRDataSet.社員マスターDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
+            JAFA_OCRDataSet.社員マスターDataTable dataTable = new JAFA_OCRDataSet.社員マスターDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByShainkbn(JAFA_OCRDataSet.社員マスターDataTable dataTable, global::System.Nullable<int> 社員区分) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((社員区分.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(社員区分.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.社員マスターDataTable GetDataByShainkbn(global::System.Nullable<int> 社員区分) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((社員区分.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(社員区分.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
             JAFA_OCRDataSet.社員マスターDataTable dataTable = new JAFA_OCRDataSet.社員マスターDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;

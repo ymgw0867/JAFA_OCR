@@ -36,7 +36,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtMonth = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.btnSel = new System.Windows.Forms.Button();
             this.cmbBumonS = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -49,7 +48,7 @@
             this.label2.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.label2.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label2.ForeColor = System.Drawing.SystemColors.Window;
-            this.label2.Location = new System.Drawing.Point(276, 18);
+            this.label2.Location = new System.Drawing.Point(231, 18);
             this.label2.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 27);
@@ -69,7 +68,7 @@
             this.dg1.ReadOnly = true;
             this.dg1.RowTemplate.Height = 21;
             this.dg1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg1.Size = new System.Drawing.Size(1127, 532);
+            this.dg1.Size = new System.Drawing.Size(1127, 574);
             this.dg1.TabIndex = 12;
             this.dg1.TabStop = false;
             // 
@@ -77,7 +76,7 @@
             // 
             this.btnRtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRtn.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.btnRtn.Location = new System.Drawing.Point(1024, 612);
+            this.btnRtn.Location = new System.Drawing.Point(1024, 644);
             this.btnRtn.Margin = new System.Windows.Forms.Padding(4);
             this.btnRtn.Name = "btnRtn";
             this.btnRtn.Size = new System.Drawing.Size(119, 39);
@@ -90,11 +89,11 @@
             // 
             this.txtYear.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtYear.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtYear.Location = new System.Drawing.Point(76, 18);
+            this.txtYear.Location = new System.Drawing.Point(17, 18);
             this.txtYear.Margin = new System.Windows.Forms.Padding(4);
-            this.txtYear.MaxLength = 2;
+            this.txtYear.MaxLength = 4;
             this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(48, 27);
+            this.txtYear.Size = new System.Drawing.Size(62, 27);
             this.txtYear.TabIndex = 0;
             this.txtYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtYear.Enter += new System.EventHandler(this.txtYear_Enter);
@@ -105,7 +104,7 @@
             this.label3.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.label3.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label3.ForeColor = System.Drawing.SystemColors.Window;
-            this.label3.Location = new System.Drawing.Point(124, 18);
+            this.label3.Location = new System.Drawing.Point(79, 18);
             this.label3.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 27);
@@ -117,7 +116,7 @@
             // 
             this.txtMonth.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.txtMonth.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtMonth.Location = new System.Drawing.Point(156, 18);
+            this.txtMonth.Location = new System.Drawing.Point(111, 18);
             this.txtMonth.Margin = new System.Windows.Forms.Padding(4);
             this.txtMonth.MaxLength = 2;
             this.txtMonth.Name = "txtMonth";
@@ -132,26 +131,13 @@
             this.label4.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.label4.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label4.ForeColor = System.Drawing.SystemColors.Window;
-            this.label4.Location = new System.Drawing.Point(204, 18);
+            this.label4.Location = new System.Drawing.Point(159, 18);
             this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 27);
             this.label4.TabIndex = 14;
             this.label4.Text = "月分";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label5.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label5.ForeColor = System.Drawing.SystemColors.Window;
-            this.label5.Location = new System.Drawing.Point(17, 18);
-            this.label5.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 27);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "平成";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSel
             // 
@@ -172,7 +158,7 @@
             // 
             this.cmbBumonS.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.cmbBumonS.FormattingEnabled = true;
-            this.cmbBumonS.Location = new System.Drawing.Point(369, 18);
+            this.cmbBumonS.Location = new System.Drawing.Point(324, 18);
             this.cmbBumonS.Margin = new System.Windows.Forms.Padding(4);
             this.cmbBumonS.Name = "cmbBumonS";
             this.cmbBumonS.Size = new System.Drawing.Size(429, 27);
@@ -183,7 +169,7 @@
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(805, 18);
+            this.comboBox1.Location = new System.Drawing.Point(763, 18);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(183, 27);
             this.comboBox1.TabIndex = 16;
@@ -192,7 +178,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(897, 612);
+            this.button1.Location = new System.Drawing.Point(901, 644);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 39);
@@ -205,12 +191,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1157, 666);
+            this.ClientSize = new System.Drawing.Size(1157, 691);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.cmbBumonS);
             this.Controls.Add(this.btnSel);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.txtMonth);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtYear);
@@ -244,7 +229,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtMonth;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnSel;
         private System.Windows.Forms.ComboBox cmbBumonS;
         private System.Windows.Forms.ComboBox comboBox1;

@@ -5,7 +5,8 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Data.OleDb;
-using LinqToExcel;
+//using LinqToExcel;
+using ClosedXML.Excel;
 
 namespace JAFA_DATA.Common
 {
@@ -39,8 +40,8 @@ namespace JAFA_DATA.Common
         JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter yuBigAdp = new JAFA_OCRDataSetTableAdapters.有休付与データTableAdapter(); // 2018/10/23
         JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter bigAdp = new JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter();   // 2018/11/02
 
-        LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
-        LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
+        //LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
+        //LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
 
         #region 出勤区分定数
         const string SHUKIN_SHUKIN = "1";       // 出勤
@@ -83,15 +84,18 @@ namespace JAFA_DATA.Common
             _dts = dts;
 
             hAdp.Fill(_dts.確定勤務票ヘッダ);
+
             //mAdp.Fill(_dts.確定勤務票明細);
 
             //jaAdp.Fill(_dts.勤怠データ);       // 2018/10/27 コメント化
             //nAdp.Fill(_dts.勤怠年休データ);    // 2018/10/27 コメント化
             //wAdp.Fill(_dts.週実績明細);          // 2018/10/22 コメント化
             //zAdp.Fill(_dts.週実績);              // 2018/11/06 コメント化
+
             sAdp.Fill(_dts.残業先払い);
             mateAdp.Fill(_dts.社員マスター);
             yuMapAdp.Fill(_dts.有休付与日数表);
+
             //ymsAdp.Fill(_dts.有給休暇付与マスター);     // 2018/10/22 コメント化
             //ymsAdp.FillByYY(_dts.有給休暇付与マスター, global.cnfYear - 1);   // 前年以降を対象とする 2018/10/22
 
@@ -946,7 +950,7 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/10/27
-                    jaAdp.DeleteQuerySCodeYYMM(t.年.ToString() + t.月.ToString().PadLeft(2, '0'), t.社員番号.ToString().PadLeft(5, '0'));
+                    jaAdp.DeleteQuerySCodeYYMM(t.年.ToString() + t.月.ToString().PadLeft(2, '0'), t.社員番号.ToString());
                     
                     // 勤怠データ作成：2018/10/27
                     putJAMateOCRData(t);
@@ -1110,7 +1114,7 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // 対象職員コード
-                    string sShoCode = t.社員番号.ToString().PadLeft(5, '0');
+                    string sShoCode = t.社員番号.ToString();
 
                     // 対象月度
                     string sYYYYMM = global.cnfYear.ToString() + global.cnfMonth.ToString().PadLeft(2, '0');
@@ -1226,27 +1230,6 @@ namespace JAFA_DATA.Common
                 {
                     YYYYMMDD = r.年.ToString() + r.月.ToString().PadLeft(2, '0') + t.日付.ToString().PadLeft(2, '0');
                     
-                    // 以下、コメント化：2018/10/27
-                    //// ＪＡメイト年休取得データRow新規インスタンス
-                    //JAFA_OCRDataSet.勤怠年休データRow jr = _dts.勤怠年休データ.New勤怠年休データRow();
-
-                    //jr.対象月度 = r.年.ToString() + r.月.ToString().PadLeft(2, '0');
-                    //jr.対象職員コード = global.ROK + r.社員番号.ToString().PadLeft(5, '0');
-                    //jr.対象職員名 = r.社員名;
-                    //jr.対象職員所属コード = global.ROK + r.所属コード.PadLeft(5, '0');
-                    //jr.対象職員所属名 = r.所属名;
-                    //jr.取得日 = YYYYMMDD;
-                    //jr.取得日数 = nissu;
-
-                    //// JAメイト年休取得データ追加
-                    //_dts.勤怠年休データ.Add勤怠年休データRow(jr);
-
-                    //// データベース更新
-                    //nAdp.Update(_dts.勤怠年休データ);
-
-                    //// 再読み込み
-                    //nAdp.Fill(_dts.勤怠年休データ);
-
                     // 勤怠年休データ新規登録：2018/10/27
                     nAdp.Insert(r.年.ToString() + r.月.ToString().PadLeft(2, '0'), 
                                 r.社員番号.ToString().PadLeft(5, '0'), r.社員名, 
@@ -1782,7 +1765,7 @@ namespace JAFA_DATA.Common
 
             // 勤怠データ新規登録：2018/10/27
             jaAdp.Insert(r.年.ToString() + r.月.ToString().PadLeft(2, '0'),
-                         r.社員番号.ToString().PadLeft(5, '0'),r.社員名, r.所属コード.PadLeft(5, '0'),
+                         r.社員番号.ToString(), r.社員名, r.所属コード.PadLeft(5, '0'),
                          r.所属名, sSHUKKIN, workTimes, getZangyoTime(r.年, r.月, r.社員番号),(int)workShinya,
                          sKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
                          (kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + kKAKURI + kSONOTA + 
@@ -2229,10 +2212,10 @@ namespace JAFA_DATA.Common
 
             // 有給計算対象者の入所年月：当年３月までの入社者
             DateTime nDate = DateTime.Parse(fYear + "/03/31");   // 対象入所年月日
-            
-            // 算定開始年月（前年４月）
-            string sYYYYMM = (nDate.Year - 1).ToString() + "04";
 
+            // 算定開始年月
+            string sYYYYMM = "";
+            
             // 算定終了年月（当年３月）
             string eYYYYMM = nDate.Year.ToString() + nDate.Month.ToString().PadLeft(2, '0');    // 西暦 2018/10/22
 
@@ -2240,19 +2223,43 @@ namespace JAFA_DATA.Common
             decimal k;       // 欠勤日数
             decimal sRT;     // 出勤率
             decimal dd;      // 有休＋半休日数
+            decimal wYY = 0;
 
             // 有休付与対象者抽出：正社員 2018/10/22
             foreach (var s in _dts.社員マスター.Where(a => a.調整年月日 <= nDate && a.社員区分 == global.SEISHAIN))
             {
                 zfuyo = 0;
 
+                // 勤続年数
+                wYY = fYear - s.調整年月日.Year;
+
+                // 算定開始年月を求める
+                if (wYY > 1)
+                {
+                    //2年以上経過、前年４月
+                    sYYYYMM = (nDate.Year - 1).ToString() + "04";
+                }
+                else
+                {
+                    // 勤続1年のとき、半年経過時付与月以降
+
+                    // 有給休暇付与マスターのレコードが存在するか
+                    if (ymsAdp.FillBySCode(_dts.有給休暇付与マスター, s.職員コード) > 0)
+                    {
+                        // 最近の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                        foreach (var z in _dts.有給休暇付与マスター
+                            .Where(a => (a.年 * 100 + a.月) != (fYear * 100 + fMonth))
+                            .OrderBy(a => a.年).ThenBy(a => a.月))
+                        {
+                            sYYYYMM = (z.年 * 100 + z.月).ToString();
+                        }
+                    }
+                }
+
                 // 出勤率が80％以上の正社員を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString().PadLeft(5, '0'),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
                     out y, out k, out sRT, out dd))
                 {
-                    // 勤続年数
-                    decimal wYY = fYear - s.調整年月日.Year;
-
                     if (s.調整年月日.Month >= 1 && s.調整年月日.Month <= 3)
                     {
                         // １月から３月入所は１年繰り上げ
@@ -2295,38 +2302,97 @@ namespace JAFA_DATA.Common
                 decimal zenNensho = 0;  // 前年初有給残日数
                 decimal kurikoshi = 0;  // 繰越日数
 
-                // 前年の有給休暇付与マスターのレコードが存在するか
-                if (ymsAdp.FillBySCodeYYMM(_dts.有給休暇付与マスター, s.職員コード, fYear - 1, fMonth) > 0)
+                // 勤続1年：2018/11/09
+                if (wYY == global.flgOn)
                 {
-                    // 前年の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
-                    foreach (var z in _dts.有給休暇付与マスター)
+                    // 有給休暇付与マスターのレコードが存在するか
+                    if (ymsAdp.FillBySCode(_dts.有給休暇付与マスター, s.職員コード) > 0)
                     {
-                        zenNensho = (decimal)z.当年初有給残日数;
-
-                        // 繰越日数は前年の付与実績から求める：2015/09/30
-                        zfuyo = (int)z.当年付与日数;
-
-                        break;
-                    }
-                }
-                else
-                {
-                    // 前年の有給休暇付与マスターExcelシートが存在するとき
-                    if (mstSheet != null)
-                    {
-                        // 前年の有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
-                        foreach (var x in mstSheet.Where(a => a.sCode == s.職員コード.ToString() && a.sYY == (fYear - 1).ToString() && a.sMM == fMonth.ToString()))
+                        // 最近の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                        foreach (var z in _dts.有給休暇付与マスター
+                            .Where(a => (a.年 * 100 + a.月) != (fYear * 100 + fMonth))
+                            .OrderBy(a => a.年).ThenBy(a => a.月))
                         {
-                            zenNensho = (decimal)Utility.StrtoDouble(x.sNensho);
+                            zenNensho = (decimal)z.当年初有給残日数;
 
                             // 繰越日数は前年の付与実績から求める：2015/09/30
-                            zfuyo = Utility.StrtoInt(x.sFuyo);
+                            zfuyo = (int)z.当年付与日数;
+                        }
+                    }
+                    else if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
+                    {
+                        // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+                        using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
+                        {
+                            var sheet1 = book.Worksheet(1);
+                            var tbl = sheet1.RangeUsed().AsTable();
+
+                            foreach (var t in tbl.DataRange.Rows())
+                            {
+                                if (s.職員コード == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                                    (fYear - 1) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) &&
+                                    fMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                                {
+                                    zenNensho = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
+
+                                    // 繰越日数は前年の付与実績から求める
+                                    zfuyo = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
+
+                                    break;
+                                }
+                            }
+
+                            sheet1.Dispose();
+                        }
+                    }
+                }
+
+
+                // 勤続2年目以降：2018/11/09
+                if (wYY > 1)
+                {
+                    // 前年の有給休暇付与マスターのレコードが存在するか
+                    if (ymsAdp.FillBySCodeYYMM(_dts.有給休暇付与マスター, s.職員コード, fYear - 1, fMonth) > 0)
+                    {
+                        // 前年の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                        foreach (var z in _dts.有給休暇付与マスター)
+                        {
+                            zenNensho = (decimal)z.当年初有給残日数;
+
+                            // 繰越日数は前年の付与実績から求める：2015/09/30
+                            zfuyo = (int)z.当年付与日数;
 
                             break;
                         }
                     }
+                    else if(System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
+                    {
+                        // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+                        using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
+                        {
+                            var sheet1 = book.Worksheet(1);
+                            var tbl = sheet1.RangeUsed().AsTable();
+
+                            foreach (var t in tbl.DataRange.Rows())
+                            {
+                                if (s.職員コード == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                                    (fYear - 1) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) &&
+                                    fMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                                {
+                                    zenNensho = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
+
+                                    // 繰越日数は前年の付与実績から求める
+                                    zfuyo = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
+
+                                    break;
+                                }
+                            }
+
+                            sheet1.Dispose();
+                        }
+                    }
                 }
-                
+
                 decimal zan = 0;
 
                 // 有休消化日数より前年初有給残日数が多いとき繰越日数を計算します
@@ -2445,33 +2511,10 @@ namespace JAFA_DATA.Common
                 nYear = fYear - 1;
                 nMonth = 9;
             }
-
-            // 算定期間
-            //string sMM = string.Empty;
-
-            //if ((global.cnfMonth + 1) > 12)
-            //{
-            //    sMM = "01";
-            //}
-            //else
-            //{
-            //    sMM = (global.cnfMonth + 1).ToString().PadLeft(2, '0');
-            //}
-
+            
             string sYYYYMM = string.Empty;
 
             // 算定開始年月
-            //if (sMM == "01")
-            //{
-            //    // 1月付与のとき当年の1月から：2017/01/30
-            //    sYYYYMM = global.cnfYear.ToString() + sMM;  // 西暦
-            //}
-            //else
-            //{
-            //    // ２～12月付与のとき前年の付与月から
-            //    sYYYYMM = global.cnfYear.ToString() + sMM;  // 西暦
-            //}
-
             sYYYYMM = nYear.ToString() + nMonth.ToString().PadLeft(2, '0');
 
             // 算定終了年月
@@ -2486,7 +2529,7 @@ namespace JAFA_DATA.Common
             foreach (var s in _dts.社員マスター.Where(a => a.調整年月日.Year == nYear && a.調整年月日.Month == nMonth && a.社員区分 == global.SEISHAIN))
             {
                 // 入社から６カ月間の出勤率が80％以上の正社員を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString().PadLeft(5, '0'),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
                     out y, out k, out sRT, out dd))
                 {
                     fuyo = global.YUKYUDAYS_AFTER6MONTH;              
@@ -2583,7 +2626,7 @@ namespace JAFA_DATA.Common
             {
                 // ２～12月付与のとき前年の付与月から
                 //sYYYYMM = (global.cnfYear + Properties.Settings.Default.rekiHosei - 1).ToString() + sMM;  // 2018/10/22 コメント化
-                sYYYYMM = global.cnfYear.ToString() + sMM;  // 西暦
+                sYYYYMM = (global.cnfYear - 1).ToString() + sMM;  // 西暦
             }
 
             // 算定終了年月
@@ -2604,7 +2647,7 @@ namespace JAFA_DATA.Common
                 zfuyo = 0;
 
                 // 出勤率が80％以上の臨時社員・外国人技能実習生を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), global.ROK + s.職員コード.ToString().PadLeft(5, '0'),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
                     out y, out k, out sRT, out dd))
                 {
                     // 週所定労働日数
@@ -2689,22 +2732,52 @@ namespace JAFA_DATA.Common
                 }
                 else
                 {
-                    // 前年の有給休暇付与マスターExcelシートが存在するとき
-                    if (mstSheet != null)
+                    // 2018/11/09 コメント化
+                    //// 前年の有給休暇付与マスターExcelシートが存在するとき
+                    //if (mstSheet != null)
+                    //{
+                    //    // 前年の有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
+                    //    foreach (var x in mstSheet.Where(a => a.sCode == s.職員コード.ToString() && a.sYY == (fYear - 1).ToString() && a.sMM == fMonth.ToString()))
+                    //    {
+                    //        //r.前年初有給残日数 = Utility.StrtoDouble(x.sNensho);
+                    //        zenNensho = (decimal)Utility.StrtoDouble(x.sNensho);
+
+                    //        // 繰越日数は前年の付与実績から求める：2015/09/30
+                    //        zfuyo = Utility.StrtoInt(x.sFuyo);
+
+                    //        break;
+                    //    }
+                    //}
+
+
+                    // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+                    if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
                     {
-                        // 前年の有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
-                        foreach (var x in mstSheet.Where(a => a.sCode == s.職員コード.ToString() && a.sYY == (fYear - 1).ToString() && a.sMM == fMonth.ToString()))
+                        using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
                         {
-                            //r.前年初有給残日数 = Utility.StrtoDouble(x.sNensho);
-                            zenNensho = (decimal)Utility.StrtoDouble(x.sNensho);
+                            var sheet1 = book.Worksheet(1);
+                            var tbl = sheet1.RangeUsed().AsTable();
 
-                            // 繰越日数は前年の付与実績から求める：2015/09/30
-                            zfuyo = Utility.StrtoInt(x.sFuyo);
+                            foreach (var t in tbl.DataRange.Rows())
+                            {
+                                if (s.職員コード == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) && 
+                                    (fYear - 1) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) && 
+                                    fMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                                {
+                                    zenNensho = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
 
-                            break;
+                                    // 繰越日数は前年の付与実績から求める
+                                    zfuyo = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
+
+                                    break;
+                                }
+                            }
+
+                            sheet1.Dispose();
                         }
                     }
                 }
+
                 decimal zan = 0;
 
                 // 有休消化日数より前年初有給残日数が多いとき繰越日数を計算します
@@ -2786,29 +2859,63 @@ namespace JAFA_DATA.Common
             sRT = 0;
             dd = 0;
 
+            // 対象勤怠データを取得
+            jaAdp.FillBySCodeDateSpan(_dts.勤怠データ, sCode, sYM.ToString(), eYM.ToString());
+
             // 対象期間の勤怠データから日数を取得する
-            foreach (var t in _dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYM && Utility.StrtoInt(a.対象月度) <= eYM && a.対象職員コード == sCode))
+            //foreach (var t in _dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYM && Utility.StrtoInt(a.対象月度) <= eYM && a.対象職員コード == sCode))
+            //{
+
+            foreach (var t in _dts.勤怠データ)
             {
                 y += t.要出勤日数;
                 k += t.欠勤日数;
                 dd += (decimal)t.有給休暇 + (decimal)t.有給半日;
             }
 
-            // Excel過去１年間有給取得ファイルが存在するとき
-            if (workSheet != null)
+            // 2018/11/09 コメント化
+            //// Excel過去１年間有給取得ファイルが存在するとき
+            //if (workSheet != null)
+            //{
+            //    // Excel過去１年間有給取得シートから対象期間の日数を取得する
+            //    foreach (var t in workSheet.Where(a => a.sCode == sCode.Substring(3, 5)))
+            //    {
+            //        if (Utility.StrtoInt(t.sYYMM) >= sYM && Utility.StrtoInt(t.sYYMM) <= eYM)
+            //        {
+            //            y += Utility.StrtoInt(t.sYouDay);               // 要出勤日数
+            //            k += Utility.StrtoInt(t.sKekkin);               // 欠勤
+            //            dd += (decimal)Utility.StrtoDouble(t.sTotal);   // 有休＋半休
+            //        }
+            //    }
+            //}
+
+
+            // 月別有休日数.xlsxファイルが存在するとき : 2018/11/09
+            if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
             {
-                // Excel過去１年間有給取得シートから対象期間の日数を取得する
-                foreach (var t in workSheet.Where(a => a.sCode == sCode.Substring(3, 5)))
+                // 月別有休日数.xlsxシートより対象期間の日数を取得する : closedxml　2018/11/09
+                using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
                 {
-                    if (Utility.StrtoInt(t.sYYMM) >= sYM && Utility.StrtoInt(t.sYYMM) <= eYM)
+                    var sheet1 = book.Worksheet(1);
+                    var tbl = sheet1.RangeUsed().AsTable();
+
+                    foreach (var t in tbl.DataRange.Rows())
                     {
-                        y += Utility.StrtoInt(t.sYouDay);               // 要出勤日数
-                        k += Utility.StrtoInt(t.sKekkin);               // 欠勤
-                        dd += (decimal)Utility.StrtoDouble(t.sTotal);   // 有休＋半休
+                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                            (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) >= sYM &&
+                            (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) <= eYM)
+                        {
+                            y += Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));  // 要出勤日数
+                            k += Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));  // 欠勤
+                            dd += (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value)); // 有休＋半休
+                            
+                        }
                     }
+
+                    sheet1.Dispose();
                 }
             }
-            
+
             // 出勤率計算
             if (y != 0)
             {

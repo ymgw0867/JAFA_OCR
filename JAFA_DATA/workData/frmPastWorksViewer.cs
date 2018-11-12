@@ -23,7 +23,8 @@ namespace JAFA_DATA.workData
         {
             InitializeComponent();
 
-            adp.Fill(dts.勤怠データ);
+            //adp.Fill(dts.勤怠データ);  // 2018/11/12 コメント化
+
             mAdp.Fill(dts.社員マスター);
         }
 
@@ -133,7 +134,7 @@ namespace JAFA_DATA.workData
                 tempDGV.RowTemplate.Height = 22;
 
                 // 全体の高さ
-                tempDGV.Height = 637;
+                tempDGV.Height = 552;
 
                 // 奇数行の色
                 //tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
@@ -273,6 +274,9 @@ namespace JAFA_DATA.workData
                 int sYYMM = Utility.StrtoInt(sYY.ToString() + sMM.ToString().PadLeft(2, '0'));
                 int eYYMM = Utility.StrtoInt(eYY.ToString() + eMM.ToString().PadLeft(2, '0'));
 
+                // 2018/11/12
+                adp.FillByDateSpan(dts.勤怠データ, sYYMM.ToString(), eYYMM.ToString());
+
                 var s = dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYYMM && Utility.StrtoInt(a.対象月度) <= eYYMM)
                                            .OrderBy(a => a.対象月度)
                                            .ThenBy(a => a.対象職員所属コード)
@@ -312,9 +316,9 @@ namespace JAFA_DATA.workData
                     g.Rows.Add();
                     g[colYear, i].Value = t.対象月度.Substring(0, 4);
                     g[colMonth, i].Value = t.対象月度.Substring(4, 2);
-                    g[colShokuin, i].Value = t.対象職員コード.Substring(3, 5);
+                    g[colShokuin, i].Value = t.対象職員コード.ToString();
                     g[colShokuinName, i].Value = t.対象職員名;
-                    g[colSzCode, i].Value = t.対象職員所属コード.Substring(3, t.対象職員所属コード.Length - 3);
+                    g[colSzCode, i].Value = t.対象職員所属コード.ToString();
                     g[colSzName, i].Value = t.対象職員所属名;
                     g[colFutsu, i].Value = t.普通出勤日数;
                     g[colJitsuRodo, i].Value = t.実労働時間.ToString("#,0");

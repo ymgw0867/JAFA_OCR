@@ -64,7 +64,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(346, 43);
             this.button6.TabIndex = 3;
-            this.button6.Text = "週40時間超労働時間明細表(&V)";
+            this.button6.Text = "月45時間超労働時間一覧表(&V)";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 

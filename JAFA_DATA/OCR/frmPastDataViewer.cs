@@ -93,7 +93,7 @@ namespace JAFA_DATA.OCR
                 tempDGV.RowTemplate.Height = 22;
 
                 // 全体の高さ
-                tempDGV.Height = 637;
+                tempDGV.Height = 554;
 
                 // 奇数行の色
                 //tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;

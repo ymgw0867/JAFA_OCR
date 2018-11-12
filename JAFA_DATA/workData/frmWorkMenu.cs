@@ -58,7 +58,8 @@ namespace JAFA_DATA.workData
         private void button6_Click(object sender, EventArgs e)
         {
             this.Hide();
-            workData.frmWeek40hOverViewer frm = new frmWeek40hOverViewer();
+            //workData.frmWeek40hOverViewer frm = new frmWeek40hOverViewer();
+            workData.frm45HourOver frm = new frm45HourOver();
             frm.ShowDialog();
             this.Show();
         }

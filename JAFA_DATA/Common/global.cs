@@ -27,9 +27,9 @@ namespace JAFA_DATA
         #endregion
         
         #region ローカルMDB関連定数
-        public const string MDBFILE = "JAHR_DATA.mdb";      // MDBファイル名
-        public const string MDBTEMP = "JAHR_Temp.mdb";      // 最適化一時ファイル名
-        public const string MDBBACK = "JAHR_Back.mdb";      // 最適化後バックアップファイル名
+        public const string MDBFILE = "JAFA_DATA.mdb";      // MDBファイル名
+        public const string MDBTEMP = "JAFA_Temp.mdb";      // 最適化一時ファイル名
+        public const string MDBBACK = "JAFA_Back.mdb";      // 最適化後バックアップファイル名
         #endregion
 
         #region フラグオン・オフ定数

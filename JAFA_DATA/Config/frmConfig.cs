@@ -285,12 +285,22 @@ namespace JAFA_DATA.Config
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //フォルダーを選択する
-            string flName = userFolderSelect();
+            openFileDialog1.Title = "国民の祝日等CSVファイル選択";
+            openFileDialog1.FileName = string.Empty;
+            openFileDialog1.Filter = "ＣＳＶファイル(*.csv)|*.csv|全てのファイル(*.*)|*.*";
 
-            if (flName != string.Empty)
+            //ダイアログボックスを表示し「保存」ボタンが選択されたらファイル名を表示
+            string fileName;
+            DialogResult ret = openFileDialog1.ShowDialog();
+
+            if (ret == System.Windows.Forms.DialogResult.OK)
             {
-                txtCsvPath.Text = flName;
+                fileName = openFileDialog1.FileName;
+                txtCsvPath.Text = openFileDialog1.FileName;
+            }
+            else
+            {
+                fileName = string.Empty;
             }
         }
     }

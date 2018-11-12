@@ -264,6 +264,12 @@
     <Compile Include="workData\frmPastWorksViewer.designer.cs">
       <DependentUpon>frmPastWorksViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="workData\frmWork45HourOver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workData\frmWork45HourOver.designer.cs">
+      <DependentUpon>frmWork45HourOver.cs</DependentUpon>
+    </Compile>
     <Compile Include="workData\frmWorkdataCsv.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -363,6 +369,9 @@
     </Compile>
     <EmbeddedResource Include="workData\frmPastWorksViewer.resx">
       <DependentUpon>frmPastWorksViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workData\frmWork45HourOver.resx">
+      <DependentUpon>frmWork45HourOver.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="workData\frmWorkdataCsv.resx">
       <DependentUpon>frmWorkdataCsv.cs</DependentUpon>

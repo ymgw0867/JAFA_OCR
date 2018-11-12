@@ -78,7 +78,7 @@
             this.dg1.ReadOnly = true;
             this.dg1.RowTemplate.Height = 21;
             this.dg1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg1.Size = new System.Drawing.Size(1133, 637);
+            this.dg1.Size = new System.Drawing.Size(1133, 576);
             this.dg1.TabIndex = 12;
             this.dg1.TabStop = false;
             // 
@@ -86,7 +86,7 @@
             // 
             this.btnRtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRtn.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.btnRtn.Location = new System.Drawing.Point(1030, 713);
+            this.btnRtn.Location = new System.Drawing.Point(1030, 651);
             this.btnRtn.Margin = new System.Windows.Forms.Padding(4);
             this.btnRtn.Name = "btnRtn";
             this.btnRtn.Size = new System.Drawing.Size(119, 35);
@@ -256,9 +256,8 @@
             // 
             // label10
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(28, 722);
+            this.label10.Location = new System.Drawing.Point(28, 662);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(54, 17);
             this.label10.TabIndex = 28;
@@ -268,7 +267,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(907, 713);
+            this.button1.Location = new System.Drawing.Point(907, 651);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 35);
@@ -281,7 +280,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1163, 757);
+            this.ClientSize = new System.Drawing.Size(1163, 691);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtMonth);

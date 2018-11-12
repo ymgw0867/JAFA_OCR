@@ -51,11 +51,14 @@ namespace JAFA_DATA.OCR
 
             // データセットへデータを読み込む
             mAdp.Fill(dts.社員マスター);
+
             khAdp.Fill(dts.確定勤務票ヘッダ);
-            kmAdp.Fill(dts.確定勤務票明細);
-            phAdp.Fill(dts.過去勤務票ヘッダ);
-            pmAdp.Fill(dts.過去勤務票明細);
-            jaAdp.Fill(dts.勤怠データ);
+
+            // 2018/11/12 コメント化
+            //kmAdp.Fill(dts.確定勤務票明細);
+            //phAdp.Fill(dts.過去勤務票ヘッダ);
+            //pmAdp.Fill(dts.過去勤務票明細);            
+            //jaAdp.Fill(dts.勤怠データ);
 
             hDtAdp.Fill(dtsData.勤務票ヘッダ);
             mDtAdp.Fill(dtsData.勤務票明細);
@@ -87,7 +90,7 @@ namespace JAFA_DATA.OCR
             txtYear.Focus();
             
             //元号表示　2011/03/24
-            label5.Text = Properties.Settings.Default.gengou;
+            //label5.Text = Properties.Settings.Default.gengou; 2018/11/12 コメント化
 
             // 表示選択コンボボックス
             comboBox1.Items.Add("すべて表示");
@@ -144,7 +147,7 @@ namespace JAFA_DATA.OCR
                 tempDGV.RowTemplate.Height = 22;
 
                 // 全体の高さ
-                tempDGV.Height = 532;
+                tempDGV.Height = 574;
 
                 // 奇数行の色
                 //tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
@@ -170,7 +173,7 @@ namespace JAFA_DATA.OCR
                 tempDGV.Columns[6].Width = 80;
                 tempDGV.Columns[7].Width = 120;
                 tempDGV.Columns[8].Width = 160;
-                tempDGV.Columns[9].Width = 160;
+                tempDGV.Columns[9].Width = 200;
 
                 //tempDGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -300,6 +303,9 @@ namespace JAFA_DATA.OCR
                         hID = item.ヘッダID;
                     }
 
+                    // 確定勤務票明細を取得する　2018/11/12
+                    kmAdp.FillByHID(dts.確定勤務票明細, hID);
+
                     // 前半処理状況を調べる
                     if (hID != string.Empty)
                     {
@@ -380,10 +386,13 @@ namespace JAFA_DATA.OCR
                     // 当月処理済み（JAメイトOCRデータ作成済み）か調べる
                     string kymd = string.Empty;
                     string yymm = txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0');
-                    string sNum = global.ROK + t.職員コード.ToString().PadLeft(5, '0');
+                    string sNum = t.職員コード.ToString();
 
                     if (dts.勤怠データ.Any(a => a.対象月度 == yymm && a.対象職員コード == sNum))
                     {
+                        // 過去勤務票ヘッダデータを取得：2018/11/12
+                        phAdp.FillByYYMMSCode(dts.過去勤務票ヘッダ, Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text), Utility.StrtoInt(sNum));
+
                         var k = dts.過去勤務票ヘッダ.Where(a => a.年 == Utility.StrtoInt(txtYear.Text) &&
                             a.月 == Utility.StrtoInt(txtMonth.Text) && a.社員番号 == t.職員コード);
 
@@ -673,6 +682,9 @@ namespace JAFA_DATA.OCR
 
         private void btnSel_Click(object sender, EventArgs e)
         {
+            string yymm = txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0');
+            jaAdp.FillByDateSpan(dts.勤怠データ, yymm, yymm);
+
             DataSelect(comboBox1.SelectedIndex);
         }
 

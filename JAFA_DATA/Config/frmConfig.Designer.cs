@@ -47,6 +47,7 @@
             this.txtCsvPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -101,7 +102,7 @@
             this.button1.Location = new System.Drawing.Point(509, 94);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(69, 28);
-            this.button1.TabIndex = 3;
+            this.button1.TabIndex = 2;
             this.button1.Text = "参照";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -159,7 +160,7 @@
             this.txtArchive.MaxLength = 2;
             this.txtArchive.Name = "txtArchive";
             this.txtArchive.Size = new System.Drawing.Size(53, 27);
-            this.txtArchive.TabIndex = 4;
+            this.txtArchive.TabIndex = 3;
             this.txtArchive.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtArchive.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYear_KeyPress);
             // 
@@ -188,6 +189,7 @@
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(482, 27);
             this.txtPath.TabIndex = 16;
+            this.txtPath.TabStop = false;
             // 
             // txtCsvPath
             // 
@@ -196,13 +198,14 @@
             this.txtCsvPath.Name = "txtCsvPath";
             this.txtCsvPath.Size = new System.Drawing.Size(482, 27);
             this.txtCsvPath.TabIndex = 19;
+            this.txtCsvPath.TabStop = false;
             // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(509, 230);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(69, 28);
-            this.button4.TabIndex = 17;
+            this.button4.TabIndex = 4;
             this.button4.Text = "参照";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -215,6 +218,10 @@
             this.label9.Size = new System.Drawing.Size(187, 19);
             this.label9.TabIndex = 18;
             this.label9.Text = "祝日ＣＳＶデータ作成先パス";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // frmConfig
             // 
@@ -272,5 +279,6 @@
         private System.Windows.Forms.TextBox txtCsvPath;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

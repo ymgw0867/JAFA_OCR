@@ -1434,6 +1434,8 @@ namespace JAFA_DATA.OCR
             string imgName = string.Empty;
             string hdID = string.Empty;
 
+            iAdp.Fill(dts.確定勤務票明細);    // 2018/11/09
+
             foreach (var m in dts.確定勤務票明細.OrderBy(a => a.画像名))
             {
                 // 画像コピー処理
@@ -2122,21 +2124,27 @@ namespace JAFA_DATA.OCR
         private void deleteDataAll() 
         {
             // 確定勤務票明細全行削除
-            var m = dts.確定勤務票明細.Where(a => a.RowState != DataRowState.Deleted);
-            foreach (var t in m)
-            {
-                t.Delete();
-            }
+            //var m = dts.確定勤務票明細.Where(a => a.RowState != DataRowState.Deleted);
+            //foreach (var t in m)
+            //{
+            //    t.Delete();
+            //}
+
+            // 確定勤務票明細全行削除
+            iAdp.DeleteQueryAll();  // 2018/11/09
 
             // 確定勤務票ヘッダ全行削除
-            var h = dts.確定勤務票ヘッダ.Where(a => a.RowState != DataRowState.Deleted);
-            foreach (var t in h)
-            {
-                t.Delete();
-            }
+            //var h = dts.確定勤務票ヘッダ.Where(a => a.RowState != DataRowState.Deleted);
+            //foreach (var t in h)
+            //{
+            //    t.Delete();
+            //}
 
-            // データベース更新
-            adpMn.UpdateAll(dts);
+            // 確定勤務票ヘッダ全行削除
+            hAdp.DeleteQueryAll();  // 2018/11/09
+
+            //// データベース更新 2018/11/09 コメント化
+            //adpMn.UpdateAll(dts);
 
             // 後片付け
             dts.確定勤務票明細.Dispose();

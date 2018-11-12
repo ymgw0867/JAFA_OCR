@@ -628,9 +628,42 @@ namespace JAFA_DATA.Master
 
         private void btnRtn_Click(object sender, EventArgs e)
         {
+            // 入社時有給休暇日数をマスター登録する：2018/11/09
+            setInitialYukyu();
+
             // フォームを閉じます
             this.Close();
         }
+
+        ///--------------------------------------------------------------------------
+        /// <summary>
+        ///     入社時有給休暇日数を有給休暇付与マスターに登録する </summary>
+        ///--------------------------------------------------------------------------
+        private void setInitialYukyu()
+        {
+            this.Cursor = Cursors.WaitCursor;
+
+            JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
+
+            // 正社員が対象
+            adp.FillByShainkbn(dts.社員マスター, 1);
+
+            foreach (var t in dts.社員マスター.Where(a => a.退職区分 == global.flgOff))
+            {
+                // 入社時有給休暇日数が有給休暇付与マスター登録済みか調べる
+                if (yAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, t.職員コード, t.調整年月日.Year, t.調整年月日.Month) == 0)
+                {
+                    // 未登録のとき入社時有給休暇日数を有給休暇付与マスターに登録する
+                    yAdp.InsertQuery(t.職員コード, t.調整年月日.Year, t.調整年月日.Month,
+                                     0, 0, global.YUKYUDAYS_NYUSHO, 0, global.YUKYUDAYS_NYUSHO, t.調整年月日, t.調整年月日, 
+                                     0, 0, 0, DateTime.Now); 
+                }
+            }
+
+            this.Cursor = Cursors.Default;
+        }
+
+
 
         private void frm_FormClosing(object sender, FormClosingEventArgs e)
         {

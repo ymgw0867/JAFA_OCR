@@ -23,8 +23,9 @@ namespace JAFA_DATA.workData
         {
             InitializeComponent();
 
-            hAdp.Fill(dts.過去勤務票ヘッダ);
-            mAdp.Fill(dts.過去勤務票明細);
+            // 2018/11/12 コメント化
+            //hAdp.Fill(dts.過去勤務票ヘッダ);
+            //mAdp.Fill(dts.過去勤務票明細);
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
@@ -100,7 +101,7 @@ namespace JAFA_DATA.workData
                 tempDGV.RowTemplate.Height = 22;
 
                 // 全体の高さ
-                tempDGV.Height = 637;
+                tempDGV.Height = 574;
 
                 // 奇数行の色
                 //tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
@@ -199,6 +200,9 @@ namespace JAFA_DATA.workData
         {
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+
+                hAdp.FillByYYMM(dts.過去勤務票ヘッダ, sYY * 100 + sMM);
                 var s = dts.過去勤務票ヘッダ.Where(a => a.年 == sYY && a.月 == sMM)
                                            .OrderBy(a => a.所属コード)
                                            .ThenBy(a => a.社員番号);
@@ -228,6 +232,9 @@ namespace JAFA_DATA.workData
 
                 foreach (var t in s)
                 {
+                    // 2018/11/12
+                    mAdp.FillByHID(dts.過去勤務票明細, t.ヘッダID);
+
                     var im = dts.過去勤務票明細.Where(a => a.ヘッダID == t.ヘッダID).OrderBy(a => a.日付);
 
                     // 休日出勤一覧表のとき
@@ -316,6 +323,10 @@ namespace JAFA_DATA.workData
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButtons.OK);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
             }
 
             //社員情報がないとき

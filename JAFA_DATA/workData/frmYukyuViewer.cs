@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using JAFA_DATA.Common;
 using LinqToExcel;
+using ClosedXML.Excel;
 
 namespace JAFA_DATA.workData
 {
@@ -24,51 +25,53 @@ namespace JAFA_DATA.workData
         {
             InitializeComponent();
 
-            adp.Fill(dts.勤怠データ);
+            //adp.Fill(dts.勤怠データ);  // 2018/11/11 コメント化
             mAdp.Fill(dts.社員マスター);
-            fAdp.Fill(dts.有給休暇付与マスター);
+            //fAdp.Fill(dts.有給休暇付与マスター);    // 2018/11/11 コメント化
 
-            // linqToExcel : excel過去１年間有給取得シート
-            if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
-            {
-                // ターゲットのエクセルファイルが存在するとき
-                var excel = new ExcelQueryFactory(Properties.Settings.Default.exlMounthPath);
-                excel.ReadOnly = true;
-                excel.AddMapping<exlMntData>(m => m.sCode, "職員コード");
-                excel.AddMapping<exlMntData>(m => m.sName, "氏名");
-                excel.AddMapping<exlMntData>(m => m.sYYMM, "年月");
-                excel.AddMapping<exlMntData>(m => m.sYouDay, "要出勤日数");
-                excel.AddMapping<exlMntData>(m => m.sKekkin, "欠勤");
-                excel.AddMapping<exlMntData>(m => m.sDay, "有給休暇");
-                excel.AddMapping<exlMntData>(m => m.sHan, "半休");
-                excel.AddMapping<exlMntData>(m => m.sTotal, "合計");
-                workSheet = excel.Worksheet<exlMntData>("sheet1");
-            }
+            // 以下、2018/11/11 コメント化
+            //// linqToExcel : excel過去１年間有給取得シート
+            //if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
+            //{
+            //    // ターゲットのエクセルファイルが存在するとき
+            //    var excel = new ExcelQueryFactory(Properties.Settings.Default.exlMounthPath);
+            //    excel.ReadOnly = true;
+            //    excel.AddMapping<exlMntData>(m => m.sCode, "職員コード");
+            //    excel.AddMapping<exlMntData>(m => m.sName, "氏名");
+            //    excel.AddMapping<exlMntData>(m => m.sYYMM, "年月");
+            //    excel.AddMapping<exlMntData>(m => m.sYouDay, "要出勤日数");
+            //    excel.AddMapping<exlMntData>(m => m.sKekkin, "欠勤");
+            //    excel.AddMapping<exlMntData>(m => m.sDay, "有給休暇");
+            //    excel.AddMapping<exlMntData>(m => m.sHan, "半休");
+            //    excel.AddMapping<exlMntData>(m => m.sTotal, "合計");
+            //    workSheet = excel.Worksheet<exlMntData>("sheet1");
+            //}
 
-            // linqToExcel : excel前年有休付与日数シート
-            if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
-            {
-                // ターゲットのエクセルファイルが存在するとき
-                var excelMst = new ExcelQueryFactory(Properties.Settings.Default.exlYukyuMstPath);
-                excelMst.ReadOnly = true;
-                excelMst.AddMapping<exlYukyuMst>(m => m.sCode, "職員コード");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sName, "氏名");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sYY, "年");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sMM, "月");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sFuyo, "当年付与日数");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sKurikoshi, "当年繰越日数");
-                excelMst.AddMapping<exlYukyuMst>(m => m.sNensho, "当年初有給残");
-                mstSheet = excelMst.Worksheet<exlYukyuMst>("sheet1");
-            }
+            //// linqToExcel : excel前年有休付与日数シート
+            //if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
+            //{
+            //    // ターゲットのエクセルファイルが存在するとき
+            //    var excelMst = new ExcelQueryFactory(Properties.Settings.Default.exlYukyuMstPath);
+            //    excelMst.ReadOnly = true;
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sCode, "職員コード");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sName, "氏名");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sYY, "年");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sMM, "月");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sFuyo, "当年付与日数");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sKurikoshi, "当年繰越日数");
+            //    excelMst.AddMapping<exlYukyuMst>(m => m.sNensho, "当年初有給残");
+            //    mstSheet = excelMst.Worksheet<exlYukyuMst>("sheet1");
+            //}
         }
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
         JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter adp = new JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter();
         JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter fAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
-
-        LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
-        LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
+        
+        // 2018/11/11 コメント化
+        //LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
+        //LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
 
         #region グリッドカラム定義
         string colYear = "c0";
@@ -168,7 +171,7 @@ namespace JAFA_DATA.workData
                 tempDGV.RowTemplate.Height = 22;
 
                 // 全体の高さ
-                tempDGV.Height = 637;
+                tempDGV.Height = 574;
 
                 // 奇数行の色
                 //tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
@@ -272,25 +275,20 @@ namespace JAFA_DATA.workData
         {
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+
                 int sYYMM = Utility.StrtoInt(sYY.ToString() + sMM.ToString().PadLeft(2, '0'));
                 int eYYMM = Utility.StrtoInt(eYY.ToString() + eMM.ToString().PadLeft(2, '0'));
 
+                adp.FillByDateSpan(dts.勤怠データ, sYYMM.ToString(), eYYMM.ToString()); // 2018/11/11
                 var s = dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYYMM && Utility.StrtoInt(a.対象月度) <= eYYMM)
                                            .OrderBy(a => a.対象職員コード)
                                            .ThenBy(a => a.対象月度);
-
-                //// 所属名指定
-                //if (szName != string.Empty)
-                //{
-                //    s = s.Where(a => a.対象職員所属名 == szName).OrderBy(a => a.対象月度)
-                //                                                .ThenBy(a => a.対象職員所属コード)
-                //                                               .ThenBy(a => a.対象職員コード);
-                //}
-
+                
                 // 社員番号
                 if (txtShainNum.Text != string.Empty)
                 {
-                    s = s.Where(a => Utility.StrtoInt(a.対象職員コード.Substring(3, 5)) == Utility.StrtoInt(txtShainNum.Text))
+                    s = s.Where(a => Utility.StrtoInt(a.対象職員コード) == Utility.StrtoInt(txtShainNum.Text))
                                            .OrderBy(a => a.対象職員コード)
                                            .ThenBy(a => a.対象月度);
                 }
@@ -305,9 +303,9 @@ namespace JAFA_DATA.workData
                     g.Rows.Add();
                     g[colYear, i].Value = t.対象月度.Substring(0, 4);
                     g[colMonth, i].Value = t.対象月度.Substring(4, 2);
-                    g[colShokuin, i].Value = t.対象職員コード.Substring(3, 5);
+                    g[colShokuin, i].Value = t.対象職員コード.ToString();
                     g[colShokuinName, i].Value = t.対象職員名;
-                    g[colSzCode, i].Value = t.対象職員所属コード.Substring(3, t.対象職員所属コード.Length - 3);
+                    g[colSzCode, i].Value = t.対象職員所属コード.ToString();
                     g[colSzName, i].Value = t.対象職員所属名;
                     g[colYukyu, i].Value = t.有給休暇;
                     g[colHankyu, i].Value = t.有給半日;
@@ -320,16 +318,16 @@ namespace JAFA_DATA.workData
                     double z = 0;       // 有給残
 
                     // 職員コードでブレーク時
-                    if (shokuCode != t.対象職員コード.Substring(3, 5))
+                    if (shokuCode != t.対象職員コード)
                     {
-                        if (dts.社員マスター.Any(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5))))
+                        if (dts.社員マスター.Any(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.ToString())))
                         {
-                            var ss = dts.社員マスター.Single(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.Substring(3, 5)));
+                            var ss = dts.社員マスター.Single(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.ToString()));
                             yfMonth = ss.有給付与月;
                         }
 
                         // 当年初有休残日数取得
-                        sZan = getNenshozan(t.対象職員コード.Substring(3, 5), Utility.StrtoInt(t.対象月度), yfMonth, out sNen, out sTsuki);
+                        sZan = getNenshozan(t.対象職員コード.ToString(), Utility.StrtoInt(t.対象月度), yfMonth, out sNen, out sTsuki);
 
                         // 当月が有給付与月以外のとき
                         if (t.対象月度.Substring(4, 2) != yfMonth.ToString())
@@ -389,7 +387,8 @@ namespace JAFA_DATA.workData
                             mm -= 12;
                         }
 
-                        var fu = dts.有給休暇付与マスター.Where(a => a.社員番号 == Utility.StrtoInt(t.対象職員コード.Substring(3, 5)) &&
+                        fAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, Utility.StrtoInt(t.対象職員コード), yy, mm);  // 2018/11/11
+                        var fu = dts.有給休暇付与マスター.Where(a => a.社員番号 == Utility.StrtoInt(t.対象職員コード) &&
                                                               a.年 == yy && a.月 == mm);
                         foreach (var item in fu)
                         {
@@ -400,7 +399,7 @@ namespace JAFA_DATA.workData
                     g[colYukyuFlg, i].Value = t.有休付与対象フラグ;
 
                     // 職員コード
-                    shokuCode = t.対象職員コード.Substring(3, 5);
+                    shokuCode = t.対象職員コード;
 
                     i++;
                 }
@@ -422,6 +421,10 @@ namespace JAFA_DATA.workData
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButtons.OK);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
             }
 
             //社員情報がないとき
@@ -449,8 +452,9 @@ namespace JAFA_DATA.workData
             sNen = 0;
             sTsuki = 0;
 
+            fAdp.FillBySCode(dts.有給休暇付与マスター, Utility.StrtoInt(sCode)); // 2018/11/11
             foreach (var t in dts.有給休暇付与マスター
-                .Where(a => a.社員番号 == Utility.StrtoInt(sCode) && (a.年 * 100 + a.月) <= sYYMM)
+                .Where(a => (a.年 * 100 + a.月) <= sYYMM)
                 .OrderByDescending(a => (a.年 * 100 + a.月)))
             {
                 zan = t.当年初有給残日数;
@@ -463,8 +467,32 @@ namespace JAFA_DATA.workData
             // 有給休暇付与マスターが存在しなかったらExcelシートを読む
             if (!sFms)
             {
-                // 有給休暇付与マスターExcelシートが存在するとき
-                if (mstSheet != null)
+                //// 有給休暇付与マスターExcelシートが存在するとき
+                //if (mstSheet != null)
+                //{
+                //    // 当年
+                //    int sYear = sYYMM / 100;    // 月
+                //    int sMonth = sYYMM % 100;   // 年
+
+                //    // 前回の有給付与年
+                //    if (sMonth < sFyMonth)
+                //    {
+                //        sYear --;
+                //    }
+
+                //    // 有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
+                //    foreach (var x in mstSheet.Where(a => a.sCode == sCode && a.sYY == sYear.ToString() && a.sMM == sFyMonth.ToString()))
+                //    {
+                //        zan = Utility.StrtoDouble(x.sNensho);
+                //        sNen = Utility.StrtoInt(x.sYY);
+                //        sTsuki = Utility.StrtoInt(x.sMM); 
+                //        break;
+                //    }
+                //}
+                
+
+                // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/11
+                if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
                 {
                     // 当年
                     int sYear = sYYMM / 100;    // 月
@@ -473,16 +501,28 @@ namespace JAFA_DATA.workData
                     // 前回の有給付与年
                     if (sMonth < sFyMonth)
                     {
-                        sYear --;
+                        sYear--;
                     }
 
-                    // 有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
-                    foreach (var x in mstSheet.Where(a => a.sCode == sCode && a.sYY == sYear.ToString() && a.sMM == sFyMonth.ToString()))
+                    using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
                     {
-                        zan = Utility.StrtoDouble(x.sNensho);
-                        sNen = Utility.StrtoInt(x.sYY);
-                        sTsuki = Utility.StrtoInt(x.sMM); 
-                        break;
+                        var sheet1 = book.Worksheet(1);
+                        var tbl = sheet1.RangeUsed().AsTable();
+
+                        foreach (var t in tbl.DataRange.Rows())
+                        {
+                            if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                                sYear == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) &&
+                                sFyMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                            {
+                                zan = Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
+                                sNen = sYear;
+                                sTsuki = sFyMonth;
+                                break;
+                            }
+                        }
+
+                        sheet1.Dispose();
                     }
                 }
             }
@@ -519,20 +559,46 @@ namespace JAFA_DATA.workData
             //// 勤怠データが存在しなかったらExcelシートを読む
             //if (!sFms)
             //{
-                // Excel過去１年間有給取得ファイルが存在するとき
-                if (workSheet != null)
-                {
-                    // Excel過去１年間有給取得シートから日数を取得する
-                    foreach (var t in workSheet.Where(a => a.sCode == sCode.Substring(3, 5)))
-                    {
-                        if (Utility.StrtoInt(t.sYYMM) >= sYYMM && Utility.StrtoInt(t.sYYMM) <= eYYMM)
-                        {                        
-                            sNissu += Utility.StrtoDouble(t.sTotal);   // 有休＋半休
-                        }
-                    }
-                }
+                // 以下、コメント化 2018/11/11 
+                //// Excel過去１年間有給取得ファイルが存在するとき
+                //if (workSheet != null)
+                //{
+                //    // Excel過去１年間有給取得シートから日数を取得する
+                //    foreach (var t in workSheet.Where(a => a.sCode == sCode.Substring(3, 5)))
+                //    {
+                //        if (Utility.StrtoInt(t.sYYMM) >= sYYMM && Utility.StrtoInt(t.sYYMM) <= eYYMM)
+                //        {                        
+                //            sNissu += Utility.StrtoDouble(t.sTotal);   // 有休＋半休
+                //        }
+                //    }
+                //}
             //}
 
+
+
+            // 月別有休日数.xlsxファイルが存在するとき : 2018/11/11
+            if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
+            {
+                // 月別有休日数.xlsxシートより対象期間の日数を取得する : closedxml　2018/11/09
+                using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
+                {
+                    var sheet1 = book.Worksheet(1);
+                    var tbl = sheet1.RangeUsed().AsTable();
+
+                    foreach (var t in tbl.DataRange.Rows())
+                    {
+                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                            (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) >= sYYMM &&
+                            (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) <= eYYMM)
+                        {
+                            sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value)); // 有休＋半休
+                        }
+                    }
+
+                    sheet1.Dispose();
+                }
+            }
+            
             return sNissu;
         }
 
