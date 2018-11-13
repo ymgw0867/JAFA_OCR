@@ -1399,14 +1399,14 @@ namespace JAFA_DATA.Common
 
             //kAdp.Fill(dts.勤怠データ); // 2018/10/26 コメント化
 
-            string sCode = mr.職員コード.ToString().PadLeft(5, '0');
+            int sCode = mr.職員コード;
 
             kAdp.FillBySCode(dts.勤怠データ, sCode); // 2018/10/26
 
 
             foreach (var t in dts.勤怠データ.Where(a => a.対象職員コード == sCode))
             {
-                if (Utility.StrtoInt(t.対象月度) >= sYYMM && Utility.StrtoInt(t.対象月度) <= eYYMM)
+                if (t.対象月度 >= sYYMM && t.対象月度 <= eYYMM)
                 {
                     sNissu += (double)(t.有給休暇 + t.有給半日);
                     sFms = true;
@@ -1445,7 +1445,7 @@ namespace JAFA_DATA.Common
 
                     foreach (var t in tbl.DataRange.Rows())
                     {
-                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
+                        if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
                         {
                             sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
                         }

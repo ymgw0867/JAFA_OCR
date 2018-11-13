@@ -197,11 +197,11 @@ namespace JAFA_DATA.OCR
         /// -------------------------------------------------------------------------
         private void showJaMateData(int sYY, int sMM, int sID)
         {
-            string yymm = sYY.ToString() + sMM.ToString().PadLeft(2, '0');
-            string shainID = sID.ToString();
+            int yymm = sYY * 100 + sMM;
+            int shainID = sID;
 
 
-            adpJ.FillBySCodeDateSpan(dts.勤怠データ, sID.ToString(), yymm, yymm);    // 2018/11/11
+            adpJ.FillBySCodeDateSpan(dts.勤怠データ, sID, yymm, yymm);    // 2018/11/11
             foreach (var t in dts.勤怠データ.Where(a => a.対象月度 == yymm && a.対象職員コード == shainID))
             {
                 dgvJa[cja, 0].Value = t.普通出勤日数;

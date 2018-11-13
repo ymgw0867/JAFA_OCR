@@ -79,5 +79,13 @@ namespace JAFA_DATA.workData
             frm.ShowDialog();
             this.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            workData.frmWeek30HourOver frm = new frmWeek30HourOver();
+            frm.ShowDialog();
+            this.Show();
+        }
     }
 }

@@ -28,10 +28,6 @@ namespace JAFA_DATA.OCR
         ///------------------------------------------------------------------------------------
         private void showOcrData(int iX)
         {
-            // ビュー読み込み
-            //khAdp.Fill(dts.確定ヘッダ);
-            //kAdp.Fill(dts.確定データ);
-
             // 確定勤務票ヘッダテーブル行を取得
             JAFA_OCRDataSet.確定勤務票ヘッダRow r = (JAFA_OCRDataSet.確定勤務票ヘッダRow)dts.確定勤務票ヘッダ.Rows[iX];
 
@@ -68,10 +64,7 @@ namespace JAFA_DATA.OCR
      
             // エラー情報表示初期化
             lblErrMsg.Visible = false;
-            lblErrMsg.Text = string.Empty;
-
-            //// 画像表示
-            //ShowImage(global.pblImagePath + r.画像名.ToString());                        
+            lblErrMsg.Text = string.Empty; 
         }
 
         ///------------------------------------------------------------------------------------

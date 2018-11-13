@@ -11,15 +11,15 @@ using JAFA_DATA.Common;
 
 namespace JAFA_DATA.workData
 {
-    public partial class frm45HourOver : Form
+    public partial class frmWeek30HourOver : Form
     {
         string _ComNo = string.Empty;               // 会社番号
         string _ComName = string.Empty;             // 会社名
         string _ComDatabeseName = string.Empty;     // 会社データベース名
 
-        string appName = "月45時間超労働時間一覧表";    // アプリケーション表題
+        string appName = "週30時間超労働時間一覧表";    // アプリケーション表題
 
-        public frm45HourOver()
+        public frmWeek30HourOver()
         {
             InitializeComponent();
         }
@@ -44,12 +44,7 @@ namespace JAFA_DATA.workData
         string colJitsurou = "c44";
         string colMtotal = "c45";
         #endregion
-
-        const int SEL_ALL = 0;
-        const int SEL_SEISHAIN = 1;
-        const int SEL_RINJISHAIN = 2;
-        const int SEL_GAIKOKUJIN = 3;
-
+        
         string[] holArray = null;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -76,18 +71,18 @@ namespace JAFA_DATA.workData
             button1.Enabled = false;
 
             // 初期状態は全て
-            radioButton1.Checked = true;
+            //radioButton1.Checked = true;
 
             // 休日CSVファイルの休日日付を配列に読み込む
             holCsvToArray();
         }
 
-        ///-----------------------------------------------------------------------
+        ///---------------------------------------------------------------------
         /// <summary>
         ///     データグリッドビューの定義を行います </summary>
         /// <param name="tempDGV">
         ///     データグリッドビューオブジェクト</param>
-        ///-----------------------------------------------------------------------
+        ///---------------------------------------------------------------------
         public void GridViewSetting(DataGridView tempDGV)
         {
             try
@@ -199,7 +194,7 @@ namespace JAFA_DATA.workData
         /// <param name="sSel">
         ///     対象社員区分</param>
         ///-----------------------------------------------------------------------------
-        private void GridViewShowData(DataGridView g, int sYY, int sMM, int sSel)
+        private void GridViewShowData(DataGridView g, int sYY, int sMM)
         {
             try
             {
@@ -213,38 +208,15 @@ namespace JAFA_DATA.workData
                 int mDays = ddt.AddMonths(1).AddDays(-1).Day; // 対象年月の歴日数
                 int shoDays = mDays - holDays;                
 
-                // 所定労働時間（分）
-                int shoTime = shoDays * 480;
-
-                // 超過基準時間（分）
-                int borderTime = Utility.StrtoInt(txtTime.Text) * 60;
+                // 所定労働時間（分）× ３ ÷ ４
+                int shoTime = shoDays * 480 * 3 / 4;
 
                 int sYYMM = sYY * 100 + sMM;
 
                 wAdp.FillByDateSpan(dts.勤怠データ, sYYMM, sYYMM);
 
-                int sKbn = 0;
-
-                if (sSel == SEL_ALL)
-                {
-                    // 全社員を取得
-                    sAdp.Fill(dts.社員マスター);
-                }
-                else if (sSel == SEL_SEISHAIN)
-                {
-                    // 正社員を取得
-                    sAdp.FillByShainkbn(dts.社員マスター, global.SEISHAIN);
-                }
-                else if (sSel == SEL_RINJISHAIN)
-                {
-                    // 臨時社員を取得
-                    sAdp.FillByShainkbn(dts.社員マスター, global.RINJISHAIN);
-                }
-                else if (sSel == SEL_GAIKOKUJIN)
-                {
-                    // 外国人技能実習生を取得
-                    sAdp.FillByShainkbn(dts.社員マスター, global.GAIKOKUJINGINOU);
-                }
+                // 臨時社員を対象とする
+                sAdp.FillByShainkbn(dts.社員マスター, global.RINJISHAIN);
 
                 g.Rows.Clear();
                 int i = 0;
@@ -255,15 +227,19 @@ namespace JAFA_DATA.workData
                     {
                         var s = dts.社員マスター.Single(a => a.職員コード == t.対象職員コード);
 
-                        sKbn = s.社員区分;
+                        if (s.短時間勤務 == global.flgOff)
+                        {
+                            // 短時間勤務者を対象とする
+                            continue;
+                        }
                     }
                     else
                     {
                         continue;
                     }
 
-                    // 実労働時間が所定労働時間＋基準時間以内のとき読み飛ばす
-                    if (t.実労働時間 < (shoTime + borderTime))
+                    // 実労働時間が所定労働時間*3/4未満のとき読み飛ばす
+                    if (t.実労働時間 < shoTime)
                     {
                         continue;
                     }
@@ -274,16 +250,7 @@ namespace JAFA_DATA.workData
                     g[colSzName, i].Value = t.対象職員所属名;
                     g[colShokuin, i].Value = t.対象職員コード;
                     g[colShokuinName, i].Value = t.対象職員名;
-
-                    if (sKbn == 0)
-                    {
-                        g[colShainKbn, i].Value = string.Empty;
-                    }
-                    else
-                    {
-                        g[colShainKbn, i].Value = global.shainKbnArray[sKbn];
-                    }
-
+                    g[colShainKbn, i].Value = global.shainKbnArray[global.RINJISHAIN];
                     g[colDay, i].Value = t.普通出勤日数;
                     g[colJitsurou, i].Value = Utility.getHHMM(t.実労働時間);
                     g[colShoteiDays, i].Value = shoDays;
@@ -389,29 +356,8 @@ namespace JAFA_DATA.workData
             //エラーチェック
             if (!ErrCheck()) return;
 
-            //データ表示
-            int sSel = 0;
-
-            // 社員区分
-            if (radioButton1.Checked)
-            {
-                sSel = SEL_ALL;
-            }
-            else if (radioButton2.Checked)
-            {
-                sSel = SEL_SEISHAIN;
-            }
-            else if (radioButton3.Checked)
-            {
-                sSel = SEL_RINJISHAIN;
-            }
-            else if (radioButton4.Checked)
-            {
-                sSel = SEL_GAIKOKUJIN;
-            }
-
             // 一覧表表示
-            GridViewShowData(dg1, Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text), sSel);
+            GridViewShowData(dg1, Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text));
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

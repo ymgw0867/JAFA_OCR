@@ -275,9 +275,9 @@ namespace JAFA_DATA.workData
                 int eYYMM = Utility.StrtoInt(eYY.ToString() + eMM.ToString().PadLeft(2, '0'));
 
                 // 2018/11/12
-                adp.FillByDateSpan(dts.勤怠データ, sYYMM.ToString(), eYYMM.ToString());
+                adp.FillByDateSpan(dts.勤怠データ, sYYMM, eYYMM);
 
-                var s = dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYYMM && Utility.StrtoInt(a.対象月度) <= eYYMM)
+                var s = dts.勤怠データ.Where(a => a.対象月度 >= sYYMM && a.対象月度 <= eYYMM)
                                            .OrderBy(a => a.対象月度)
                                            .ThenBy(a => a.対象職員所属コード)
                                            .ThenBy(a => a.対象職員コード);
@@ -293,7 +293,7 @@ namespace JAFA_DATA.workData
                 // 社員番号開始
                 if (txtShainNum.Text != string.Empty)
                 {
-                    s = s.Where(a => Utility.StrtoInt(a.対象職員コード.Substring(3, 5)) >= Utility.StrtoInt(txtShainNum.Text))
+                    s = s.Where(a => a.対象職員コード >= Utility.StrtoInt(txtShainNum.Text))
                                            .OrderBy(a => a.対象月度)
                                            .ThenBy(a => a.対象職員所属コード)
                                            .ThenBy(a => a.対象職員コード);
@@ -302,7 +302,7 @@ namespace JAFA_DATA.workData
                 // 社員番号終了
                 if (txtShainNum2.Text != string.Empty)
                 {
-                    s = s.Where(a => Utility.StrtoInt(a.対象職員コード.Substring(3, 5)) <= Utility.StrtoInt(txtShainNum2.Text))
+                    s = s.Where(a => a.対象職員コード <= Utility.StrtoInt(txtShainNum2.Text))
                                            .OrderBy(a => a.対象月度)
                                            .ThenBy(a => a.対象職員所属コード)
                                            .ThenBy(a => a.対象職員コード);
@@ -314,8 +314,8 @@ namespace JAFA_DATA.workData
                 foreach (var t in s)
                 {
                     g.Rows.Add();
-                    g[colYear, i].Value = t.対象月度.Substring(0, 4);
-                    g[colMonth, i].Value = t.対象月度.Substring(4, 2);
+                    g[colYear, i].Value = t.対象月度.ToString().Substring(0, 4);
+                    g[colMonth, i].Value = t.対象月度.ToString().Substring(4, 2);
                     g[colShokuin, i].Value = t.対象職員コード.ToString();
                     g[colShokuinName, i].Value = t.対象職員名;
                     g[colSzCode, i].Value = t.対象職員所属コード.ToString();

@@ -66,7 +66,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(364, 43);
             this.button3.TabIndex = 2;
-            this.button3.Text = "ＪＡメイトOCRデータ作成(&C)";
+            this.button3.Text = "Ｂｉｇ給与計算Ｐｒｏデータ作成(&C)";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -76,7 +76,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(364, 43);
             this.button4.TabIndex = 3;
-            this.button4.Text = "メイト出勤簿処理状況(&M)";
+            this.button4.Text = "出勤簿処理状況(&M)";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 

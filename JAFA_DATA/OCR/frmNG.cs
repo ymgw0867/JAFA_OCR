@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using JAFA_DATA.Common;
+using OpenCvSharp;
 
 namespace JAFA_DATA.OCR
 {
@@ -34,11 +35,19 @@ namespace JAFA_DATA.OCR
             lblNoImage.Visible = false;
             button1.Enabled = false;
             button3.Enabled = false;
-
-            // 拡大・縮小ボタンを非アクティブにする
-            btnPlus.Enabled = false;
-            btnMinus.Enabled = false;
+            trackBar1.Enabled = false;
         }
+
+        // openCvSharp 関連　2018/10/23
+        const float B_WIDTH = 0.35f;
+        const float B_HEIGHT = 0.35f;
+        const float A_WIDTH = 0.05f;
+        const float A_HEIGHT = 0.05f;
+
+        float n_width = 0f;
+        float n_height = 0f;
+
+        Mat mMat = new Mat();
 
         //カラム定義
         string C_Date = "col1";
@@ -169,7 +178,7 @@ namespace JAFA_DATA.OCR
 
                 // 全体の高さ
                 //tempDGV.Height = 574;
-                tempDGV.Height = 641;
+                tempDGV.Height = 562;
 
                 // 奇数行の色
                 tempDGV.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
@@ -252,7 +261,7 @@ namespace JAFA_DATA.OCR
 
                 if (r > 0)
                 {
-                    label1.Text = r.ToString() + "件】";
+                    label1.Text = "【" + r.ToString() + "件】";
                 }
                 else
                 {
@@ -265,6 +274,109 @@ namespace JAFA_DATA.OCR
             }
         }
 
+
+        ///-----------------------------------------------------------
+        /// <summary>
+        ///     画像表示 openCV：2018/10/24 </summary>
+        /// <param name="img">
+        ///     表示画像ファイル名</param>
+        ///-----------------------------------------------------------
+        private void showImage_openCv(string img)
+        {
+            n_width = B_WIDTH;
+            n_height = B_HEIGHT;
+
+            imgShow(img, n_width, n_height);
+
+            trackBar1.Value = 0;
+        }
+
+        ///---------------------------------------------------------
+        /// <summary>
+        ///     画像表示メイン openCV : 2018/10/24 </summary>
+        /// <param name="mImg">
+        ///     Mat形式イメージ</param>
+        /// <param name="w">
+        ///     width</param>
+        /// <param name="h">
+        ///     height</param>
+        ///---------------------------------------------------------
+        private void imgShow(string filePath, float w, float h)
+        {
+            mMat = new Mat(filePath, ImreadModes.GrayScale);
+            Bitmap bt = MatToBitmap(mMat);
+
+            // Bitmap を生成
+            Bitmap canvas = new Bitmap((int)(bt.Width * w), (int)(bt.Height * h));
+
+            Graphics g = Graphics.FromImage(canvas);
+
+            g.DrawImage(bt, 0, 0, bt.Width * w, bt.Height * h);
+
+            //メモリクリア
+            bt.Dispose();
+            g.Dispose();
+
+            pictureBox1.Image = canvas;
+        }
+
+        ///---------------------------------------------------------
+        /// <summary>
+        ///     画像表示メイン openCV : 2018/10/24 </summary>
+        /// <param name="mImg">
+        ///     Mat形式イメージ</param>
+        /// <param name="w">
+        ///     width</param>
+        /// <param name="h">
+        ///     height</param>
+        ///---------------------------------------------------------
+        private void imgShow(Mat mImg, float w, float h)
+        {
+            int cWidth = 0;
+            int cHeight = 0;
+
+            Bitmap bt = MatToBitmap(mImg);
+
+            // Bitmapサイズ
+            if (panel1.Width < (bt.Width * w) || panel1.Height < (bt.Height * h))
+            {
+                cWidth = (int)(bt.Width * w);
+                cHeight = (int)(bt.Height * h);
+            }
+            else
+            {
+                cWidth = panel1.Width;
+                cHeight = panel1.Height;
+            }
+
+            // Bitmap を生成
+            Bitmap canvas = new Bitmap(cWidth, cHeight);
+
+            // ImageオブジェクトのGraphicsオブジェクトを作成する
+            Graphics g = Graphics.FromImage(canvas);
+
+            // 画像をcanvasの座標(0, 0)の位置に指定のサイズで描画する
+            g.DrawImage(bt, 0, 0, bt.Width * w, bt.Height * h);
+
+            //メモリクリア
+            bt.Dispose();
+            g.Dispose();
+
+            // PictureBox1に表示する
+            pictureBox1.Image = canvas;
+        }
+
+
+        // GUI上に画像を表示するには、OpenCV上で扱うMat形式をBitmap形式に変換する必要がある
+        public static Bitmap MatToBitmap(Mat image)
+        {
+            return OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+        }
+
+
+
+
+
         /// ------------------------------------------------------------------------------
         /// <summary>
         ///     伝票画像表示 </summary>
@@ -275,97 +387,97 @@ namespace JAFA_DATA.OCR
         /// ------------------------------------------------------------------------------
         public void ShowImage(string tempImgName)
         {
-            //修正画面へ組み入れた画像フォームの表示    
-            //画像の出力が無い場合は、画像表示をしない。
-            if (tempImgName == string.Empty)
-            {
-                leadImg.Visible = false;
-                lblNoImage.Visible = false;
-                global.pblImagePath = string.Empty;
-                return;
-            }
+            ////修正画面へ組み入れた画像フォームの表示    
+            ////画像の出力が無い場合は、画像表示をしない。
+            //if (tempImgName == string.Empty)
+            //{
+            //    leadImg.Visible = false;
+            //    lblNoImage.Visible = false;
+            //    global.pblImagePath = string.Empty;
+            //    return;
+            //}
 
-            //画像ファイルがあるとき表示
-            if (System.IO.File.Exists(tempImgName))
-            {
-                lblNoImage.Visible = false;
-                leadImg.Visible = true;
+            ////画像ファイルがあるとき表示
+            //if (System.IO.File.Exists(tempImgName))
+            //{
+            //    lblNoImage.Visible = false;
+            //    leadImg.Visible = true;
 
-                // 画像操作ボタン
-                btnPlus.Enabled = true;
-                btnMinus.Enabled = true;
+            //    // 画像操作ボタン
+            //    btnPlus.Enabled = true;
+            //    btnMinus.Enabled = true;
 
-                //画像ロード
-                Leadtools.Codecs.RasterCodecs.Startup();
-                Leadtools.Codecs.RasterCodecs cs = new Leadtools.Codecs.RasterCodecs();
+            //    //画像ロード
+            //    Leadtools.Codecs.RasterCodecs.Startup();
+            //    Leadtools.Codecs.RasterCodecs cs = new Leadtools.Codecs.RasterCodecs();
 
-                // 描画時に使用される速度、品質、およびスタイルを制御します。 
-                Leadtools.RasterPaintProperties prop = new Leadtools.RasterPaintProperties();
-                prop = Leadtools.RasterPaintProperties.Default;
-                prop.PaintDisplayMode = Leadtools.RasterPaintDisplayModeFlags.Resample;
-                leadImg.PaintProperties = prop;
+            //    // 描画時に使用される速度、品質、およびスタイルを制御します。 
+            //    Leadtools.RasterPaintProperties prop = new Leadtools.RasterPaintProperties();
+            //    prop = Leadtools.RasterPaintProperties.Default;
+            //    prop.PaintDisplayMode = Leadtools.RasterPaintDisplayModeFlags.Resample;
+            //    leadImg.PaintProperties = prop;
 
-                leadImg.Image = cs.Load(tempImgName, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, 1, 1);
+            //    leadImg.Image = cs.Load(tempImgName, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, 1, 1);
 
-                //画像表示倍率設定
-                if (global.miMdlZoomRate == 0f)
-                {
-                    leadImg.ScaleFactor *= global.ZOOM_RATE;
-                }
-                else
-                {
-                    leadImg.ScaleFactor *= global.miMdlZoomRate;
-                }
+            //    //画像表示倍率設定
+            //    if (global.miMdlZoomRate == 0f)
+            //    {
+            //        leadImg.ScaleFactor *= global.ZOOM_RATE;
+            //    }
+            //    else
+            //    {
+            //        leadImg.ScaleFactor *= global.miMdlZoomRate;
+            //    }
 
-                //画像のマウスによる移動を可能とする
-                leadImg.InteractiveMode = Leadtools.WinForms.RasterViewerInteractiveMode.Pan;
+            //    //画像のマウスによる移動を可能とする
+            //    leadImg.InteractiveMode = Leadtools.WinForms.RasterViewerInteractiveMode.Pan;
 
-                // グレースケールに変換
-                Leadtools.ImageProcessing.GrayscaleCommand grayScaleCommand = new Leadtools.ImageProcessing.GrayscaleCommand();
-                grayScaleCommand.BitsPerPixel = 8;
-                grayScaleCommand.Run(leadImg.Image);
-                leadImg.Refresh();
+            //    // グレースケールに変換
+            //    Leadtools.ImageProcessing.GrayscaleCommand grayScaleCommand = new Leadtools.ImageProcessing.GrayscaleCommand();
+            //    grayScaleCommand.BitsPerPixel = 8;
+            //    grayScaleCommand.Run(leadImg.Image);
+            //    leadImg.Refresh();
 
-                cs.Dispose();
-                Leadtools.Codecs.RasterCodecs.Shutdown();
+            //    cs.Dispose();
+            //    Leadtools.Codecs.RasterCodecs.Shutdown();
 
-                // 拡大・縮小ボタンをアクティブにする
-                btnPlus.Enabled = true;
-                btnMinus.Enabled = true;
-            }
-            else
-            {
-                //画像ファイルがないとき
-                lblNoImage.Visible = true;
+            //    // 拡大・縮小ボタンをアクティブにする
+            //    btnPlus.Enabled = true;
+            //    btnMinus.Enabled = true;
+            //}
+            //else
+            //{
+            //    //画像ファイルがないとき
+            //    lblNoImage.Visible = true;
 
-                // 画像操作ボタン
-                btnPlus.Enabled = false;
-                btnMinus.Enabled = false;
+            //    // 画像操作ボタン
+            //    btnPlus.Enabled = false;
+            //    btnMinus.Enabled = false;
 
-                leadImg.Visible = false;
+            //    leadImg.Visible = false;
 
-                // 拡大・縮小ボタンを非アクティブにする
-                btnPlus.Enabled = false;
-                btnMinus.Enabled = false;
-            }
+            //    // 拡大・縮小ボタンを非アクティブにする
+            //    btnPlus.Enabled = false;
+            //    btnMinus.Enabled = false;
+            //}
         }
 
         private void btnPlus_Click(object sender, EventArgs e)
         {
-            if (leadImg.ScaleFactor < global.ZOOM_MAX)
-            {
-                leadImg.ScaleFactor += global.ZOOM_STEP;
-            }
-            global.miMdlZoomRate = (float)leadImg.ScaleFactor;
+            //if (leadImg.ScaleFactor < global.ZOOM_MAX)
+            //{
+            //    leadImg.ScaleFactor += global.ZOOM_STEP;
+            //}
+            //global.miMdlZoomRate = (float)leadImg.ScaleFactor;
         }
 
         private void btnMinus_Click(object sender, EventArgs e)
         {
-            if (leadImg.ScaleFactor > global.ZOOM_MIN)
-            {
-                leadImg.ScaleFactor -= global.ZOOM_STEP;
-            }
-            global.miMdlZoomRate = (float)leadImg.ScaleFactor;
+            //if (leadImg.ScaleFactor > global.ZOOM_MIN)
+            //{
+            //    leadImg.ScaleFactor -= global.ZOOM_STEP;
+            //}
+            //global.miMdlZoomRate = (float)leadImg.ScaleFactor;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -398,12 +510,12 @@ namespace JAFA_DATA.OCR
         private void dispClear()
         {
             // 画像表示初期化
-            leadImg.Visible = false;
+            //leadImg.Visible = false;
 
+            pictureBox1.Image = null;
             button1.Enabled = false;
             button3.Enabled = false;
-            btnPlus.Enabled = false;
-            btnMinus.Enabled = false;
+            trackBar1.Enabled = false;
             dImg = string.Empty;
         }
 
@@ -423,11 +535,22 @@ namespace JAFA_DATA.OCR
         {
             if (e.RowIndex >= 0)
             {
-                ShowImage(dg2[C_Img, e.RowIndex].Value.ToString());
+                // 2018/11/12 コメント化
+                //ShowImage(dg2[C_Img, e.RowIndex].Value.ToString());
+                //button1.Enabled = true;
+                //button3.Enabled = true;
+                //btnPlus.Enabled = true;
+                //btnMinus.Enabled = true;
+                //dImg = dg2[C_Img, e.RowIndex].Value.ToString();
+
+
+                // openCV:2018/10/24
+                showImage_openCv(dg2[C_Img, e.RowIndex].Value.ToString());
+
                 button1.Enabled = true;
                 button3.Enabled = true;
-                btnPlus.Enabled = true;
-                btnMinus.Enabled = true;
+                trackBar1.Enabled = true;
+
                 dImg = dg2[C_Img, e.RowIndex].Value.ToString();
             }
         }
@@ -501,6 +624,14 @@ namespace JAFA_DATA.OCR
                 // 画像表示初期化
                 dispClear();
             }
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            n_width = B_WIDTH + (float)trackBar1.Value * 0.05f;
+            n_height = B_HEIGHT + (float)trackBar1.Value * 0.05f;
+            
+            imgShow(mMat, n_width, n_height);
         }
     }
 }

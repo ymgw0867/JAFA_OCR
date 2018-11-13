@@ -950,7 +950,7 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // 対象月度・社員番号で登録済み勤怠データを削除 : 2018/10/27
-                    jaAdp.DeleteQuerySCodeYYMM(t.年.ToString() + t.月.ToString().PadLeft(2, '0'), t.社員番号.ToString());
+                    jaAdp.DeleteQuerySCodeYYMM(Utility.StrtoInt(t.年.ToString() + t.月.ToString().PadLeft(2, '0')), t.社員番号);
                     
                     // 勤怠データ作成：2018/10/27
                     putJAMateOCRData(t);
@@ -1114,10 +1114,10 @@ namespace JAFA_DATA.Common
                 foreach (var t in h)
                 {
                     // 対象職員コード
-                    string sShoCode = t.社員番号.ToString();
+                    int sShoCode = t.社員番号;
 
                     // 対象月度
-                    string sYYYYMM = global.cnfYear.ToString() + global.cnfMonth.ToString().PadLeft(2, '0');
+                    int sYYYYMM = global.cnfYear * 100 + global.cnfMonth;
 
                     // 勤怠データ更新：2018/10/27
                     jaAdp.UpdateQueryYukyu((int)t.当年付与日数, (decimal)t.当年繰越日数, global.flgOn, sShoCode, sYYYYMM);
@@ -1764,8 +1764,8 @@ namespace JAFA_DATA.Common
             //return jr;
 
             // 勤怠データ新規登録：2018/10/27
-            jaAdp.Insert(r.年.ToString() + r.月.ToString().PadLeft(2, '0'),
-                         r.社員番号.ToString(), r.社員名, r.所属コード.PadLeft(5, '0'),
+            jaAdp.Insert(Utility.StrtoInt(r.年.ToString() + r.月.ToString().PadLeft(2, '0')),
+                         r.社員番号, r.社員名, Utility.StrtoInt(r.所属コード),
                          r.所属名, sSHUKKIN, workTimes, getZangyoTime(r.年, r.月, r.社員番号),(int)workShinya,
                          sKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
                          (kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + kKAKURI + kSONOTA + 
@@ -2026,7 +2026,7 @@ namespace JAFA_DATA.Common
             string[] arrayCsv = null;
 
             // 対象月度
-            string YYYYMM = sYear.ToString() + sMonth.ToString().PadLeft(2, '0');
+            int YYYYMM = sYear * 100 + sMonth;
             
             StringBuilder sb = new StringBuilder();
             int cnt = 0;
@@ -2257,7 +2257,7 @@ namespace JAFA_DATA.Common
                 }
 
                 // 出勤率が80％以上の正社員を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード,
                     out y, out k, out sRT, out dd))
                 {
                     if (s.調整年月日.Month >= 1 && s.調整年月日.Month <= 3)
@@ -2529,7 +2529,7 @@ namespace JAFA_DATA.Common
             foreach (var s in _dts.社員マスター.Where(a => a.調整年月日.Year == nYear && a.調整年月日.Month == nMonth && a.社員区分 == global.SEISHAIN))
             {
                 // 入社から６カ月間の出勤率が80％以上の正社員を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード,
                     out y, out k, out sRT, out dd))
                 {
                     fuyo = global.YUKYUDAYS_AFTER6MONTH;              
@@ -2647,7 +2647,7 @@ namespace JAFA_DATA.Common
                 zfuyo = 0;
 
                 // 出勤率が80％以上の臨時社員・外国人技能実習生を対象とする
-                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード.ToString(),
+                if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード,
                     out y, out k, out sRT, out dd))
                 {
                     // 週所定労働日数
@@ -2852,7 +2852,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     80%以上: true, 80%未満: false</returns>
         /// ----------------------------------------------------------------------
-        private bool getShukinRt(int sYM, int eYM, string sCode, out decimal y, out decimal k, out decimal sRT, out decimal dd)
+        private bool getShukinRt(int sYM, int eYM, int sCode, out decimal y, out decimal k, out decimal sRT, out decimal dd)
         {
             y = 0;
             k = 0;
@@ -2860,7 +2860,7 @@ namespace JAFA_DATA.Common
             dd = 0;
 
             // 対象勤怠データを取得
-            jaAdp.FillBySCodeDateSpan(_dts.勤怠データ, sCode, sYM.ToString(), eYM.ToString());
+            jaAdp.FillBySCodeDateSpan(_dts.勤怠データ, sCode, sYM, eYM);
 
             // 対象期間の勤怠データから日数を取得する
             //foreach (var t in _dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYM && Utility.StrtoInt(a.対象月度) <= eYM && a.対象職員コード == sCode))
@@ -2901,7 +2901,7 @@ namespace JAFA_DATA.Common
 
                     foreach (var t in tbl.DataRange.Rows())
                     {
-                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                        if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
                             (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) >= sYM &&
                             (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) <= eYM)
                         {

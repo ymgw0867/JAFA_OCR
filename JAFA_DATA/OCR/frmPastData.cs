@@ -871,8 +871,8 @@ namespace JAFA_DATA.OCR
 		/// ----------------------------------------------------------------------------
 		private void jaOCRDataUpdate(int sYY, int sMM, int sID)
 		{            
-			string yymm = sYY.ToString() + sMM.ToString().PadLeft(2, '0');
-			string shainID = sID.ToString();
+			int yymm = sYY * 100 + sMM;
+            int shainID = sID;
 			
 			JAFA_OCRDataSet.勤怠データRow t = dts.勤怠データ.Single(a => a.対象月度 == yymm && a.対象職員コード == shainID);
 

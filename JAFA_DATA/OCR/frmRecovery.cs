@@ -31,7 +31,7 @@ namespace JAFA_DATA.OCR
         const int MODE_SHORIZUMI = 7;                   // 月間処理済み
         const int MODE_MISHORI = 8;                     // 月間未処理
 
-        string appName = "メイト出勤簿処理実施状況";      // アプリケーション表題
+        string appName = "出勤簿処理実施状況";      // アプリケーション表題
 
         JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
         JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter mAdp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
@@ -385,13 +385,13 @@ namespace JAFA_DATA.OCR
 
                     // 当月処理済み（JAメイトOCRデータ作成済み）か調べる
                     string kymd = string.Empty;
-                    string yymm = txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0');
-                    string sNum = t.職員コード.ToString();
+                    int yymm = Utility.StrtoInt(txtYear.Text) * 100 + Utility.StrtoInt(txtMonth.Text.Trim());
+                    int sNum = t.職員コード;
 
                     if (dts.勤怠データ.Any(a => a.対象月度 == yymm && a.対象職員コード == sNum))
                     {
                         // 過去勤務票ヘッダデータを取得：2018/11/12
-                        phAdp.FillByYYMMSCode(dts.過去勤務票ヘッダ, Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text), Utility.StrtoInt(sNum));
+                        phAdp.FillByYYMMSCode(dts.過去勤務票ヘッダ, Utility.StrtoInt(txtYear.Text), Utility.StrtoInt(txtMonth.Text), sNum);
 
                         var k = dts.過去勤務票ヘッダ.Where(a => a.年 == Utility.StrtoInt(txtYear.Text) &&
                             a.月 == Utility.StrtoInt(txtMonth.Text) && a.社員番号 == t.職員コード);
@@ -624,7 +624,7 @@ namespace JAFA_DATA.OCR
         {
             g[0, iX].Value = t.所属コード.ToString();
             g[1, iX].Value = t.所属名;
-            g[2, iX].Value = t.職員コード.ToString().PadLeft(5, '0');
+            g[2, iX].Value = t.職員コード.ToString();
             g[3, iX].Value = t.氏名;
         }
 
@@ -682,7 +682,7 @@ namespace JAFA_DATA.OCR
 
         private void btnSel_Click(object sender, EventArgs e)
         {
-            string yymm = txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0');
+            int yymm = Utility.StrtoInt(txtYear.Text + txtMonth.Text.Trim().PadLeft(2, '0'));
             jaAdp.FillByDateSpan(dts.勤怠データ, yymm, yymm);
 
             DataSelect(comboBox1.SelectedIndex);

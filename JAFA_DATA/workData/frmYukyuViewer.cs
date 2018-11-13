@@ -277,18 +277,21 @@ namespace JAFA_DATA.workData
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                int sYYMM = Utility.StrtoInt(sYY.ToString() + sMM.ToString().PadLeft(2, '0'));
-                int eYYMM = Utility.StrtoInt(eYY.ToString() + eMM.ToString().PadLeft(2, '0'));
+                //int sYYMM = Utility.StrtoInt(sYY.ToString() + sMM.ToString().PadLeft(2, '0'));
+                //int eYYMM = Utility.StrtoInt(eYY.ToString() + eMM.ToString().PadLeft(2, '0'));
 
-                adp.FillByDateSpan(dts.勤怠データ, sYYMM.ToString(), eYYMM.ToString()); // 2018/11/11
-                var s = dts.勤怠データ.Where(a => Utility.StrtoInt(a.対象月度) >= sYYMM && Utility.StrtoInt(a.対象月度) <= eYYMM)
+                int sYYMM = sYY * 100 + sMM;
+                int eYYMM = eYY * 100 + eMM;
+
+                adp.FillByDateSpan(dts.勤怠データ, sYYMM, eYYMM); // 2018/11/11
+                var s = dts.勤怠データ.Where(a => a.対象月度 >= sYYMM && a.対象月度 <= eYYMM)
                                            .OrderBy(a => a.対象職員コード)
                                            .ThenBy(a => a.対象月度);
                 
                 // 社員番号
                 if (txtShainNum.Text != string.Empty)
                 {
-                    s = s.Where(a => Utility.StrtoInt(a.対象職員コード) == Utility.StrtoInt(txtShainNum.Text))
+                    s = s.Where(a => a.対象職員コード == Utility.StrtoInt(txtShainNum.Text))
                                            .OrderBy(a => a.対象職員コード)
                                            .ThenBy(a => a.対象月度);
                 }
@@ -296,13 +299,13 @@ namespace JAFA_DATA.workData
                 g.Rows.Clear();
                 int i = 0;
 
-                string shokuCode = string.Empty;
+                int shokuCode = 0;
 
                 foreach (var t in s)
                 {
                     g.Rows.Add();
-                    g[colYear, i].Value = t.対象月度.Substring(0, 4);
-                    g[colMonth, i].Value = t.対象月度.Substring(4, 2);
+                    g[colYear, i].Value = t.対象月度.ToString().Substring(0, 4);
+                    g[colMonth, i].Value = t.対象月度.ToString().Substring(4, 2);
                     g[colShokuin, i].Value = t.対象職員コード.ToString();
                     g[colShokuinName, i].Value = t.対象職員名;
                     g[colSzCode, i].Value = t.対象職員所属コード.ToString();
@@ -327,14 +330,14 @@ namespace JAFA_DATA.workData
                         }
 
                         // 当年初有休残日数取得
-                        sZan = getNenshozan(t.対象職員コード.ToString(), Utility.StrtoInt(t.対象月度), yfMonth, out sNen, out sTsuki);
+                        sZan = getNenshozan(t.対象職員コード.ToString(), t.対象月度, yfMonth, out sNen, out sTsuki);
 
                         // 当月が有給付与月以外のとき
-                        if (t.対象月度.Substring(4, 2) != yfMonth.ToString())
+                        if (t.対象月度.ToString().Substring(4, 2) != yfMonth.ToString())
                         {
                             // 当年初～表示前月までの消化日数を取得
                             int sSNenTsuki = sNen * 100 + sTsuki;
-                            int sENenTsuki = Utility.StrtoInt(t.対象月度) - 1;
+                            int sENenTsuki = t.対象月度 - 1;
                             if ((sENenTsuki % 100) == 0)
                             {
                                 int y = (sENenTsuki / 100) - 1;
@@ -379,16 +382,17 @@ namespace JAFA_DATA.workData
                     if (t.有休付与対象フラグ == global.flgOn)
                     {
                         // 出勤率を取得
-                        int yy = Utility.StrtoInt(t.対象月度.Substring(0, 4));
-                        int mm = Utility.StrtoInt(t.対象月度.Substring(4, 2)) + 1;
+                        int yy = Utility.StrtoInt(t.対象月度.ToString().Substring(0, 4));
+                        int mm = Utility.StrtoInt(t.対象月度.ToString().Substring(4, 2)) + 1;
+
                         if (mm > 12)
                         {
                             yy++;
                             mm -= 12;
                         }
 
-                        fAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, Utility.StrtoInt(t.対象職員コード), yy, mm);  // 2018/11/11
-                        var fu = dts.有給休暇付与マスター.Where(a => a.社員番号 == Utility.StrtoInt(t.対象職員コード) &&
+                        fAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, t.対象職員コード, yy, mm);  // 2018/11/11
+                        var fu = dts.有給休暇付与マスター.Where(a => a.社員番号 == t.対象職員コード &&
                                                               a.年 == yy && a.月 == mm);
                         foreach (var item in fu)
                         {
@@ -542,14 +546,14 @@ namespace JAFA_DATA.workData
         /// <returns>
         ///     消化日数</returns>
         /// -----------------------------------------------------------------------------
-        private double getShoukaNissu(string sCode, int sYYMM, int eYYMM)
+        private double getShoukaNissu(int sCode, int sYYMM, int eYYMM)
         {
             double sNissu = 0;
             bool sFms = false;
 
             foreach (var t in dts.勤怠データ.Where(a => a.対象職員コード == sCode))
             {
-                if (Utility.StrtoInt(t.対象月度) >= sYYMM && Utility.StrtoInt(t.対象月度) <= eYYMM)
+                if (t.対象月度 >= sYYMM && t.対象月度 <= eYYMM)
                 {
                     sNissu += (double)(t.有給休暇 + t.有給半日);
                     sFms = true;
@@ -587,7 +591,7 @@ namespace JAFA_DATA.workData
 
                     foreach (var t in tbl.DataRange.Rows())
                     {
-                        if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
+                        if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
                             (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) >= sYYMM &&
                             (Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value))) <= eYYMM)
                         {
