@@ -53,7 +53,7 @@ namespace JAFA_DATA.Master
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            frmMateImportXls frm = new frmMateImportXls();
+            frmShainImportXls frm = new frmShainImportXls();
             frm.ShowDialog();
             this.Show();
         }

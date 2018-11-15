@@ -163,11 +163,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>JAFA_OCRDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Master\frmMateImportXls.cs">
+    <Compile Include="Master\frmShainImportXls.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Master\frmMateImportXls.Designer.cs">
-      <DependentUpon>frmMateImportXls.cs</DependentUpon>
+    <Compile Include="Master\frmShainImportXls.Designer.cs">
+      <DependentUpon>frmShainImportXls.cs</DependentUpon>
     </Compile>
     <Compile Include="Master\frmMsMenu.cs">
       <SubType>Form</SubType>
@@ -321,8 +321,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Master\frmMateImportXls.resx">
-      <DependentUpon>frmMateImportXls.cs</DependentUpon>
+    <EmbeddedResource Include="Master\frmShainImportXls.resx">
+      <DependentUpon>frmShainImportXls.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Master\frmMsMenu.resx">
       <DependentUpon>frmMsMenu.cs</DependentUpon>
