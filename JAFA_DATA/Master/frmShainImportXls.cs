@@ -17,13 +17,8 @@ namespace JAFA_DATA.Master
         public frmShainImportXls()
         {
             InitializeComponent();
-
-            adp.Fill(dts.社員マスター);
         }
 
-        JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
-        JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
-        
         #region // エクセルシートデータ列定義
         const int COL_CODE = 1;         // 職員コード
         const int COL_NAME = 2;         // 氏名
@@ -102,8 +97,13 @@ namespace JAFA_DATA.Master
         /// ------------------------------------------------------------------
         private void addMateData(string xlsFile)
         {
+            JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
+            JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
+            
             try
             {
+                adp.Fill(dts.社員マスター);
+
                 int cnt = 0;
 
                 //マウスポインタを待機にする
@@ -195,7 +195,13 @@ namespace JAFA_DATA.Master
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Excelファイルより差分登録
             masterUpdate();
+
+            // 入社時有給休暇日数をマスター登録する
+            this.Cursor = Cursors.WaitCursor;
+            Utility.setInitialYukyu();
+            this.Cursor = Cursors.Default;
 
             // 終了
             this.Close();
@@ -211,37 +217,10 @@ namespace JAFA_DATA.Master
 
             string sMsg = "差分登録";
 
-            //if (s == sOVERWRITE)
-            //{
-            //    // 一括上書き
-            //    sMsg = "一括上書き";
-            //}
-            //else if (s == sADD)
-            //{
-            //    // 差分登録
-            //    sMsg = "差分登録";
-            //}
-
-            //// 差分登録
-            //sMsg = "差分登録";
-
             if (MessageBox.Show(label1.Text + "で社員マスターへ" + sMsg + "します。よろしいですか", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
             {
                 return;
             }
-
-            //if (s == sOVERWRITE)
-            //{
-            //    // 一括上書き
-            //    Common.frmPrg frm = new frmPrg();
-            //    CsvToMdb(label1.Text); 
-
-            //}
-            //else if (s == sADD)
-            //{
-            //    // 差分登録
-            //    addMateData(label1.Text);
-            //}
 
             // 差分登録
             addMateData(label1.Text);
@@ -271,150 +250,6 @@ namespace JAFA_DATA.Master
         private void rBtn1_Click(object sender, EventArgs e)
         {
             button1.Enabled = true;
-        }
-
-
-        /// -------------------------------------------------------------------
-        /// <summary>
-        ///     CSVファイルインポート </summary>
-        /// <param name="_InPath">
-        ///     CSVファイルパス</param>
-        /// -------------------------------------------------------------------
-        public void CsvToMdb(string _InPath)
-        {
-            string headerKey = string.Empty;    // ヘッダキー
-            int cnt = 0;
-
-            try
-            {
-                // CSVファイルインポート
-                var s = System.IO.File.ReadAllLines(_InPath, Encoding.Default);
-                foreach (var stBuffer in s)
-                {
-                    // カンマ区切りで分割して配列に格納する
-                    string[] stCSV = stBuffer.Split(',');
-                        
-                    // 職員コード
-                    if (Utility.StrtoInt(stCSV[0]) == 0)
-                    {
-                        continue;
-                    }
-
-                    // マスター更新
-                    upMateData(stCSV);
-                    cnt++;
-                }
-
-                // データベースへ反映
-                adp.Update(dts.社員マスター);
-
-                // 終了
-                MessageBox.Show(cnt.ToString() + "件、処理しました。");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "CSVインポート処理", MessageBoxButtons.OK);
-            }
-            finally
-            {
-            }
-        }
-
-        /// ---------------------------------------------------------------
-        /// <summary>
-        ///     社員マスター更新 </summary>
-        /// <param name="c">
-        ///     CSVデータ配列</param>
-        /// ---------------------------------------------------------------
-        private void upMateData(string [] c)
-        {
-            int sCode = Utility.StrtoInt(c[0]);
-
-            if (dts.社員マスター.Any(a => a.職員コード == sCode))
-            {
-                // 登録済みのとき：上書き更新
-                sOverWriteMaster(sCode, c);
-            }
-            else
-            {
-                // 新規登録
-                sAddMaster(sCode, c);
-            }
-        }
-
-        /// ---------------------------------------------------------------
-        /// <summary>
-        ///     社員マスターレコード上書き </summary>
-        /// <param name="sCode">
-        ///     職員コード</param>
-        /// <param name="c">
-        ///     CSVデータ配列</param>
-        /// ---------------------------------------------------------------
-        private void sOverWriteMaster(int sCode, string [] c)
-        {
-            JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.Single(a => a.職員コード == sCode);
-
-            setMasterRow(r, c);
-        }
-
-        /// ---------------------------------------------------------------
-        /// <summary>
-        ///     社員マスターレコード追加 </summary>
-        /// <param name="sCode">
-        ///     職員コード</param>
-        /// <param name="c">
-        ///     CSVデータ配列</param>
-        /// ---------------------------------------------------------------
-        private void sAddMaster(int sCode, string[] c)
-        {
-            JAFA_OCRDataSet.社員マスターRow r = dts.社員マスター.New社員マスターRow();
-
-            r.職員コード = sCode;
-            dts.社員マスター.Add社員マスターRow(setMasterRow(r, c));
-        }
-
-        /// ----------------------------------------------------------------------------
-        /// <summary>
-        ///     社員マスターレコードにデータをセットする </summary>
-        /// <param name="r">
-        ///     JAHR_OCRDataSet.社員マスターRow </param>
-        /// <param name="c">
-        ///     CSVデータ配列</param>
-        /// <returns>
-        ///     JAHR_OCRDataSet.社員マスターRow</returns>
-        /// ----------------------------------------------------------------------------
-        private JAFA_OCRDataSet.社員マスターRow setMasterRow(JAFA_OCRDataSet.社員マスターRow r, string[] c)
-        {
-            DateTime dt;
-
-            r.氏名 = c[1];
-            r.フリガナ = c[2];
-            r.所属コード = Utility.StrtoInt(c[3]);
-            r.所属名 = c[4];
-
-            if (DateTime.TryParse(c[5], out dt))
-            {
-                r.入所年月日 = dt;
-            }
-
-            if (DateTime.TryParse(c[6], out dt))
-            {
-                r.調整年月日 = dt;
-            }
-
-            if (DateTime.TryParse(c[7], out dt))
-            {
-                r.退職年月日 = dt;
-            }
-
-            r.週所定労働日数 = Utility.StrtoInt(c[8]);
-            r.退職区分 = Utility.StrtoInt(c[9]);
-            //r.週開始曜日 = Utility.StrtoInt(c[10]);    // 2018/10/22 コメント化
-            r.有給付与月 = Utility.StrtoInt(c[11]);
-            r.備考 = c[12];
-            r.更新年月日 = DateTime.Now;
-
-            return r;
-        }
+        }        
     }
 }

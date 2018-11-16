@@ -1200,7 +1200,7 @@ namespace JAFA_DATA.OCR
                     // JAメイト年休取得データ(mdb)作成 : 2018/10/27
                     kd.saveJAMateNenkyuData();
 
-                    // JAメイトOCRデータ(mdb)作成
+                    // 勤怠データ作成
                     kd.saveJAMateOCRData();
 
                     /* 有給休暇付与日数計算・有給付与マスター・有休付与データ登録：
@@ -1216,9 +1216,12 @@ namespace JAFA_DATA.OCR
                     /* 有給休暇付与日数計算・有給付与マスター・有休付与データ登録：
                      * 正社員：４月付与
                      */
-                    kd.sumYukyu04Month();
+                    if (global.cnfMonth == 3)
+                    {
+                        kd.sumYukyu04Month();
+                    }
 
-                    // JAメイトOCRデータ(mdb)に有給付与情報を書き込み
+                    // 勤怠データに有給付与情報を書き込み
                     kd.saveJAMateOCRYukyu();
 
                     //// JAメイト年休取得データ CSVファイル出力：2018/11/02 コメント化
@@ -1248,11 +1251,6 @@ namespace JAFA_DATA.OCR
 
                     // 確定勤務票データ削除
                     //deleteDataAll();
-
-
-                    //////////////////////// 2018/11/12 ここまで  ////////////////////
-
-                    // ↓↓↓↓↓↓↓↓↓↓↓↓ 次回ここから　↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
                     // MDBファイル最適化
                     mdbCompact();
@@ -1496,6 +1494,13 @@ namespace JAFA_DATA.OCR
                 string OldDb = Properties.Settings.Default.mdbOlePath;
                 string NewDb = Properties.Settings.Default.mdbPathTemp;
 
+                // 一時ファイルが存在しているとき削除する：2018/11/16
+                if (System.IO.File.Exists(Properties.Settings.Default.mdbPath + global.MDBTEMP))
+                {
+                    System.IO.File.Delete(Properties.Settings.Default.mdbPath + global.MDBTEMP);
+                }
+
+                // 最適化した結果を一時ファイルに出力
                 jro.CompactDatabase(OldDb, NewDb);
 
                 //今までのバックアップファイルを削除する

@@ -133,13 +133,6 @@ namespace JAFA_DATA
             frm.ShowDialog();
             this.Show();
         }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            JAFA_OCRDataSet dts = new JAFA_DATA.JAFA_OCRDataSet();
-            JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter adp = new JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter();
-            int cc = Utility.StrtoInt(Utility.NulltoStr(adp.ScalarQuerySCodeYYMM_ov8Shinya(5025, 29, 9)));
-            MessageBox.Show(cc.ToString());
-        }
+        
     }
 }

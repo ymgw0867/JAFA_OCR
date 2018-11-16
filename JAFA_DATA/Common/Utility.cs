@@ -781,5 +781,46 @@ namespace JAFA_DATA.Common
             System.Text.Encoding enc = new System.Text.UTF8Encoding(false);
             File.WriteAllLines(outFileName, arrayData, enc);
         }
+
+
+        ///--------------------------------------------------------------------------
+        /// <summary>
+        ///     正社員入社時有給休暇日数を有給休暇付与マスターに登録する </summary>
+        ///--------------------------------------------------------------------------
+        public static void setInitialYukyu()
+        {
+            JAFA_OCRDataSet dts = new JAFA_DATA.JAFA_OCRDataSet();
+            JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter adp = new JAFA_OCRDataSetTableAdapters.社員マスターTableAdapter();
+            JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
+
+            try
+            {
+                // 正社員が対象
+                adp.FillByShainkbn(dts.社員マスター, 1);
+
+                foreach (var t in dts.社員マスター.Where(a => a.退職区分 == global.flgOff))
+                {
+                    // 入社時有給休暇日数が有給休暇付与マスター登録済みか調べる
+                    if (yAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, t.職員コード, t.調整年月日.Year, t.調整年月日.Month) == 0)
+                    {
+                        // 未登録のとき入社時有給休暇日数を有給休暇付与マスターに登録する
+                        yAdp.InsertQuery(t.職員コード, t.調整年月日.Year, t.調整年月日.Month,
+                                         0, 0, global.YUKYUDAYS_NYUSHO, 0, global.YUKYUDAYS_NYUSHO, t.調整年月日, t.調整年月日,
+                                         0, 0, 0, DateTime.Now);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                adp.Dispose();
+                yAdp.Dispose();
+                dts.Dispose();
+            }
+        }
     }
 }

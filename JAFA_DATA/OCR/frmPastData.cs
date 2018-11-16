@@ -1220,8 +1220,9 @@ namespace JAFA_DATA.OCR
 		private void dGV_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			// 画像表示
-			ShowImage(global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString());
-		}
+			//ShowImage(global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString());
+			showImage_openCv(global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString());
+        }
 
 		private void button1_Click(object sender, EventArgs e)
 		{

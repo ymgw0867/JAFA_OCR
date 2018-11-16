@@ -23,7 +23,7 @@ namespace JAFA_DATA.Common
         //private const string CSVFILENAME = "JAメイトOCRデータ";
         //private const string CSVNENKYUNAME = "JAメイト年休取得データ";
 
-        private const string CSVFILENAME = "JAメイトOCRデータ";
+        private const string CSVFILENAME = "Big給与計算Pro勤怠データ";
         private const string CSVNENKYUNAME = "Big給与計算Pro有休付与データ";
 
         JAFA_OCRDataSet _dts = new JAFA_OCRDataSet();
@@ -928,7 +928,7 @@ namespace JAFA_DATA.Common
 
         ///--------------------------------------------------------------------------------------
         /// <summary>
-        ///     JAメイトOCRデータ作成(mdb)</summary>
+        ///     勤怠データ作成(mdb)</summary>
         ///--------------------------------------------------------------------------------------     
         public void saveJAMateOCRData()
         {
@@ -959,7 +959,7 @@ namespace JAFA_DATA.Common
                     Application.DoEvents();
 
                     // プログレスバー表示
-                    frmP.Text = "ＪＡ仕様勤怠データ(MDB)作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.Text = "勤怠データ作成中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
                     frmP.progressValue = rCnt * 100 / h.Count();
                     frmP.ProgressStep();
 
@@ -996,7 +996,7 @@ namespace JAFA_DATA.Common
             }
             catch (Exception e)
             {
-                MessageBox.Show("勤怠データ(MDB)作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
+                MessageBox.Show("勤怠データ作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
             }
             finally
             {
@@ -1082,7 +1082,7 @@ namespace JAFA_DATA.Common
 
         ///--------------------------------------------------------------------------------------
         /// <summary>
-        ///     JAメイトOCRデータ作成(mdb)に有給付与データを書き込む</summary>
+        ///     勤怠データに有給付与データを書き込む</summary>
         ///--------------------------------------------------------------------------------------     
         public void saveJAMateOCRYukyu()
         {
@@ -1126,7 +1126,7 @@ namespace JAFA_DATA.Common
                     Application.DoEvents();
 
                     // プログレスバー表示
-                    frmP.Text = "JAメイトOCRデータ(MDB)に有休付与データを書き込み中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
+                    frmP.Text = "勤怠データに有休付与データを書き込み中です・・・" + rCnt.ToString() + "/" + h.Count().ToString();
                     frmP.progressValue = rCnt * 100 / h.Count();
                     frmP.ProgressStep();
 
@@ -1154,7 +1154,7 @@ namespace JAFA_DATA.Common
             }
             catch (Exception e)
             {
-                MessageBox.Show("JAメイトOCRデータ(MDB)作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
+                MessageBox.Show("勤怠データ作成中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
             }
             finally
             {
@@ -2226,7 +2226,8 @@ namespace JAFA_DATA.Common
             decimal wYY = 0;
 
             // 有休付与対象者抽出：正社員 2018/10/22
-            foreach (var s in _dts.社員マスター.Where(a => a.調整年月日 <= nDate && a.社員区分 == global.SEISHAIN))
+            foreach (var s in _dts.社員マスター.Where(a => a.調整年月日 <= nDate && 
+                                                     a.社員区分 == global.SEISHAIN))
             {
                 zfuyo = 0;
 
@@ -2243,27 +2244,39 @@ namespace JAFA_DATA.Common
                 {
                     // 勤続1年のとき、半年経過時付与月以降
 
-                    // 有給休暇付与マスターのレコードが存在するか
-                    if (ymsAdp.FillBySCode(_dts.有給休暇付与マスター, s.職員コード) > 0)
-                    {
-                        // 最近の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
-                        foreach (var z in _dts.有給休暇付与マスター
-                            .Where(a => (a.年 * 100 + a.月) != (fYear * 100 + fMonth))
-                            .OrderBy(a => a.年).ThenBy(a => a.月))
-                        {
-                            sYYYYMM = (z.年 * 100 + z.月).ToString();
-                        }
-                    }
+                    // 2018/11/16 コメント化
+                    //// 有給休暇付与マスターのレコードが存在するか
+                    //if (ymsAdp.FillBySCode(_dts.有給休暇付与マスター, s.職員コード) > 0)
+                    //{
+                    //    // 最近の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                    //    foreach (var z in _dts.有給休暇付与マスター
+                    //        .Where(a => (a.年 * 100 + a.月) != (fYear * 100 + fMonth))
+                    //        .OrderBy(a => a.年).ThenBy(a => a.月))
+                    //    {
+                    //        // ループしているため結果的に一番最近の付与年月が取得される
+                    //        sYYYYMM = (z.年 * 100 + z.月).ToString();
+                    //    }
+                    //}
+
+                    // 調整年月日と算定開始月の配列
+                    // 順に1月[0]～12月[11]、要素(1)が算定開始月、要素(2)が前年(1)当年(0)を表す
+                    int[,] sMonthly = { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 10 ,1 }, { 11, 1 }, { 12, 1 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 10, 1 }, { 11, 1 }, { 12, 1} };
+                    
+                    // 調整年月日の月で判断
+                    sYYYYMM = ((fYear - sMonthly[s.調整年月日.Month - 1, 1]) * 100 + sMonthly[s.調整年月日.Month - 1, 0]).ToString();
                 }
 
                 // 出勤率が80％以上の正社員を対象とする
                 if (getShukinRt(Utility.StrtoInt(sYYYYMM), Utility.StrtoInt(eYYYYMM), s.職員コード,
                     out y, out k, out sRT, out dd))
                 {
-                    if (s.調整年月日.Month >= 1 && s.調整年月日.Month <= 3)
+                    if (fYear == s.調整年月日.Year)
                     {
-                        // １月から３月入所は１年繰り上げ
-                        wYY++;
+                        if (s.調整年月日.Month >= 1 && s.調整年月日.Month <= 3)
+                        {
+                            // 当年の１月から３月入所は１年繰り上げ
+                            wYY++;
+                        }
                     }
 
                     // 勤続８年以降は７年にまとめる
@@ -2303,16 +2316,18 @@ namespace JAFA_DATA.Common
                 decimal kurikoshi = 0;  // 繰越日数
 
                 // 勤続1年：2018/11/09
-                if (wYY == global.flgOn)
+                if (wYY <= global.flgOn)
                 {
                     // 有給休暇付与マスターのレコードが存在するか
                     if (ymsAdp.FillBySCode(_dts.有給休暇付与マスター, s.職員コード) > 0)
                     {
-                        // 最近の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                        // 有給休暇付与マスターより前回の年初有給残日数（当年初有給残日数）を求めます
+                        // ※ 入社時または６ヶ月経過時の有給休暇付与実績を取得
                         foreach (var z in _dts.有給休暇付与マスター
                             .Where(a => (a.年 * 100 + a.月) != (fYear * 100 + fMonth))
                             .OrderBy(a => a.年).ThenBy(a => a.月))
                         {
+                            // ループしているため結果的に一番最近の付与情報が取得される
                             zenNensho = (decimal)z.当年初有給残日数;
 
                             // 繰越日数は前年の付与実績から求める：2015/09/30
@@ -2321,7 +2336,7 @@ namespace JAFA_DATA.Common
                     }
                     else if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
                     {
-                        // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+                        // 有給付与マスター.xlsxシートより前回の年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
                         using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
                         {
                             var sheet1 = book.Worksheet(1);
@@ -2329,16 +2344,13 @@ namespace JAFA_DATA.Common
 
                             foreach (var t in tbl.DataRange.Rows())
                             {
-                                if (s.職員コード == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
-                                    (fYear - 1) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) &&
-                                    fMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                                if (s.職員コード == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
                                 {
+                                    // ループしているため結果的に一番最近の付与情報が取得される
                                     zenNensho = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
 
                                     // 繰越日数は前年の付与実績から求める
                                     zfuyo = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
-
-                                    break;
                                 }
                             }
 
@@ -2351,10 +2363,10 @@ namespace JAFA_DATA.Common
                 // 勤続2年目以降：2018/11/09
                 if (wYY > 1)
                 {
-                    // 前年の有給休暇付与マスターのレコードが存在するか
+                    // 前年４月の有給休暇付与マスターのレコードが存在するか
                     if (ymsAdp.FillBySCodeYYMM(_dts.有給休暇付与マスター, s.職員コード, fYear - 1, fMonth) > 0)
                     {
-                        // 前年の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
+                        // 前年４月の有給休暇付与マスターより前年初有給残日数（当年初有給残日数）を求めます
                         foreach (var z in _dts.有給休暇付与マスター)
                         {
                             zenNensho = (decimal)z.当年初有給残日数;
@@ -2367,7 +2379,7 @@ namespace JAFA_DATA.Common
                     }
                     else if(System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
                     {
-                        // 有給付与マスター.xlsxシートより前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+                        // 有給付与マスター.xlsxシートより前年４月付与時の前年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
                         using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
                         {
                             var sheet1 = book.Worksheet(1);
@@ -2639,10 +2651,8 @@ namespace JAFA_DATA.Common
             decimal dd;      // 有休＋半休日数
 
             // 有休付与対象者抽出：臨時社員・外国人技能実習生 2018/10/22
-            foreach (var s in _dts.社員マスター
-                .Where(a => a.有給付与月 == fMonth &&
-                           (a.社員区分 == global.RINJISHAIN ||
-                            a.社員区分 == global.GAIKOKUJINGINOU)))
+            foreach (var s in _dts.社員マスター.Where(a => a.有給付与月 == fMonth &&
+                           (a.社員区分 == global.RINJISHAIN || a.社員区分 == global.GAIKOKUJINGINOU)))
             {
                 zfuyo = 0;
 
@@ -2654,12 +2664,13 @@ namespace JAFA_DATA.Common
                     int wDays = s.週所定労働日数;
 
                     // 勤続年数
-                    //decimal wYY = fYear - s.調整年月日.Year - 1 + 0.5M;
                     decimal wYY = fYear - s.調整年月日.Year;
+
                     if (fMonth < s.調整年月日.Month)
                     {
                         wYY--;
                     }
+
                     wYY += 0.5M;
 
                     // 有休付与日数取得                
@@ -2834,7 +2845,8 @@ namespace JAFA_DATA.Common
 
         /// ----------------------------------------------------------------------
         /// <summary>
-        ///     出勤率が80%以上か調べて算定期間中の「要出勤日数」「欠勤日数」「出勤率」「有休+半休」を返す</summary>
+        ///     出勤率が80%以上か調べて算定期間中の「要出勤日数」「欠勤日数」「出勤率」
+        ///     「有休+半休」を返す</summary>
         /// <param name="sYM">
         ///     算定開始年月 YYYYMM</param>
         /// <param name="eYM">

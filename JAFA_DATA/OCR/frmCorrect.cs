@@ -1550,6 +1550,13 @@ namespace JAFA_DATA.OCR
                 string OldDb = Properties.Settings.Default.mdbOlePath;
                 string NewDb = Properties.Settings.Default.mdbPathTemp;
 
+                // 一時ファイルが存在しているとき削除する：2018/11/16
+                if (System.IO.File.Exists(Properties.Settings.Default.mdbPath + global.MDBTEMP))
+                {
+                    System.IO.File.Delete(Properties.Settings.Default.mdbPath + global.MDBTEMP);
+                }
+
+                // 最適化した結果を一時ファイルに出力
                 jro.CompactDatabase(OldDb, NewDb);
 
                 //今までのバックアップファイルを削除する
