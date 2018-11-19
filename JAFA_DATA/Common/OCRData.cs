@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.OleDb;
 using System.IO;
-using LinqToExcel;
+//using LinqToExcel;
 using ClosedXML.Excel;
 
 namespace JAFA_DATA.Common

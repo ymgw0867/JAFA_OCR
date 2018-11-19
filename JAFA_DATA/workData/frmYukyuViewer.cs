@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using JAFA_DATA.Common;
-using LinqToExcel;
+//using LinqToExcel;
 using ClosedXML.Excel;
 
 namespace JAFA_DATA.workData
@@ -515,14 +515,12 @@ namespace JAFA_DATA.workData
 
                         foreach (var t in tbl.DataRange.Rows())
                         {
-                            if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)) &&
-                                sYear == Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value)) &&
-                                sFyMonth == Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value)))
+                            if (Utility.StrtoInt(sCode) == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
                             {
+                                // ループで最後の情報を取得(一番最近の付与情報）: 2018/11/19
                                 zan = Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
-                                sNen = sYear;
-                                sTsuki = sFyMonth;
-                                break;
+                                sNen = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+                                sTsuki = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
                             }
                         }
 

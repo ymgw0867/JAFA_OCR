@@ -67,6 +67,9 @@
             // 
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
             this.dg1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dg1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dg1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg1.Location = new System.Drawing.Point(16, 66);
             this.dg1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -80,6 +83,7 @@
             // 
             // btnRtn
             // 
+            this.btnRtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRtn.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.btnRtn.Location = new System.Drawing.Point(1030, 650);
             this.btnRtn.Margin = new System.Windows.Forms.Padding(4);
@@ -228,6 +232,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button1.Location = new System.Drawing.Point(907, 650);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
