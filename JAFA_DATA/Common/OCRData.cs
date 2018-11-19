@@ -191,10 +191,11 @@ namespace JAFA_DATA.Common
         #endregion
 
         #region 出勤区分定数
-        const string SHUKIN_SHUKIN = "1";       // 出勤
-        const string SHUKIN_YUKYU = "2";        // 有休
-        const string SHUKIN_HANKYU = "3";       // 半休
-        const string SHUKIN_KYUSHU = "5";       // 休日出勤
+        const string SHUKIN_SHUKIN = "1";           // 出勤
+        const string SHUKIN_YUKYU = "2";            // 有休
+        const string SHUKIN_HANKYU = "3";           // 半休
+        const string SHUKIN_KYUSHU = "5";           // 休日出勤
+        const string SHUKIN_HOUTEIKYUSHU = "20";    // 法定休日出勤 2018/11/18
         #endregion
 
         // 週日数 ：月最初の週開始曜日以降
@@ -595,44 +596,6 @@ namespace JAFA_DATA.Common
         ///-----------------------------------------------------------------------------------------------
         public Boolean errCheckMain(int sIx, int eIx, Form frm, JAFA_OCRDataSet dts)
         {
-            // 有給休暇残日数チェック用 2015/07/02
-            //yAdp.Fill(dts.有給休暇付与マスター);    // 2018/10/26 コメント化
-            //kAdp.Fill(dts.勤怠データ);             // 2018/10/26 コメント化
-
-            // 以下、コメント化 2018/10/26
-            //// linqToExcel : excel過去１年間有給取得シート
-            //if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
-            //{
-            //    // ターゲットのエクセルファイルが存在するとき
-            //    var excel = new ExcelQueryFactory(Properties.Settings.Default.exlMounthPath);
-            //    excel.ReadOnly = true;
-            //    excel.AddMapping<exlMntData>(m => m.sCode, "職員コード");
-            //    excel.AddMapping<exlMntData>(m => m.sName, "氏名");
-            //    excel.AddMapping<exlMntData>(m => m.sYYMM, "年月");
-            //    excel.AddMapping<exlMntData>(m => m.sYouDay, "要出勤日数");
-            //    excel.AddMapping<exlMntData>(m => m.sKekkin, "欠勤");
-            //    excel.AddMapping<exlMntData>(m => m.sDay, "有給休暇");
-            //    excel.AddMapping<exlMntData>(m => m.sHan, "半休");
-            //    excel.AddMapping<exlMntData>(m => m.sTotal, "合計");
-            //    workSheet = excel.Worksheet<exlMntData>("sheet1");
-            //}
-
-            //// linqToExcel : excel前年有休付与日数シート
-            //if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
-            //{
-            //    // ターゲットのエクセルファイルが存在するとき
-            //    var excelMst = new ExcelQueryFactory(Properties.Settings.Default.exlYukyuMstPath);
-            //    excelMst.ReadOnly = true;
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sCode, "職員コード");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sName, "氏名");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sYY, "年");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sMM, "月");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sFuyo, "当年付与日数");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sKurikoshi, "当年繰越日数");
-            //    excelMst.AddMapping<exlYukyuMst>(m => m.sNensho, "当年初有給残");
-            //    mstSheet = excelMst.Worksheet<exlYukyuMst>("sheet1");
-            //}
-
             int rCnt = 0;
 
             // オーナーフォームを無効にする
@@ -900,32 +863,34 @@ namespace JAFA_DATA.Common
                 string skbn = Utility.StrtoInt(m.出勤区分).ToString();
                 if (skbn == "0") skbn = string.Empty;
 
-                // 勤務日カウント（月最初の週開始日以降）
+                // 勤務日カウント（月最初の週開始日以降）: 2018/11/18 法定休日出勤を追加
                 if (sWeekStatus)
                 {
                     if (skbn == SHUKIN_SHUKIN || skbn == SHUKIN_YUKYU ||
-                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU)
+                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU || 
+                        skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         wDays++;
                     }
 
-                    // 休日出勤日カウント
-                    if (skbn == SHUKIN_KYUSHU)
+                    // 休日出勤日カウント　: 2018/11/18 法定休日出勤を追加
+                    if (skbn == SHUKIN_KYUSHU || skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         hWorkDays++;
                     }
                 }
                 else
                 {
-                    // 月最初の週開始日以前
+                    // 月最初の週開始日以前）: 2018/11/18 法定休日出勤を追加
                     if (skbn == SHUKIN_SHUKIN || skbn == SHUKIN_YUKYU ||
-                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU)
+                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU ||
+                        skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         wDaysF++;
                     }
 
-                    // 休日出勤日カウント
-                    if (skbn == SHUKIN_KYUSHU)
+                    // 休日出勤日カウント　: 2018/11/18 法定休日出勤を追加
+                    if (skbn == SHUKIN_KYUSHU || skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         hWorkDaysF++;
                     }
@@ -1013,18 +978,19 @@ namespace JAFA_DATA.Common
 
                     cDaysF2++;
                     
-                    // 出勤区分の先頭ゼロを消去：2015/09/24
+                    // 出勤区分の先頭ゼロを消去：2015/09/24 : 法定休日出勤を追加 2018/11/18
                     string skbn = Utility.StrtoInt(item.出勤区分).ToString();
                     if (skbn == "0") skbn = string.Empty;
 
                     if (skbn == SHUKIN_SHUKIN || skbn == SHUKIN_YUKYU ||
-                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU)
+                        skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU || 
+                        skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         wDaysF2++;
                     }
 
-                    // 休日出勤日カウント
-                    if (skbn == SHUKIN_KYUSHU)
+                    // 休日出勤日カウント : 法定休日出勤を追加 2018/11/18
+                    if (skbn == SHUKIN_KYUSHU || skbn == SHUKIN_HOUTEIKYUSHU)
                     {
                         hWorkDaysF2++;
                     }
@@ -1193,15 +1159,16 @@ namespace JAFA_DATA.Common
                 string skbn = Utility.StrtoInt(m.出勤区分).ToString();
                 if (skbn == "0") skbn = string.Empty;
 
-                // 勤務日カウント
+                // 勤務日カウント : 法定休日出勤を追加 2018/11/18
                 if (skbn == SHUKIN_SHUKIN || skbn == SHUKIN_YUKYU ||
-                    skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU)
+                    skbn == SHUKIN_HANKYU || skbn == SHUKIN_KYUSHU || 
+                    skbn == SHUKIN_HOUTEIKYUSHU)
                 {
                     wDays++;
                 }
 
-                // 休日出勤日カウント
-                if (skbn == SHUKIN_KYUSHU)
+                // 休日出勤日カウント : 法定休日出勤を追加 2018/11/18
+                if (skbn == SHUKIN_KYUSHU || skbn == SHUKIN_HOUTEIKYUSHU)
                 {
                     hWorkDays++;
                 }
@@ -1243,7 +1210,7 @@ namespace JAFA_DATA.Common
         {
             bool result = true;
             
-            int pYYMM = global.cnfYear * 100 + global.cnfMonth; 
+            int pYYMM = global.cnfYear * 100 + global.cnfMonth; // 対象年月
             int sNen = 0;
             int sTsuki = 0;
             
@@ -1302,7 +1269,7 @@ namespace JAFA_DATA.Common
             yAdp.FillBySCode(dts.有給休暇付与マスター, sCode); // 2018/10/26
 
             foreach (var t in dts.有給休暇付与マスター
-                .Where(a => a.社員番号 == sCode && (a.年 * 100 + a.月) <= sYYMM)
+                .Where(a => a.社員番号 == sCode && (a.年 * 100 + a.月) < sYYMM)
                 .OrderByDescending(a => (a.年 * 100 + a.月)))
             {
                 zan = t.当年初有給残日数;
@@ -1317,30 +1284,6 @@ namespace JAFA_DATA.Common
             // 有給休暇付与マスターが存在しなかったらExcelシートを読む
             if (!sFms)
             {
-                // 以下、コメント化：2018/10/26
-                // 有給休暇付与マスターExcelシートが存在するとき
-                //if (mstSheet != null)
-                //{
-                //    // 当年
-                //    int sYear = sYYMM / 100;    // 月
-                //    int sMonth = sYYMM % 100;   // 年
-
-                //    // 前回の有給付与年
-                //    if (sMonth < sFyMonth)
-                //    {
-                //        sYear--;
-                //    }
-
-                //    // 有給休暇付与Excelシートより前年初有給残日数（当年初有給残日数）を求めます
-                //    foreach (var x in mstSheet.Where(a => a.sCode == sCode.ToString() && a.sYY == sYear.ToString() && a.sMM == sFyMonth.ToString()))
-                //    {
-                //        zan = Utility.StrtoDouble(x.sNensho);
-                //        sNen = Utility.StrtoInt(x.sYY);
-                //        sTsuki = Utility.StrtoInt(x.sMM);
-                //        break;
-                //    }
-                //}
-
                 // 当年
                 int sYear = sYYMM / 100;    // 月
                 int sMonth = sYYMM % 100;   // 年
@@ -1363,10 +1306,12 @@ namespace JAFA_DATA.Common
                         {
                             if (sCode.ToString() == Utility.NulltoStr(t.Cell(1).Value))
                             {
+                                // ループで最後に一致した行を対象とする(一番最近の有休付与データ）
                                 zan = Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
                                 sNen = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
                                 sTsuki = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
-                                break;
+
+                                //break; 2018/11/19 コメント化
                             }
                         }
 
@@ -1415,27 +1360,7 @@ namespace JAFA_DATA.Common
 
             kAdp.Dispose();
 
-            // 以下、コメント化：2018/10/26
-            ////// 勤怠データが存在しなかったらExcelシートを読む
-            ////if (!sFms)
-            ////{
-
-            //// Excel過去１年間有給取得ファイルが存在するとき
-            //if (workSheet != null)
-            //{
-            //    // Excel過去１年間有給取得シートから日数を取得する
-            //    foreach (var t in workSheet.Where(a => a.sCode == mr.職員コード.ToString()))
-            //    {
-            //        if (Utility.StrtoInt(t.sYYMM) >= sYYMM && Utility.StrtoInt(t.sYYMM) <= eYYMM)
-            //        {
-            //            sNissu += Utility.StrtoDouble(t.sTotal);   // 有休＋半休
-            //        }
-            //    }
-            //}
-
-            ////}
-
-            // Excel過去１年間有給取得シートから日数を取得する:closedxml　2018/10/26
+            // Excel過去１年間有給取得シートから日数を取得する:closedxml　2018/11/19
             if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
             {
                 using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
@@ -1447,7 +1372,13 @@ namespace JAFA_DATA.Common
                     {
                         if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
                         {
-                            sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
+                            int xYYMM = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+
+                            if (xYYMM >= sYYMM && xYYMM <= eYYMM)
+                            {
+                                // 対象期間の有休実績を取得
+                                sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
+                            }
                         }
                     }
 

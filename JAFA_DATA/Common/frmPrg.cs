@@ -31,7 +31,13 @@ namespace JAFA_DATA.Common
 
         private void frmPrg_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Cursor = Cursors.Default;
             this.Dispose();
+        }
+
+        private void frmPrg_Shown(object sender, EventArgs e)
+        {
+            Cursor = Cursors.Default;
         }
     }
 }

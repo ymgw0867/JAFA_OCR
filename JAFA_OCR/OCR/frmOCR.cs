@@ -7,8 +7,8 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Leadtools;
-using Leadtools.Codecs;
+//using Leadtools;
+//using Leadtools.Codecs;
 using System.Data.OleDb;
 using JAFA_OCR.Common;
 using System.IO;
@@ -331,65 +331,65 @@ namespace JAFA_OCR.OCR
         ///------------------------------------------------------------------------------
         private bool MultiTif(string InPath, string outPath)
         {
-            //スキャン出力画像を確認
-            if (System.IO.Directory.GetFiles(InPath, "*.tif").Count() == 0)
-            {
-                MessageBox.Show("ＯＣＲ変換処理対象の画像ファイルが指定フォルダ " + InPath + " に存在しません", "スキャン画像確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return false;
-            }
+            ////スキャン出力画像を確認
+            //if (System.IO.Directory.GetFiles(InPath, "*.tif").Count() == 0)
+            //{
+            //    MessageBox.Show("ＯＣＲ変換処理対象の画像ファイルが指定フォルダ " + InPath + " に存在しません", "スキャン画像確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return false;
+            //}
 
-            // 出力先フォルダがなければ作成する
-            if (System.IO.Directory.Exists(outPath) == false)
-            {
-                System.IO.Directory.CreateDirectory(outPath);
-            }
+            //// 出力先フォルダがなければ作成する
+            //if (System.IO.Directory.Exists(outPath) == false)
+            //{
+            //    System.IO.Directory.CreateDirectory(outPath);
+            //}
 
-            // 出力先フォルダ内の全てのファイルを削除する（通常ファイルは存在しないが例外処理などで残ってしまった場合に備えて念のため）
-            foreach (string files in System.IO.Directory.GetFiles(outPath, "*"))
-            {
-                System.IO.File.Delete(files);
-            }
+            //// 出力先フォルダ内の全てのファイルを削除する（通常ファイルは存在しないが例外処理などで残ってしまった場合に備えて念のため）
+            //foreach (string files in System.IO.Directory.GetFiles(outPath, "*"))
+            //{
+            //    System.IO.File.Delete(files);
+            //}
 
-            RasterCodecs.Startup();
-            RasterCodecs cs = new RasterCodecs();
+            //RasterCodecs.Startup();
+            //RasterCodecs cs = new RasterCodecs();
 
-            int _pageCount = 0;
-            string fnm = string.Empty;
+            //int _pageCount = 0;
+            //string fnm = string.Empty;
 
-            // マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
-            foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
-            {
-                // 画像読み出す
-                RasterImage leadImg = cs.Load(files, 0, CodecsLoadByteOrder.BgrOrGray, 1, -1);
+            //// マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
+            //foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            //{
+            //    // 画像読み出す
+            //    RasterImage leadImg = cs.Load(files, 0, CodecsLoadByteOrder.BgrOrGray, 1, -1);
 
-                // 頁数を取得
-                int _fd_count = leadImg.PageCount;
+            //    // 頁数を取得
+            //    int _fd_count = leadImg.PageCount;
 
-                // 頁ごとに読み出す
-                for (int i = 1; i <= _fd_count; i++)
-                {
-                    // ファイル名（日付時間部分）
-                    string fName = string.Format("{0:0000}", DateTime.Today.Year) +
-                            string.Format("{0:00}", DateTime.Today.Month) +
-                            string.Format("{0:00}", DateTime.Today.Day) +
-                            string.Format("{0:00}", DateTime.Now.Hour) +
-                            string.Format("{0:00}", DateTime.Now.Minute) +
-                            string.Format("{0:00}", DateTime.Now.Second);
+            //    // 頁ごとに読み出す
+            //    for (int i = 1; i <= _fd_count; i++)
+            //    {
+            //        // ファイル名（日付時間部分）
+            //        string fName = string.Format("{0:0000}", DateTime.Today.Year) +
+            //                string.Format("{0:00}", DateTime.Today.Month) +
+            //                string.Format("{0:00}", DateTime.Today.Day) +
+            //                string.Format("{0:00}", DateTime.Now.Hour) +
+            //                string.Format("{0:00}", DateTime.Now.Minute) +
+            //                string.Format("{0:00}", DateTime.Now.Second);
 
-                    // ファイル名設定
-                    _pageCount++;
-                    fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
+            //        // ファイル名設定
+            //        _pageCount++;
+            //        fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
 
-                    // 画像保存
-                    cs.Save(leadImg, fnm, RasterImageFormat.Tif, 0, i, i, 1, CodecsSavePageMode.Insert);
-                }
-            }
+            //        // 画像保存
+            //        cs.Save(leadImg, fnm, RasterImageFormat.Tif, 0, i, i, 1, CodecsSavePageMode.Insert);
+            //    }
+            //}
 
-            // InPathフォルダの全てのtifファイルを削除する
-            foreach (var files in System.IO.Directory.GetFiles(InPath, "*.tif"))
-            {
-                System.IO.File.Delete(files);
-            }
+            //// InPathフォルダの全てのtifファイルを削除する
+            //foreach (var files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            //{
+            //    System.IO.File.Delete(files);
+            //}
 
             return true;
         }

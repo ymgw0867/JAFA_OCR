@@ -36,7 +36,7 @@
             this.prgBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.prgBar.Location = new System.Drawing.Point(0, 0);
             this.prgBar.Name = "prgBar";
-            this.prgBar.Size = new System.Drawing.Size(344, 27);
+            this.prgBar.Size = new System.Drawing.Size(503, 23);
             this.prgBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.prgBar.TabIndex = 0;
             // 
@@ -44,7 +44,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 27);
+            this.ClientSize = new System.Drawing.Size(503, 23);
             this.ControlBox = false;
             this.Controls.Add(this.prgBar);
             this.Name = "frmPrg";
@@ -52,6 +52,7 @@
             this.Text = "進行状況";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPrg_FormClosing);
             this.Load += new System.EventHandler(this.frmPrg_Load);
+            this.Shown += new System.EventHandler(this.frmPrg_Shown);
             this.ResumeLayout(false);
 
         }

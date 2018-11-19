@@ -89,48 +89,7 @@ namespace JAFA_DATA.OCR
 
             // フォーム最小値
             Utility.WindowsMinSize(this, this.Width, this.Height);
-
-            //元号を取得 : 2018/10/26コメント化
-            //label1.Text = Properties.Settings.Default.gengou;
-
-            // OCRDATAクラスインスタンスを生成
-            //OCRData ocr = new OCRData();
-
-            //// 自分のコンピュータの登録名を取得
-            //string pcName = Utility.getPcDir();
-
-            //// 登録されていないとき終了します
-            //if (pcName == string.Empty)
-            //{
-            //    MessageBox.Show("このコンピュータがＯＣＲ出力先として登録されていません。", "出力先未登録", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //    this.Close();
-            //}
-
-            //// スキャンＰＣのコンピュータ別フォルダ内のＯＣＲデータ存在チェック
-            //if (Directory.Exists(Properties.Settings.Default.pcPath + pcName + @"\"))
-            //{
-            //    string[] ocrfiles = Directory.GetFiles(Properties.Settings.Default.pcPath + pcName + @"\", "*.csv");
-
-            //    // スキャンＰＣのＯＣＲ画像、ＣＳＶデータをローカルのDATAフォルダへ移動します
-            //    if (ocrfiles.Length > 0)
-            //    {
-            //        foreach (string files in System.IO.Directory.GetFiles(Properties.Settings.Default.pcPath + pcName + @"\", "*"))
-            //        {
-            //            // パスを含まないファイル名を取得
-            //            string reFile = Path.GetFileName(files);
-
-            //            // ファイル移動
-            //            if (reFile != "Thumbs.db")
-            //            {
-            //                File.Move(files, Properties.Settings.Default.dataPath + @"\" + reFile);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// CSVデータをMDBへ読み込みます
-            //GetCsvDataToMDB();
-
+            
             // データセットへデータを読み込みます
             adpMn.確定勤務票ヘッダTableAdapter.Fill(dts.確定勤務票ヘッダ);
             adpMn.確定勤務票明細TableAdapter.Fill(dts.確定勤務票明細);
@@ -1191,8 +1150,12 @@ namespace JAFA_DATA.OCR
                 // エラーチェックを実行する
                 if (getErrData(cI, ocr)) // エラーがなかったとき
                 {
+                    adpMn.UpdateAll(dts);
+
                     // OCROutputクラス インスタンス生成
                     OCROutput kd = new OCROutput(this, dts);
+
+                    Cursor = Cursors.WaitCursor;
 
                     // 週実績明細集計 : 2018/10/27
                     kd.saveWeekData();
@@ -1250,7 +1213,13 @@ namespace JAFA_DATA.OCR
                     deleteArchived();
 
                     // 確定勤務票データ削除
-                    //deleteDataAll();
+                    deleteDataAll();
+
+                    // 週実績明細削除　(過去1年以上前）: 2018/11/19
+                    weekItemDataDelete();
+
+                    // 週実績削除　(過去1年以上前）: 2018/11/19
+                    weekDataDelete();
 
                     // MDBファイル最適化
                     mdbCompact();
@@ -1348,7 +1317,6 @@ namespace JAFA_DATA.OCR
             // エラーチェック実行①:カレントの社員から最終社員まで
             if (!ocr.errCheckMain(cIdx, (dts.確定勤務票ヘッダ.Rows.Count - 1), this, dts))
             {
-                //MessageBox.Show("err!");
                 return false;
             }
 
@@ -1357,13 +1325,11 @@ namespace JAFA_DATA.OCR
             {
                 if (!ocr.errCheckMain(0, (cIdx - 1), this, dts))
                 {
-                    //MessageBox.Show("err!");
                     return false;
                 }
             }
 
             // エラーなし
-            //MessageBox.Show("non err!");
             lblErrMsg.Text = string.Empty;
 
             return true;
@@ -1481,6 +1447,35 @@ namespace JAFA_DATA.OCR
                 hdID = m.ヘッダID;
             }
         }
+
+        ///------------------------------------------------------------------------
+        /// <summary>
+        ///     過去の週実績明細データを削除する：2018/11/19
+        ///     ※1年以上前データを削除対象        /// </summary>
+        ///------------------------------------------------------------------------
+        private void weekItemDataDelete()
+        {
+            DateTime dt = DateTime.Today.AddYears(-1);
+            dt = DateTime.Parse(dt.Year + "/" + dt.Month + "/01");
+
+            JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter adp = new JAFA_OCRDataSetTableAdapters.週実績明細TableAdapter();
+            adp.DeleteQueryPastymd(dt);
+        }
+
+        ///------------------------------------------------------------------------
+        /// <summary>
+        ///     過去の週実績データを削除する：2018/11/19
+        ///     ※1年以上前データを削除対象        /// </summary>
+        ///------------------------------------------------------------------------
+        private void weekDataDelete()
+        {
+            DateTime dt = DateTime.Today.AddYears(-1);
+            int dd = dt.Year * 100 + dt.Month;
+
+            JAFA_OCRDataSetTableAdapters.週実績TableAdapter adp = new JAFA_OCRDataSetTableAdapters.週実績TableAdapter();
+            adp.DeleteQueryYYMM(dd);
+        }
+
 
         /// ---------------------------------------------------------------------
         /// <summary>
@@ -2130,27 +2125,10 @@ namespace JAFA_DATA.OCR
         private void deleteDataAll() 
         {
             // 確定勤務票明細全行削除
-            //var m = dts.確定勤務票明細.Where(a => a.RowState != DataRowState.Deleted);
-            //foreach (var t in m)
-            //{
-            //    t.Delete();
-            //}
-
-            // 確定勤務票明細全行削除
             iAdp.DeleteQueryAll();  // 2018/11/09
 
             // 確定勤務票ヘッダ全行削除
-            //var h = dts.確定勤務票ヘッダ.Where(a => a.RowState != DataRowState.Deleted);
-            //foreach (var t in h)
-            //{
-            //    t.Delete();
-            //}
-
-            // 確定勤務票ヘッダ全行削除
             hAdp.DeleteQueryAll();  // 2018/11/09
-
-            //// データベース更新 2018/11/09 コメント化
-            //adpMn.UpdateAll(dts);
 
             // 後片付け
             dts.確定勤務票明細.Dispose();

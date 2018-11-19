@@ -237,10 +237,10 @@ namespace JAFA_DATA.workData
 
                     var im = dts.過去勤務票明細.Where(a => a.ヘッダID == t.ヘッダID).OrderBy(a => a.日付);
 
-                    // 休日出勤一覧表のとき
+                    // 休日出勤一覧表のとき : 法定休日出勤を含む　2018/11/18
                     if (sSel == global.flgOff)
                     {
-                        im = im.Where(a => a.出勤区分 == "5").OrderBy(a => a.日付);
+                        im = im.Where(a => a.出勤区分 == "5" || a.出勤区分 == "20").OrderBy(a => a.日付);
                     }
 
                     //foreach (var m in dts.過去勤務票明細.Where(a => a.ヘッダID == t.ヘッダID && a.出勤区分 == "5").OrderBy(a => a.日付))
