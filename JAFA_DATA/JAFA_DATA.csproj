@@ -95,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\clsGetMst.cs" />
+    <Compile Include="Common\clsKintaiXls.cs" />
+    <Compile Include="Common\clsYukyuFuyo.cs" />
     <Compile Include="Common\exlMntData.cs" />
     <Compile Include="Common\exlYukyuMst.cs" />
     <Compile Include="Common\frmPrg.cs">

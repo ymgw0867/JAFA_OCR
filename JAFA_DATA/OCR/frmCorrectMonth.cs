@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Data.OleDb;
 using JAFA_DATA.Common;
 using OpenCvSharp;
+using ClosedXML.Excel;
 
 namespace JAFA_DATA.OCR
 {
@@ -79,6 +80,9 @@ namespace JAFA_DATA.OCR
 
         // dataGridView1_CellEnterステータス
         bool gridViewCellEnterStatus = true;
+        
+        clsYukyuFuyo[] yArray = null;
+        clsKintaiXls[] kArray = null;
 
         private void frmCorrect_Load(object sender, EventArgs e)
         {
@@ -117,6 +121,12 @@ namespace JAFA_DATA.OCR
             
             // tagを初期化
             this.Tag = string.Empty;
+
+            // 2018/11/20
+            putYukyuFuyoArray();
+
+            // 2018/11/20
+            putKintaiArray();
         }
 
         #region データグリッドビューカラム定義
@@ -140,6 +150,87 @@ namespace JAFA_DATA.OCR
         private static string cID = "colID";
         private static string cImg = "colImg";      // 画像名
         #endregion
+
+
+
+
+        private void putYukyuFuyoArray()
+        {
+            int cnt = 0;
+
+            JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
+            yAdp.Fill(dts.有給休暇付与マスター);
+
+            // 有給休暇付与マスターより前回の年初有給残日数（当年初有給残日数）を求めます
+            foreach (var z in dts.有給休暇付与マスター.Where(a => (a.年 * 100 + a.月) != (global.cnfYear * 100 + global.cnfMonth)))
+            {
+                Array.Resize(ref yArray, cnt + 1);
+
+                yArray[cnt] = new clsYukyuFuyo();
+                yArray[cnt].sCode = z.社員番号;
+                yArray[cnt].sYear = z.年;
+                yArray[cnt].sMonth = z.月;
+                yArray[cnt].sNensho = (decimal)z.当年初有給残日数;
+                yArray[cnt].sFuyo = (decimal)z.当年付与日数;
+
+                cnt++;
+            }
+
+            // 有給付与マスター.xlsxシートより前回の年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/09
+            using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
+            {
+                var sheet1 = book.Worksheet(1);
+                var tbl = sheet1.RangeUsed().AsTable();
+
+                foreach (var t in tbl.DataRange.Rows())
+                {
+                    Array.Resize(ref yArray, cnt + 1);
+
+                    yArray[cnt] = new clsYukyuFuyo();
+                    yArray[cnt].sCode = Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value));
+                    yArray[cnt].sYear = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+                    yArray[cnt].sMonth = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
+                    yArray[cnt].sNensho = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
+                    yArray[cnt].sFuyo = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
+
+                    cnt++;
+                }
+
+                sheet1.Dispose();
+            }
+        }
+
+
+        private void putKintaiArray()
+        {
+            int cnt = 0;
+
+            // 月別有給日数.xlsxシート
+            using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
+            {
+                var sheet1 = book.Worksheet(1);
+                var tbl = sheet1.RangeUsed().AsTable();
+
+                foreach (var t in tbl.DataRange.Rows())
+                {
+                    Array.Resize(ref kArray, cnt + 1);
+
+                    kArray[cnt] = new clsKintaiXls();
+                    kArray[cnt].sCode = Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value));
+                    kArray[cnt].sYYMM = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+                    kArray[cnt].sYoushukkin = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
+                    kArray[cnt].sKekkin = Utility.StrtoInt(Utility.NulltoStr(t.Cell(5).Value));
+                    kArray[cnt].sYuckyu = (decimal)Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
+
+                    cnt++;
+                }
+
+                sheet1.Dispose();
+            }
+        }
+
+
+
 
         ///----------------------------------------------------------------------------
         /// <summary>
@@ -960,7 +1051,7 @@ namespace JAFA_DATA.OCR
             OCRData ocr = new OCRData();
 
             // エラーチェックを実行
-            if (getErrData(cI, ocr))
+            if (getErrData(cI, ocr, yArray, kArray))
             {
                 MessageBox.Show("エラーはありませんでした", "エラーチェック", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 dGV.CurrentCell = null;
@@ -1148,12 +1239,12 @@ namespace JAFA_DATA.OCR
                 OCRData ocr = new OCRData();
 
                 // エラーチェックを実行する
-                if (getErrData(cI, ocr)) // エラーがなかったとき
+                if (getErrData(cI, ocr, yArray, kArray)) // エラーがなかったとき
                 {
                     adpMn.UpdateAll(dts);
 
                     // OCROutputクラス インスタンス生成
-                    OCROutput kd = new OCROutput(this, dts);
+                    OCROutput kd = new OCROutput(this, dts, global.cnfYear, global.cnfMonth);
 
                     Cursor = Cursors.WaitCursor;
 
@@ -1303,7 +1394,7 @@ namespace JAFA_DATA.OCR
         /// <returns>
         ///     エラーなし：true, エラーあり：false</returns>
         /// -----------------------------------------------------------------------------------
-        private bool getErrData(int cIdx, OCRData ocr)
+        private bool getErrData(int cIdx, OCRData ocr, clsYukyuFuyo [] yArray, clsKintaiXls[] kArray)
         {
             // カレントレコード更新
             CurDataUpDate(cIdx);
@@ -1315,7 +1406,7 @@ namespace JAFA_DATA.OCR
             ocr._errMsg = string.Empty;         
 
             // エラーチェック実行①:カレントの社員から最終社員まで
-            if (!ocr.errCheckMain(cIdx, (dts.確定勤務票ヘッダ.Rows.Count - 1), this, dts))
+            if (!ocr.errCheckMain(cIdx, (dts.確定勤務票ヘッダ.Rows.Count - 1), this, dts, yArray, kArray))
             {
                 return false;
             }
@@ -1323,7 +1414,7 @@ namespace JAFA_DATA.OCR
             // エラーチェック実行②:最初のレコードからカレントレコードの前のレコードまで
             if (cIdx > 0)
             {
-                if (!ocr.errCheckMain(0, (cIdx - 1), this, dts))
+                if (!ocr.errCheckMain(0, (cIdx - 1), this, dts, yArray, kArray))
                 {
                     return false;
                 }

@@ -229,9 +229,13 @@ namespace JAFA_DATA.Common
         JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
         JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter kAdp = new JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter();
 
-        //// 有給休暇残日数チェック用 2015/07/02
-        //LinqToExcel.Query.ExcelQueryable<exlMntData> workSheet = null;
-        //LinqToExcel.Query.ExcelQueryable<exlYukyuMst> mstSheet = null;
+        int _yy = 0;    // 対象年
+        int _mm = 0;    // 対象月
+
+        public OCRData()
+        {
+
+        }
 
         ///-----------------------------------------------------------------------
         /// <summary>
@@ -564,7 +568,21 @@ namespace JAFA_DATA.Common
                         break;
                     }
                 }
+
+                System.Threading.Thread.Sleep(50);
+                Application.DoEvents();
+
+                //プログレスバー表示
+                frmP.Text = "エラーチェック実行中　" + rCnt.ToString() + "/" + cTotal.ToString();
+                frmP.progressValue = rCnt * 100 / cTotal;
+                frmP.ProgressStep();
+
+                System.Threading.Thread.Sleep(100);
+                Application.DoEvents();
             }
+
+            System.Threading.Thread.Sleep(1000);
+            Application.DoEvents();
 
             // いったんオーナーをアクティブにする
             frm.Activate();
@@ -594,7 +612,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     True:エラーなし、false:エラーあり</returns>
         ///-----------------------------------------------------------------------------------------------
-        public Boolean errCheckMain(int sIx, int eIx, Form frm, JAFA_OCRDataSet dts)
+        public Boolean errCheckMain(int sIx, int eIx, Form frm, JAFA_OCRDataSet dts, clsYukyuFuyo[] yArray, clsKintaiXls[] kArray)
         {
             int rCnt = 0;
 
@@ -624,7 +642,7 @@ namespace JAFA_DATA.Common
                     JAFA_OCRDataSet.確定勤務票ヘッダRow r = (JAFA_OCRDataSet.確定勤務票ヘッダRow)dts.確定勤務票ヘッダ.Rows[i];
 
                     // エラーチェック実施
-                    eCheck = errCheckData(dts, r);
+                    eCheck = errCheckData(dts, r, yArray, kArray);
 
                     if (!eCheck)　//エラーがあったとき
                     {
@@ -633,7 +651,7 @@ namespace JAFA_DATA.Common
                     }
                 }
 
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(50);
                 Application.DoEvents();
 
                 //プログレスバー表示
@@ -641,7 +659,7 @@ namespace JAFA_DATA.Common
                 frmP.progressValue = rCnt * 100 / cTotal;
                 frmP.ProgressStep();
 
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(100);
                 Application.DoEvents();
             }
 
@@ -1013,7 +1031,7 @@ namespace JAFA_DATA.Common
         ///     エラーなし：true, エラー有り：false</returns>
         ///-----------------------------------------------------------------------------------------------
         /// 
-        public Boolean errCheckData(JAFA_OCRDataSet dts, JAFA_OCRDataSet.確定勤務票ヘッダRow r)
+        public Boolean errCheckData(JAFA_OCRDataSet dts, JAFA_OCRDataSet.確定勤務票ヘッダRow r, clsYukyuFuyo [] yArray, clsKintaiXls [] kArray)
         {
             // 対象年月
             if (!errCheckYearMonth(r)) return false;
@@ -1186,7 +1204,7 @@ namespace JAFA_DATA.Common
             }
 
             // 有給残チェック
-            if (!errCheckYukyuZan(dts, mr, yukyuNissu))
+            if (!errCheckYukyuZan(dts, mr, yukyuNissu, yArray, kArray))
             {
                 return false;
             }
@@ -1206,7 +1224,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     残日数あり：true, 残日数超過：false </returns>
         /// -------------------------------------------------------------------------------------
-        private bool errCheckYukyuZan(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, double sYukyu)
+        private bool errCheckYukyuZan(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, double sYukyu, clsYukyuFuyo[] yArray, clsKintaiXls[] kArray)
         {
             bool result = true;
             
@@ -1215,7 +1233,7 @@ namespace JAFA_DATA.Common
             int sTsuki = 0;
             
             // 当年初の有給残日数を求める
-            double sZan = getNenshozan(dts, mr, pYYMM, out sNen, out sTsuki);
+            double sZan = getNenshozan(mr, pYYMM, out sNen, out sTsuki, yArray);
 
             // 消化日数期間を設定
             int sYYMM = sNen * 100 + sTsuki;　// 開始年月 201410
@@ -1228,7 +1246,7 @@ namespace JAFA_DATA.Common
             }
 
             // 前月までの消化日数を求める
-            double sNissu = getShoukaNissu(dts, mr, sYYMM, eYYMM);
+            double sNissu = getShoukaNissu(dts, mr, sYYMM, eYYMM, kArray);
 
             // 有休残日数
             if (sZan < (sNissu + sYukyu))
@@ -1251,71 +1269,92 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     当年初有給残日数</returns>
         /// ----------------------------------------------------------------------
-        private double getNenshozan(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, out int sNen, out int sTsuki)
+        private double getNenshozan(JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, out int sNen, out int sTsuki, clsYukyuFuyo[] yArray)
         {
             double zan = 0;
-            bool sFms = false;
+            //bool sFms = false;
 
             sNen = 0;
             sTsuki = 0;
 
             int sCode = mr.職員コード;
-            int sFyMonth = mr.有給付与月;
+            //int sFyMonth = mr.有給付与月;
 
-            JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
+            // 以下、コメント化 2018/11/20
+            //JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter yAdp = new JAFA_OCRDataSetTableAdapters.有給休暇付与マスターTableAdapter();
            
-            //yAdp.Fill(dts.有給休暇付与マスター); // 2018/10/26 コメント化
+            ////yAdp.Fill(dts.有給休暇付与マスター); // 2018/10/26 コメント化
 
-            yAdp.FillBySCode(dts.有給休暇付与マスター, sCode); // 2018/10/26
+            //yAdp.FillBySCode(dts.有給休暇付与マスター, sCode); // 2018/10/26
 
-            foreach (var t in dts.有給休暇付与マスター
-                .Where(a => a.社員番号 == sCode && (a.年 * 100 + a.月) < sYYMM)
-                .OrderByDescending(a => (a.年 * 100 + a.月)))
+            //foreach (var t in dts.有給休暇付与マスター
+            //    .Where(a => a.社員番号 == sCode && (a.年 * 100 + a.月) < sYYMM)
+            //    .OrderByDescending(a => (a.年 * 100 + a.月)))
+            //{
+            //    zan = t.当年初有給残日数;
+            //    sNen = t.年;
+            //    sTsuki = t.月;
+            //    sFms = true;
+            //    break;
+            //}
+
+            //yAdp.Dispose();
+
+            //// 有給休暇付与マスターが存在しなかったらExcelシートを読む
+            //if (!sFms)
+            //{
+            //    // 当年
+            //    int sYear = sYYMM / 100;    // 月
+            //    int sMonth = sYYMM % 100;   // 年
+
+            //    // 前回の有給付与年
+            //    if (sMonth < sFyMonth)
+            //    {
+            //        sYear--;
+            //    }
+
+            //    // 有給休暇付与マスターExcelシートからセルの値を取得 : closedxml　2018/10/26
+            //    if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
+            //    {
+            //        using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
+            //        {
+            //            var sheet1 = book.Worksheet(1);
+            //            var tbl = sheet1.RangeUsed().AsTable();
+
+            //            foreach (var t in tbl.DataRange.Rows())
+            //            {
+            //                if (sCode.ToString() == Utility.NulltoStr(t.Cell(1).Value))
+            //                {
+            //                    // ループで最後に一致した行を対象とする(一番最近の有休付与データ）
+            //                    zan = Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
+            //                    sNen = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+            //                    sTsuki = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
+
+            //                    //break; 2018/11/19 コメント化
+            //                }
+            //            }
+
+            //            sheet1.Dispose();
+            //        }
+            //    }
+            //}
+
+            // 配列から取得：2018/11/20
+            if (yArray != null)
             {
-                zan = t.当年初有給残日数;
-                sNen = t.年;
-                sTsuki = t.月;
-                sFms = true;
-                break;
-            }
-
-            yAdp.Dispose();
-
-            // 有給休暇付与マスターが存在しなかったらExcelシートを読む
-            if (!sFms)
-            {
-                // 当年
-                int sYear = sYYMM / 100;    // 月
-                int sMonth = sYYMM % 100;   // 年
-
-                // 前回の有給付与年
-                if (sMonth < sFyMonth)
+                // 有給付与マスター配列より一番最近の付与時の年初有給残日数（当年初有給残日数）を求めます : closedxml　2018/11/20
+                if (yArray != null)
                 {
-                    sYear--;
-                }
+                    var ss = yArray.Where(a => a.sCode == sCode &&
+                                         (a.sYear * 100 + a.sMonth) <= sYYMM)
+                        .OrderBy(a => a.sYear).ThenBy(a => a.sMonth);
 
-                // 有給休暇付与マスターExcelシートからセルの値を取得 : closedxml　2018/10/26
-                if (System.IO.File.Exists(Properties.Settings.Default.exlYukyuMstPath))
-                {
-                    using (var book = new XLWorkbook(Properties.Settings.Default.exlYukyuMstPath, XLEventTracking.Disabled))
+                    foreach (var t in ss)
                     {
-                        var sheet1 = book.Worksheet(1);
-                        var tbl = sheet1.RangeUsed().AsTable();
-
-                        foreach (var t in tbl.DataRange.Rows())
-                        {
-                            if (sCode.ToString() == Utility.NulltoStr(t.Cell(1).Value))
-                            {
-                                // ループで最後に一致した行を対象とする(一番最近の有休付与データ）
-                                zan = Utility.StrtoDouble(Utility.NulltoStr(t.Cell(7).Value));
-                                sNen = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
-                                sTsuki = Utility.StrtoInt(Utility.NulltoStr(t.Cell(4).Value));
-
-                                //break; 2018/11/19 コメント化
-                            }
-                        }
-
-                        sheet1.Dispose();
+                        // ループで最後に一致した行を対象とする(一番最近の有休付与データ）
+                        zan = (double)t.sNensho;
+                        sNen = t.sYear;
+                        sTsuki = t.sMonth;
                     }
                 }
             }
@@ -1335,7 +1374,7 @@ namespace JAFA_DATA.Common
         /// <returns>
         ///     消化日数</returns>
         /// -----------------------------------------------------------------------------
-        private double getShoukaNissu(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, int eYYMM)
+        private double getShoukaNissu(JAFA_OCRDataSet dts, JAFA_OCRDataSet.社員マスターRow mr, int sYYMM, int eYYMM, clsKintaiXls [] kArray)
         {
             double sNissu = 0;
             bool sFms = false;
@@ -1360,29 +1399,46 @@ namespace JAFA_DATA.Common
 
             kAdp.Dispose();
 
-            // Excel過去１年間有給取得シートから日数を取得する:closedxml　2018/11/19
-            if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
+            // 以下、コメント化 2018/11/20
+            //// Excel過去１年間有給取得シートから日数を取得する:closedxml　2018/11/19
+            //if (System.IO.File.Exists(Properties.Settings.Default.exlMounthPath))
+            //{
+            //    using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
+            //    {
+            //        var sheet1 = book.Worksheet(1);
+            //        var tbl = sheet1.RangeUsed().AsTable();
+
+            //        foreach (var t in tbl.DataRange.Rows())
+            //        {
+            //            if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
+            //            {
+            //                int xYYMM = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
+
+            //                if (xYYMM >= sYYMM && xYYMM <= eYYMM)
+            //                {
+            //                    // 対象期間の有休実績を取得
+            //                    sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
+            //                }
+            //            }
+            //        }
+
+            //        sheet1.Dispose();
+            //    }
+            //}
+
+            // 過去１年間月別有給取得日数配列から日数を取得する:closedxml　2018/11/20
+            if (kArray != null)
             {
-                using (var book = new XLWorkbook(Properties.Settings.Default.exlMounthPath, XLEventTracking.Disabled))
+                for (int i = 0; i < kArray.Length; i++)
                 {
-                    var sheet1 = book.Worksheet(1);
-                    var tbl = sheet1.RangeUsed().AsTable();
-
-                    foreach (var t in tbl.DataRange.Rows())
+                    if (sCode == kArray[i].sCode)
                     {
-                        if (sCode == Utility.StrtoInt(Utility.NulltoStr(t.Cell(1).Value)))
+                        if (kArray[i].sYYMM >= sYYMM && kArray[i].sYYMM <= eYYMM)
                         {
-                            int xYYMM = Utility.StrtoInt(Utility.NulltoStr(t.Cell(3).Value));
-
-                            if (xYYMM >= sYYMM && xYYMM <= eYYMM)
-                            {
-                                // 対象期間の有休実績を取得
-                                sNissu += Utility.StrtoDouble(Utility.NulltoStr(t.Cell(8).Value));
-                            }
-                        }
+                            // 対象期間の有休実績を取得
+                            sNissu += (double)kArray[i].sYuckyu;
+                        } 
                     }
-
-                    sheet1.Dispose();
                 }
             }
 
