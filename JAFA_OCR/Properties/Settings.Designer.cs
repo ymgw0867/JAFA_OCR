@@ -104,5 +104,14 @@ namespace JAFA_OCR.Properties {
                 return ((string)(this["ngPath"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ocrStatus {
+            get {
+                return ((int)(this["ocrStatus"]));
+            }
+        }
     }
 }

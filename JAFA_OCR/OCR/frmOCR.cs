@@ -7,12 +7,11 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-//using Leadtools;
-//using Leadtools.Codecs;
+using Leadtools;
+using Leadtools.Codecs;
 using System.Data.OleDb;
 using JAFA_OCR.Common;
 using System.IO;
-//using OpenCvSharp;      // 2018/10/23
 
 namespace JAFA_OCR.OCR
 {
@@ -33,6 +32,7 @@ namespace JAFA_OCR.OCR
                 return;
             }
 
+            // 20181122
             // 入力画像があるか？
             var tifCnt = System.IO.Directory.GetFiles(Properties.Settings.Default.scanPath, "*.tif").Count();
 
@@ -53,19 +53,28 @@ namespace JAFA_OCR.OCR
 
             this.Hide();
 
-            // マルチTiff画像をシングルtifに分解する(SCANフォルダ → TRAYフォルダ)
-            //if (!MultiTif(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
-            //{
-            //    this.Show();
-            //    return;
-            //}
+            // 20181122
 
-            // マルチTiff画像をシングルtifに分解する(SCANフォルダ → TRAYフォルダ)：openCVバージョン 2018/10/23
-            if (!MultiTif_New(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
+            if (Properties.Settings.Default.ocrStatus == 0)
             {
-                this.Show();
-                return;
+                // マルチTiff画像をシングルtifに分解する：LeadTools(SCANフォルダ → TRAYフォルダ)
+                if (!MultiTif(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
+                {
+                    this.Show();
+                    return;
+                }
             }
+            else if (Properties.Settings.Default.ocrStatus == 1)
+            {
+                // 20181122
+                // マルチTiff画像をシングルtifに分解する(SCANフォルダ → TRAYフォルダ)：2018/10/23
+                if (!MultiTif_New(Properties.Settings.Default.scanPath, Properties.Settings.Default.trayPath))
+                {
+                    this.Show();
+                    return;
+                }
+            }
+
 
             // 帳票ライブラリV8.0.3によるOCR認識実行
             wrhs803LibOCR(jobname);
@@ -93,6 +102,7 @@ namespace JAFA_OCR.OCR
             int sOK = 0;
             int sNG = 0;
             int ret = 0;
+            string newFileName = string.Empty;
 
             try
             {
@@ -159,7 +169,10 @@ namespace JAFA_OCR.OCR
                             // READフォルダ → DATAフォルダ
                             string inCsvFile = Properties.Settings.Default.wrOutPath +
                                                Properties.Settings.Default.wrReaderOutFile;
-                            string newFileName = rPath + fnm + sNum.ToString().PadLeft(3, '0');
+
+                            // 新ファイル名
+                            newFileName = rPath + fnm + sNum.ToString().PadLeft(3, '0');
+
                             wrhOutFileRename(inCsvFile, newFileName);
 
                             // カウント
@@ -183,7 +196,7 @@ namespace JAFA_OCR.OCR
 
                             // NG画像をコピーする
                             if (System.IO.File.Exists(files)) System.IO.File.Copy(files, toImg);
-                            
+
                             // NGカウント
                             sNG++;
                         }
@@ -331,65 +344,65 @@ namespace JAFA_OCR.OCR
         ///------------------------------------------------------------------------------
         private bool MultiTif(string InPath, string outPath)
         {
-            ////スキャン出力画像を確認
-            //if (System.IO.Directory.GetFiles(InPath, "*.tif").Count() == 0)
-            //{
-            //    MessageBox.Show("ＯＣＲ変換処理対象の画像ファイルが指定フォルダ " + InPath + " に存在しません", "スキャン画像確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //    return false;
-            //}
+            //スキャン出力画像を確認
+            if (System.IO.Directory.GetFiles(InPath, "*.tif").Count() == 0)
+            {
+                MessageBox.Show("ＯＣＲ変換処理対象の画像ファイルが指定フォルダ " + InPath + " に存在しません", "スキャン画像確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return false;
+            }
 
-            //// 出力先フォルダがなければ作成する
-            //if (System.IO.Directory.Exists(outPath) == false)
-            //{
-            //    System.IO.Directory.CreateDirectory(outPath);
-            //}
+            // 出力先フォルダがなければ作成する
+            if (System.IO.Directory.Exists(outPath) == false)
+            {
+                System.IO.Directory.CreateDirectory(outPath);
+            }
 
-            //// 出力先フォルダ内の全てのファイルを削除する（通常ファイルは存在しないが例外処理などで残ってしまった場合に備えて念のため）
-            //foreach (string files in System.IO.Directory.GetFiles(outPath, "*"))
-            //{
-            //    System.IO.File.Delete(files);
-            //}
+            // 出力先フォルダ内の全てのファイルを削除する（通常ファイルは存在しないが例外処理などで残ってしまった場合に備えて念のため）
+            foreach (string files in System.IO.Directory.GetFiles(outPath, "*"))
+            {
+                System.IO.File.Delete(files);
+            }
 
-            //RasterCodecs.Startup();
-            //RasterCodecs cs = new RasterCodecs();
+            RasterCodecs.Startup();
+            RasterCodecs cs = new RasterCodecs();
 
-            //int _pageCount = 0;
-            //string fnm = string.Empty;
+            int _pageCount = 0;
+            string fnm = string.Empty;
 
-            //// マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
-            //foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
-            //{
-            //    // 画像読み出す
-            //    RasterImage leadImg = cs.Load(files, 0, CodecsLoadByteOrder.BgrOrGray, 1, -1);
+            // マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
+            foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            {
+                // 画像読み出す
+                RasterImage leadImg = cs.Load(files, 0, CodecsLoadByteOrder.BgrOrGray, 1, -1);
 
-            //    // 頁数を取得
-            //    int _fd_count = leadImg.PageCount;
+                // 頁数を取得
+                int _fd_count = leadImg.PageCount;
 
-            //    // 頁ごとに読み出す
-            //    for (int i = 1; i <= _fd_count; i++)
-            //    {
-            //        // ファイル名（日付時間部分）
-            //        string fName = string.Format("{0:0000}", DateTime.Today.Year) +
-            //                string.Format("{0:00}", DateTime.Today.Month) +
-            //                string.Format("{0:00}", DateTime.Today.Day) +
-            //                string.Format("{0:00}", DateTime.Now.Hour) +
-            //                string.Format("{0:00}", DateTime.Now.Minute) +
-            //                string.Format("{0:00}", DateTime.Now.Second);
+                // 頁ごとに読み出す
+                for (int i = 1; i <= _fd_count; i++)
+                {
+                    // ファイル名（日付時間部分）
+                    string fName = string.Format("{0:0000}", DateTime.Today.Year) +
+                            string.Format("{0:00}", DateTime.Today.Month) +
+                            string.Format("{0:00}", DateTime.Today.Day) +
+                            string.Format("{0:00}", DateTime.Now.Hour) +
+                            string.Format("{0:00}", DateTime.Now.Minute) +
+                            string.Format("{0:00}", DateTime.Now.Second);
 
-            //        // ファイル名設定
-            //        _pageCount++;
-            //        fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
+                    // ファイル名設定
+                    _pageCount++;
+                    fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
 
-            //        // 画像保存
-            //        cs.Save(leadImg, fnm, RasterImageFormat.Tif, 0, i, i, 1, CodecsSavePageMode.Insert);
-            //    }
-            //}
+                    // 画像保存
+                    cs.Save(leadImg, fnm, RasterImageFormat.Tif, 0, i, i, 1, CodecsSavePageMode.Insert);
+                }
+            }
 
-            //// InPathフォルダの全てのtifファイルを削除する
-            //foreach (var files in System.IO.Directory.GetFiles(InPath, "*.tif"))
-            //{
-            //    System.IO.File.Delete(files);
-            //}
+            // InPathフォルダの全てのtifファイルを削除する
+            foreach (var files in System.IO.Directory.GetFiles(InPath, "*.tif"))
+            {
+                System.IO.File.Delete(files);
+            }
 
             return true;
         }
@@ -431,9 +444,18 @@ namespace JAFA_OCR.OCR
             // マルチTIFを分解して画像ファイルをTRAYフォルダへ保存する
             foreach (string files in System.IO.Directory.GetFiles(InPath, "*.tif"))
             {
+                //TIFFのImageCodecInfoを取得する
+                ImageCodecInfo ici = GetEncoderInfo("image/tiff");
+
+                if (ici == null)
+                {
+                    return false;
+                }
+
                 using (FileStream tifFS = new FileStream(files, FileMode.Open, FileAccess.Read))
                 {
                     Image gim = Image.FromStream(tifFS);
+
                     FrameDimension gfd = new FrameDimension(gim.FrameDimensionsList[0]);
 
                     //全体のページ数を得る
@@ -453,9 +475,16 @@ namespace JAFA_OCR.OCR
                         // ファイル名設定
                         fnm = outPath + fName + string.Format("{0:000}", _pageCount) + ".tif";
 
+                        EncoderParameters ep = null;
+                        
+                        // マルチTIFFではなく、1枚だけ保存する
+                        // 圧縮方法を指定する
+                        ep = new EncoderParameters(1);
+                        ep.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionCCITT4);
+                            
                         // 画像保存
-                        //gim.Save(@"C:\multitif\0902" + i.ToString().PadLeft(3, '0') + ".tif", ImageFormat.Tiff);
-                        gim.Save(fnm, ImageFormat.Tiff);
+                        gim.Save(fnm, ici, ep);
+                        ep.Dispose();
                     }
                 }
             }
@@ -467,6 +496,38 @@ namespace JAFA_OCR.OCR
             }
 
             return true;
+        }
+
+        //MimeTypeで指定されたImageCodecInfoを探して返す
+        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mineType)
+        {
+            //GDI+ に組み込まれたイメージ エンコーダに関する情報をすべて取得
+            System.Drawing.Imaging.ImageCodecInfo[] encs = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+            //指定されたMimeTypeを探して見つかれば返す
+            foreach (System.Drawing.Imaging.ImageCodecInfo enc in encs)
+            {
+                if (enc.MimeType == mineType)
+                {
+                    return enc;
+                }
+            }
+            return null;
+        }
+
+        //ImageFormatで指定されたImageCodecInfoを探して返す
+        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(System.Drawing.Imaging.ImageFormat f)
+        {
+            System.Drawing.Imaging.ImageCodecInfo[] encs = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+
+            foreach (System.Drawing.Imaging.ImageCodecInfo enc in encs)
+            {
+                if (enc.FormatID == f.Guid)
+                {
+                    return enc;
+                }
+            }
+
+            return null;
         }
 
         private void showMultiTiff(string tiffFileName)
