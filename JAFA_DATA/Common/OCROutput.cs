@@ -1395,7 +1395,8 @@ namespace JAFA_DATA.Common
             
             // 月間集計値を求める
             double sSHUKKIN = 0;    // 普通出勤日数
-            int sKYUSHU = 0;        // 法定休日出勤日数
+            int sKYUSHU = 0;        // 休日出勤日数
+            int sHOUTEIKYUSHU = 0;  // 法定休日出勤日数 2019/02/12
             int KYUJITSU = 0;       // 休日日数
             int sFURIKYU = 0;       // 振替休日日数            
             int sYUKYU = 0;         // 有休
@@ -1517,7 +1518,8 @@ namespace JAFA_DATA.Common
                         break;
 
                     case SHUKIN_HOUTEIKYUSHU:   // 法定休日出勤日数　：2018/11/18
-                        sKYUSHU++;
+                        //sKYUSHU++;    // コメント化 2019/02/12
+                        sHOUTEIKYUSHU++;    // 2019/02/12
                         break;
 
                     default:
@@ -1593,13 +1595,14 @@ namespace JAFA_DATA.Common
             //return jr;
 
             // 勤怠データ新規登録：2018/10/27
+            // 休日出勤日数の書き込みに未使用の「遅刻回数」フィールドを使用 : 2019/02/12
             jaAdp.Insert(Utility.StrtoInt(r.年.ToString() + r.月.ToString().PadLeft(2, '0')),
                          r.社員番号, r.社員名, Utility.StrtoInt(r.所属コード),
                          r.所属名, sSHUKKIN, workTimes, getZangyoTime(r.年, r.月, r.社員番号),(int)workShinya,
-                         sKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
+                         sHOUTEIKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
                          (kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + kKAKURI + kSONOTA + 
                          ksKAIGO + kSANZENSANGO + ksIKUJI), kKEKKON, kKIBIKI, kSEIRI, kKANGO, kKAIGO,
-                         kRISAI, kKAKURI, kSONOTA, ksKAIGO, kSANZENSANGO, ksIKUJI, global.FLGOFF, global.FLGOFF, 
+                         kRISAI, kKAKURI, kSONOTA, ksKAIGO, kSANZENSANGO, ksIKUJI, sKYUSHU.ToString(), global.FLGOFF, 
                          global.FLGOFF, global.FLGOFF, global.FLGOFF, r.交通費, r.日当, r.宿泊費,
                          (mr.Count() - KYUJITSU - sFURIKYU), 0, 0, 0);
         }

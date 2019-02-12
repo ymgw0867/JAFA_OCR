@@ -206,30 +206,42 @@ namespace JAFA_DATA.OCR
             {
                 dgvJa[cja, 0].Value = t.普通出勤日数;
                 dgvJa[cja, 1].Value = getHourMinute(t.実労働時間);
-                dgvJa[cja, 2].Value = getHourMinute(t.残業時間);
+
+
+                // 残業時間はBIG給与計算Pro勤怠データから取得 2019/02/12
+                adpB.FillByYYMMSCode(dts.BIG給与計算Pro勤怠データ, sYY, sMM, sID);
+                foreach (var m in dts.BIG給与計算Pro勤怠データ)
+                {
+                    dgvJa[cja, 2].Value = getHourMinute(m.普通残業時間);
+                }
+
+                //dgvJa[cja, 2].Value = getHourMinute(t.残業時間);
+
                 dgvJa[cja, 3].Value = getHourMinute(t.深夜時間);
-                dgvJa[cja, 4].Value = t.法定休日出勤日数;
-                dgvJa[cja, 5].Value = t.休日日数;
-                dgvJa[cja, 6].Value = t.振替休日日数;
+
+                dgvJa[cja, 4].Value = t.遅刻回数;           // 休日出勤日数挿入 2019/02/12
+                dgvJa[cja, 5].Value = t.法定休日出勤日数;    // 以下、1行ずらす 2019/02/12
+                dgvJa[cja, 6].Value = t.休日日数;
+                dgvJa[cja, 7].Value = t.振替休日日数;
                 //dgvJa[cja, 7].Value = t.有給半日;
-                dgvJa[cja, 7].Value = t.有給半日 / 0.5;
-                dgvJa[cja, 8].Value = t.有給休暇;
-                dgvJa[cja, 9].Value = t.欠勤日数;
-                dgvJa[cja, 10].Value = t.その他休暇休職合計日数;
-                dgvJa[cja, 11].Value = t.結婚休暇日数;
-                dgvJa[cja, 12].Value = t.忌引休暇日数;
-                dgvJa[cja, 13].Value = t.生理休暇日数;
-                dgvJa[cja, 14].Value = t.看護休暇日数;
-                dgvJa[cja, 15].Value = t.介護休暇日数;
-                dgvJa[cja, 16].Value = t.罹災休暇日数;
-                dgvJa[cja, 17].Value = t.隔離休暇日数;
-                dgvJa[cja, 18].Value = t.その他の特別休暇日数;
-                dgvJa[cja, 19].Value = t.介護休職日数;
-                dgvJa[cja, 20].Value = t.産前産後休暇日数;
-                dgvJa[cja, 21].Value = t.育児休職日数;
-                dgvJa[cja, 22].Value = t.要出勤日数;
-                dgvJa[cja, 23].Value = t.有休付与日数;
-                dgvJa[cja, 24].Value = t.有休繰越日数;
+                dgvJa[cja, 8].Value = t.有給半日 / 0.5;
+                dgvJa[cja, 9].Value = t.有給休暇;
+                dgvJa[cja, 10].Value = t.欠勤日数;
+                dgvJa[cja, 11].Value = t.その他休暇休職合計日数;
+                dgvJa[cja, 12].Value = t.結婚休暇日数;
+                dgvJa[cja, 13].Value = t.忌引休暇日数;
+                dgvJa[cja, 14].Value = t.生理休暇日数;
+                dgvJa[cja, 15].Value = t.看護休暇日数;
+                dgvJa[cja, 16].Value = t.介護休暇日数;
+                dgvJa[cja, 17].Value = t.罹災休暇日数;
+                dgvJa[cja, 18].Value = t.隔離休暇日数;
+                dgvJa[cja, 19].Value = t.その他の特別休暇日数;
+                dgvJa[cja, 20].Value = t.介護休職日数;
+                dgvJa[cja, 21].Value = t.産前産後休暇日数;
+                dgvJa[cja, 22].Value = t.育児休職日数;
+                dgvJa[cja, 23].Value = t.要出勤日数;
+                dgvJa[cja, 24].Value = t.有休付与日数;
+                dgvJa[cja, 25].Value = t.有休繰越日数;
             }
 
             dgvJa.CurrentCell = null;

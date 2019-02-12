@@ -720,6 +720,18 @@ namespace JAFA_DATA.OCR
                                 }
                             }
                         }
+
+                        /* 外国人技能実習生で休憩時間が1時間30分以外のとき警告
+                         * 2019/01/12
+                         */
+                        if (lblShainkbn.Text == global.GAIKOKUJINGINOU.ToString())
+                        {
+                            if ((Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) * 60 + Utility.StrtoInt(Utility.NulltoStr(dGV[cKSM, e.RowIndex].Value))) != 90)
+                            {
+                                dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                            }
+                        }
                     }
                     else
                     {

@@ -32971,7 +32971,7 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[3];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[4];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT ID, 年, 月, 社員番号, 就業日数, 出勤日数, 勤務時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 深夜残業時間, 休日残業時間, 法定休日残業数, その他1残業時間, その他2残業時間, 欠勤日数一般, 欠勤日数有給, 欠勤日数病欠, 欠勤日数特別, 欠勤日数代休, 遅刻時間, 早退時間, 遅刻回数, 早退回数, 変動支給項目金額項目, 変動支給項目回数項目, 変動控除項目金額項目, 変動控除項目回数項目, 前渡現物, 繰越貸越, 超過残業時間, 欠勤時間有給, 更新年月日 FROM BIG給与計算Pro勤怠データ";
@@ -32989,6 +32989,13 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
             this._commandCollection[2].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[3].Connection = this.Connection;
+            this._commandCollection[3].CommandText = @"SELECT ID, 年, 月, 社員番号, 就業日数, 出勤日数, 勤務時間, 時給者1勤務時間, 時給者2勤務時間, 時給者3勤務時間, 普通残業時間, 深夜残業時間, 休日残業時間, 法定休日残業数, その他1残業時間, その他2残業時間, 欠勤日数一般, 欠勤日数有給, 欠勤日数病欠, 欠勤日数特別, 欠勤日数代休, 遅刻時間, 早退時間, 遅刻回数, 早退回数, 変動支給項目金額項目, 変動支給項目回数項目, 変動控除項目金額項目, 変動控除項目回数項目, 前渡現物, 繰越貸越, 超過残業時間, 欠勤時間有給, 更新年月日 FROM BIG給与計算Pro勤怠データ where 年=? and 月=? and 社員番号=?";
+            this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("社員番号", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "社員番号", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -33057,6 +33064,66 @@ namespace JAFA_DATA.JAFA_OCRDataSetTableAdapters {
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable dataTable = new JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByYYMMSCode(JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable dataTable, global::System.Nullable<int> 年, global::System.Nullable<int> 月, global::System.Nullable<int> 社員番号) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((社員番号.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(社員番号.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable GetDataByYYMMSCode(global::System.Nullable<int> 年, global::System.Nullable<int> 月, global::System.Nullable<int> 社員番号) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((社員番号.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(社員番号.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable dataTable = new JAFA_OCRDataSet.BIG給与計算Pro勤怠データDataTable();
             this.Adapter.Fill(dataTable);

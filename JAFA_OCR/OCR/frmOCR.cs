@@ -75,7 +75,6 @@ namespace JAFA_OCR.OCR
                 }
             }
 
-
             // 帳票ライブラリV8.0.3によるOCR認識実行
             wrhs803LibOCR(jobname);
 
@@ -477,7 +476,6 @@ namespace JAFA_OCR.OCR
 
                         EncoderParameters ep = null;
                         
-                        // マルチTIFFではなく、1枚だけ保存する
                         // 圧縮方法を指定する
                         ep = new EncoderParameters(1);
                         ep.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionCCITT4);

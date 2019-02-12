@@ -66,6 +66,7 @@ namespace JAFA_DATA.OCR
 		JAFA_OCRDataSetTableAdapters.過去勤務票明細TableAdapter adpM = new JAFA_OCRDataSetTableAdapters.過去勤務票明細TableAdapter();
 		JAFA_OCRDataSetTableAdapters.出勤区分TableAdapter sAdp = new JAFA_OCRDataSetTableAdapters.出勤区分TableAdapter();
 		JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter adpJ = new JAFA_OCRDataSetTableAdapters.勤怠データTableAdapter();
+        JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter adpB = new JAFA_OCRDataSetTableAdapters.BIG給与計算Pro勤怠データTableAdapter();  // 2019/02/12
    
 		// データセットオブジェクト
 		JAFA_OCRDataSet dts = new JAFA_OCRDataSet();
@@ -380,27 +381,28 @@ namespace JAFA_DATA.OCR
 					gv[0, 1].Value = "実労働時間";
 					gv[0, 2].Value = "残業時間";
 					gv[0, 3].Value = "深夜時間";
-					gv[0, 4].Value = "法定休日出勤";
-					gv[0, 5].Value = "休日";
-					gv[0, 6].Value = "振替休日";
-					gv[0, 7].Value = "有休半日・回";
-					gv[0, 8].Value = "有休・回";
-					gv[0, 9].Value = "欠勤";
-					gv[0, 10].Value = "その他休暇合計";
-					gv[0, 11].Value = "結婚休暇";
-					gv[0, 12].Value = "忌引休暇";
-					gv[0, 13].Value = "生理休暇";
-					gv[0, 14].Value = "看護休暇";
-					gv[0, 15].Value = "介護休暇";
-					gv[0, 16].Value = "罹災休暇";
-					gv[0, 17].Value = "隔離休暇";
-					gv[0, 18].Value = "他特休";
-					gv[0, 19].Value = "介護休職";
-					gv[0, 20].Value = "産前産後";
-					gv[0, 21].Value = "育児休職";
-					gv[0, 22].Value = "要出勤日数";
-					gv[0, 23].Value = "有休付与";
-					gv[0, 24].Value = "有休繰越";
+					gv[0, 4].Value = "休日出勤";    // 行挿入 2019/02/12
+					gv[0, 5].Value = "法定休日出勤"; // 以下、１行下にずらす 2019/02/12
+                    gv[0, 6].Value = "休日";
+					gv[0, 7].Value = "振替休日";
+					gv[0, 8].Value = "有休半日・回";
+					gv[0, 9].Value = "有休・回";
+					gv[0, 10].Value = "欠勤";
+					gv[0, 11].Value = "その他休暇合計";
+					gv[0, 12].Value = "結婚休暇";
+					gv[0, 13].Value = "忌引休暇";
+					gv[0, 14].Value = "生理休暇";
+					gv[0, 15].Value = "看護休暇";
+					gv[0, 16].Value = "介護休暇";
+					gv[0, 17].Value = "罹災休暇";
+					gv[0, 18].Value = "隔離休暇";
+					gv[0, 19].Value = "他特休";
+					gv[0, 20].Value = "介護休職";
+					gv[0, 21].Value = "産前産後";
+					gv[0, 22].Value = "育児休職";
+					gv[0, 23].Value = "要出勤日数";
+					gv[0, 24].Value = "有休付与";
+					gv[0, 25].Value = "有休繰越";
 
 					// 編集の可否 : データ欄は編集可能とする
 					//gv.ReadOnly = true;
@@ -881,28 +883,28 @@ namespace JAFA_DATA.OCR
 			t.実労働時間 = getWorkMinute(Utility.NulltoStr(dgvJa[cja, 1].Value));
 			t.残業時間 = getWorkMinute(Utility.NulltoStr(dgvJa[cja, 2].Value));
 			t.深夜時間 = getWorkMinute(Utility.NulltoStr(dgvJa[cja, 3].Value));
-
-			t.法定休日出勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 4].Value));
-			t.休日日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 5].Value));
-			t.振替休日日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 6].Value));
-			t.有給半日 = Utility.StrtoDouble(Utility.NulltoStr(dgvJa[cja, 7].Value)) * 0.5;
-			t.有給休暇 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 8].Value));
-			t.欠勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 9].Value));
-			t.その他休暇休職合計日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 10].Value));
-			t.結婚休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 11].Value));
-			t.忌引休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 12].Value));
-			t.生理休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 13].Value));
-			t.看護休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 14].Value));
-			t.介護休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 15].Value));
-			t.罹災休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 16].Value));
-			t.隔離休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 17].Value));
-			t.その他の特別休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 18].Value));
-			t.介護休職日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 19].Value));
-			t.産前産後休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 20].Value));
-			t.育児休職日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 21].Value));
-			t.要出勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 22].Value));
-			t.有休付与日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 23].Value));
-			t.有休繰越日数 = Utility.StrtoDouble(Utility.NulltoStr(dgvJa[cja, 24].Value));
+			t.遅刻回数 = Utility.NulltoStr(dgvJa[cja, 4].Value);         // 休日出勤日数挿入 2019/02/12
+            t.法定休日出勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 5].Value));     // 以下、1行ずらす 2019/02/12
+            t.休日日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 6].Value));
+			t.振替休日日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 7].Value));
+			t.有給半日 = Utility.StrtoDouble(Utility.NulltoStr(dgvJa[cja, 8].Value)) * 0.5;
+			t.有給休暇 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 9].Value));
+			t.欠勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 10].Value));
+			t.その他休暇休職合計日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 11].Value));
+			t.結婚休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 12].Value));
+			t.忌引休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 13].Value));
+			t.生理休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 14].Value));
+			t.看護休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 15].Value));
+			t.介護休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 16].Value));
+			t.罹災休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 17].Value));
+			t.隔離休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 18].Value));
+			t.その他の特別休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 19].Value));
+			t.介護休職日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 20].Value));
+			t.産前産後休暇日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 21].Value));
+			t.育児休職日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 22].Value));
+			t.要出勤日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 23].Value));
+			t.有休付与日数 = Utility.StrtoInt(Utility.NulltoStr(dgvJa[cja, 24].Value));
+			t.有休繰越日数 = Utility.StrtoDouble(Utility.NulltoStr(dgvJa[cja, 25].Value));
 
 			adpJ.Update(dts.勤怠データ);
 		}
@@ -1314,7 +1316,7 @@ namespace JAFA_DATA.OCR
 					}
 
 					// JAメイトOCRデータのグリッドを順番に読む
-					for (int i = 0; i < 25; i++)
+					for (int i = 0; i < 26; i++)
 					{
 						oxlsSheet.Cells[i + 5, 12] = dgvJa[1, i].Value.ToString();
 					}
