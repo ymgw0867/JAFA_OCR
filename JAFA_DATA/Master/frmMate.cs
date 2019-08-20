@@ -422,13 +422,16 @@ namespace JAFA_DATA.Master
                     throw new Exception("調整年月日を入力してください");
                 }
 
-                // 有休付与月
-                int cm = dtChousei.Value.Month + 6;
-                if (cm > 12) cm = cm - 12;
-                if (cm != Utility.StrtoInt(txtFuyoTsuki.Text))
+                // 有休付与月 正社員以外を対象とする：2019/02/19
+                if (cmbShain.SelectedIndex > 1)
                 {
-                    txtFuyoTsuki.Focus();
-                    throw new Exception("有休付与月が正しくありません");
+                    int cm = dtChousei.Value.Month + 6;
+                    if (cm > 12) cm = cm - 12;
+                    if (cm != Utility.StrtoInt(txtFuyoTsuki.Text))
+                    {
+                        txtFuyoTsuki.Focus();
+                        throw new Exception("有休付与月が正しくありません");
+                    }
                 }
 
                 //// 週開始曜日

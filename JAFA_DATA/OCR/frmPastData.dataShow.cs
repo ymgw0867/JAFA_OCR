@@ -106,8 +106,13 @@ namespace JAFA_DATA.OCR
                 {
                     //ShowImage(global.pblImagePath + t.画像名.ToString());
 
-                    // openCV版：2018/11/11
-                    showImage_openCv(global.pblImagePath + t.画像名.ToString());
+                    // openCV版：2018/11/11, 2019/03/13
+                    string img = global.pblImagePath + t.画像名.ToString();
+
+                    if (System.IO.File.Exists(img))
+                    {
+                        showImage_openCv(img);
+                    }
                 }
 
                 // 表示色を初期化

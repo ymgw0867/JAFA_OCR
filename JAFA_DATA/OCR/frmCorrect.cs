@@ -791,8 +791,8 @@ namespace JAFA_DATA.OCR
 
 
 
-            // 訂正チェック
-            if (colName == cTeisei)
+            // 訂正チェック : 2019/03/14
+            if (colName == cTeisei || Utility.NulltoStr(dGV[cTeisei, e.RowIndex].Value) == "True")
             {
                 if (dGV[cTeisei, e.RowIndex].Value.ToString() == "True")
                 {

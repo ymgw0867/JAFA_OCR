@@ -162,7 +162,12 @@ namespace JAFA_DATA.OCR
             yAdp.Fill(dts.有給休暇付与マスター);
 
             // 有給休暇付与マスターより前回の年初有給残日数（当年初有給残日数）を求めます
-            foreach (var z in dts.有給休暇付与マスター.Where(a => (a.年 * 100 + a.月) != (global.cnfYear * 100 + global.cnfMonth)))
+            //foreach (var z in dts.有給休暇付与マスター.Where(a => (a.年 * 100 + a.月) != (global.cnfYear * 100 + global.cnfMonth)))   // 2019/05/09 コメント化
+
+            // 2019/05/09 対象年月までの付与実績を含む
+            foreach (var z in dts.有給休暇付与マスター
+                    .Where(a => (a.年 * 100 + a.月) <= (global.cnfYear * 100 + global.cnfMonth))
+                    .OrderBy(a => a.年).ThenBy(a => a.月))
             {
                 Array.Resize(ref yArray, cnt + 1);
 
@@ -667,6 +672,9 @@ namespace JAFA_DATA.OCR
                 global.ChangeValueStatus = true;
             }
 
+            double wTime = 0;   // 2019/03/14
+            OCRData ocr = new OCRData();    // 2019/03/14
+
             // 出勤時刻、退勤時刻
             if (colName == cSH || colName == cSM || colName == cEH || colName == cEM || 
                 colName == cKSH || colName == cKSM)
@@ -681,8 +689,8 @@ namespace JAFA_DATA.OCR
                         dGV[cEM, e.RowIndex].Value.ToString() != string.Empty)
                     {
                         // 出勤時刻、退勤時刻、休憩時間から実働時間を取得する
-                        OCRData ocr = new OCRData();
-                        double wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
+                        //OCRData ocr = new OCRData(); // 2019/03/14
+                        wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
                             dGV[cSM, e.RowIndex].Value.ToString(), 
                             dGV[cEH, e.RowIndex].Value.ToString(), 
                             dGV[cEM, e.RowIndex].Value.ToString(),
@@ -708,6 +716,77 @@ namespace JAFA_DATA.OCR
                             dGV[cWM, e.RowIndex].Value = string.Empty;
                             global.ChangeValueStatus = true;
                         }
+
+                        // 警告表示初期化 : 曜日を表示します（日曜日は色表示のため）
+                        dGV[cKSH, e.RowIndex].Style.BackColor = Color.Empty;
+                        dGV[cKSE, e.RowIndex].Style.BackColor = Color.Empty;
+                        dGV[cKSM, e.RowIndex].Style.BackColor = Color.Empty;
+                        YoubiSet(e.RowIndex);
+
+                        /*  正社員で残業時間２時間につき15分の休憩がないとき警告表示
+                         *  2019/03/14  
+                         */
+
+                        if (lblShainkbn.Text == global.SEISHAIN.ToString())
+                        {
+                            wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
+                                dGV[cSM, e.RowIndex].Value.ToString(),
+                                dGV[cEH, e.RowIndex].Value.ToString(),
+                                dGV[cEM, e.RowIndex].Value.ToString(), "0", "0");
+
+                            // 始業時刻から終業時刻が11時間超え (労働時間, 残業時間)
+                            // (540, 0)(660,2)(780,4)(900, 6)(1020, 8)
+                            if (wTime >= 660)
+                            {
+                                int z = (int)((wTime - 540) / 60 / 2);  // 残業2時間単位数
+                                int rest = z * 15 + 60; // 計算上の休憩時間・分
+
+                                // 記入休憩時間が計算上の休憩時間未満のとき
+                                if (Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) * 60 + Utility.StrtoInt(Utility.NulltoStr(dGV[cKSM, e.RowIndex].Value)) < rest)
+                                {
+                                    dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                    dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                                }
+                            }
+                        }
+
+
+                        /*  正社員、臨時社員、外国人技能実習生で始業時刻から終業時刻が6時間を超えて
+                         *  休憩時間が1時間未満のとき警告
+                         *  2019/03/14   
+                         */
+                        if (lblShainkbn.Text == global.SEISHAIN.ToString() ||
+                            lblShainkbn.Text == global.RINJISHAIN.ToString() ||
+                            lblShainkbn.Text == global.GAIKOKUJINGINOU.ToString())
+                        {
+                            wTime = ocr.getWorkTime(dGV[cSH, e.RowIndex].Value.ToString(),
+                                dGV[cSM, e.RowIndex].Value.ToString(),
+                                dGV[cEH, e.RowIndex].Value.ToString(),
+                                dGV[cEM, e.RowIndex].Value.ToString(), "0", "0");
+
+                            // 始業時刻から終業時刻が6時間超え
+                            if (wTime > 360)
+                            {
+                                // 休憩時間が1時間未満のとき
+                                if (Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) < 1)
+                                {
+                                    dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                    dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                                }
+                            }
+                        }
+
+                        /* 外国人技能実習生で休憩時間が1時間30分以外のとき警告
+                         * 2019/03/14  
+                         */
+                        if (lblShainkbn.Text == global.GAIKOKUJINGINOU.ToString())
+                        {
+                            if ((Utility.StrtoInt(Utility.NulltoStr(dGV[cKSH, e.RowIndex].Value)) * 60 + Utility.StrtoInt(Utility.NulltoStr(dGV[cKSM, e.RowIndex].Value))) != 90)
+                            {
+                                dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+                                dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+                            }
+                        }
                     }
                     else
                     {
@@ -728,38 +807,38 @@ namespace JAFA_DATA.OCR
                 }
             }
 
-            // 警告：休憩時間が1時間以上のときバックカラーを変える 2015/08/31
-            if (colName == cKSH || colName == cKSM)
-            {
-                int kh = 0;
-                int km = 0;
+            //// 警告：休憩時間が1時間以上のときバックカラーを変える 2015/08/31
+            //if (colName == cKSH || colName == cKSM)
+            //{
+            //    int kh = 0;
+            //    int km = 0;
 
-                if (dGV[cKSH, e.RowIndex].Value != null && dGV[cKSM, e.RowIndex].Value != null)
-                {
-                    kh = Utility.StrtoInt(dGV[cKSH, e.RowIndex].Value.ToString());
-                    km = Utility.StrtoInt(dGV[cKSM, e.RowIndex].Value.ToString());
+            //    if (dGV[cKSH, e.RowIndex].Value != null && dGV[cKSM, e.RowIndex].Value != null)
+            //    {
+            //        kh = Utility.StrtoInt(dGV[cKSH, e.RowIndex].Value.ToString());
+            //        km = Utility.StrtoInt(dGV[cKSM, e.RowIndex].Value.ToString());
 
-                    if ((kh * 60 + km) > 60)
-                    {
-                        dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
-                        dGV[cKSE, e.RowIndex].Style.BackColor = Color.LightPink;
-                        dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
-                    }
-                    else
-                    {
-                        // null処理を追加 2018/03/27
-                        if (Utility.NulltoStr(dGV[cWeek, e.RowIndex].Value) != "日")
-                        {
-                            dGV[cKSH, e.RowIndex].Style.BackColor = Color.White;
-                            dGV[cKSE, e.RowIndex].Style.BackColor = Color.White;
-                            dGV[cKSM, e.RowIndex].Style.BackColor = Color.White;
-                        }
-                    }
-                }
-            }
+            //        if ((kh * 60 + km) > 60)
+            //        {
+            //            dGV[cKSH, e.RowIndex].Style.BackColor = Color.LightPink;
+            //            dGV[cKSE, e.RowIndex].Style.BackColor = Color.LightPink;
+            //            dGV[cKSM, e.RowIndex].Style.BackColor = Color.LightPink;
+            //        }
+            //        else
+            //        {
+            //            // null処理を追加 2018/03/27
+            //            if (Utility.NulltoStr(dGV[cWeek, e.RowIndex].Value) != "日")
+            //            {
+            //                dGV[cKSH, e.RowIndex].Style.BackColor = Color.White;
+            //                dGV[cKSE, e.RowIndex].Style.BackColor = Color.White;
+            //                dGV[cKSM, e.RowIndex].Style.BackColor = Color.White;
+            //            }
+            //        }
+            //    }
+            //}
 
-            // 訂正チェック
-            if (colName == cTeisei)
+            // 訂正チェック : 2019/03/14
+            if (colName == cTeisei || Utility.NulltoStr(dGV[cTeisei, e.RowIndex].Value) == "True")
             {
                 if (dGV[cTeisei, e.RowIndex].Value.ToString() == "True")
                 {
@@ -1249,7 +1328,7 @@ namespace JAFA_DATA.OCR
                     Cursor = Cursors.WaitCursor;
 
                     // 週実績明細集計 : 2018/10/27
-                    kd.saveWeekData();
+                    kd.saveWeekData();                    
 
                     // JAメイト年休取得データ(mdb)作成 : 2018/10/27
                     kd.saveJAMateNenkyuData();
@@ -2237,8 +2316,13 @@ namespace JAFA_DATA.OCR
             //ShowImage(global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString());
 
             // openCV:2018/10/26
-            showImage_openCv(global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString());
+            string img = global.pblImagePath + Utility.NulltoStr(dGV[cImg, dGV.CurrentRow.Index].Value).ToString();
 
+            // 2019/03/13
+            if (System.IO.File.Exists(img))
+            {
+                showImage_openCv(img);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

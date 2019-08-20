@@ -188,6 +188,7 @@ namespace JAFA_DATA.OCR
                 dGV[cEM, mRow].Value = t.終了分;
                 dGV[cKSH, mRow].Value = t.休憩開始時;
                 dGV[cKSM, mRow].Value = t.休憩開始分;
+
                 //dGV[cWH, mRow].Value = t.実働時;
                 //dGV[cWM, mRow].Value = t.実働分;
 

@@ -798,7 +798,8 @@ namespace JAFA_DATA.Common
                 // 正社員が対象
                 adp.FillByShainkbn(dts.社員マスター, 1);
 
-                foreach (var t in dts.社員マスター.Where(a => a.退職区分 == global.flgOff))
+                // 職員コード 1008以降を対象とする 2019/02/19
+                foreach (var t in dts.社員マスター.Where(a => a.退職区分 == global.flgOff && a.職員コード > 1008))
                 {
                     // 入社時有給休暇日数が有給休暇付与マスター登録済みか調べる
                     if (yAdp.FillBySCodeYYMM(dts.有給休暇付与マスター, t.職員コード, t.調整年月日.Year, t.調整年月日.Month) == 0)

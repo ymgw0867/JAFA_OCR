@@ -873,6 +873,9 @@ namespace JAFA_DATA.Common
 
                 int rCnt = 1;
 
+                // 2019/03/13
+                wAdp.Fill(_dts.週実績明細);
+
                 // 確定勤務票ヘッダデータ取得
                 var h = _dts.確定勤務票ヘッダ.OrderBy(a => a.ヘッダID);
 
@@ -1236,9 +1239,11 @@ namespace JAFA_DATA.Common
             if (Utility.StrtoInt(sName[6]) == global.SEISHAIN &&
                 Utility.StrtoInt(sName[7]) == global.flgOn)
             {
-                if (workTimes > (int)(shugyoDays * 8 * 60))
+                //if (workTimes > (int)(shugyoDays * 8 * 60))   // 2019/03/13
+                if (workTimes > (int)(sSHUKKIN * 8 * 60))   // 出勤日数に訂正 2019/03/13
                 {
-                    fuZan = workTimes - (int)(shugyoDays * 8 * 60);
+                    //fuZan = workTimes - (int)(shugyoDays * 8 * 60);   // 2019/03/13
+                    fuZan = workTimes - (int)(sSHUKKIN * 8 * 60);     // 出勤日数に訂正 2019/03/13
                 }
             }
 
@@ -1596,9 +1601,10 @@ namespace JAFA_DATA.Common
 
             // 勤怠データ新規登録：2018/10/27
             // 休日出勤日数の書き込みに未使用の「遅刻回数」フィールドを使用 : 2019/02/12
+            // 時間外はゼロとする：2019/03/13
             jaAdp.Insert(Utility.StrtoInt(r.年.ToString() + r.月.ToString().PadLeft(2, '0')),
                          r.社員番号, r.社員名, Utility.StrtoInt(r.所属コード),
-                         r.所属名, sSHUKKIN, workTimes, getZangyoTime(r.年, r.月, r.社員番号),(int)workShinya,
+                         r.所属名, sSHUKKIN, workTimes, global.flgOff, (int)workShinya,
                          sHOUTEIKYUSHU, KYUJITSU, sFURIKYU, sHANKYU, sYUKYU, keKEKKIN,
                          (kKEKKON + kKIBIKI + kSEIRI + kKANGO + kKAIGO + kRISAI + kKAKURI + kSONOTA + 
                          ksKAIGO + kSANZENSANGO + ksIKUJI), kKEKKON, kKIBIKI, kSEIRI, kKANGO, kKAIGO,

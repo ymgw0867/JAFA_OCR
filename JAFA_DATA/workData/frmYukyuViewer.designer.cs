@@ -153,7 +153,7 @@
             // 
             this.btnSel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSel.Font = new System.Drawing.Font("Meiryo UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.btnSel.Location = new System.Drawing.Point(1036, 8);
+            this.btnSel.Location = new System.Drawing.Point(1036, 6);
             this.btnSel.Margin = new System.Windows.Forms.Padding(4);
             this.btnSel.Name = "btnSel";
             this.btnSel.Size = new System.Drawing.Size(89, 34);

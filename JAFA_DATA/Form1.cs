@@ -133,6 +133,11 @@ namespace JAFA_DATA
             frm.ShowDialog();
             this.Show();
         }
-        
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // キャプションにバージョンを追加　2019/02/13
+            this.Text += "  ver " + Application.ProductVersion;
+        }
     }
 }

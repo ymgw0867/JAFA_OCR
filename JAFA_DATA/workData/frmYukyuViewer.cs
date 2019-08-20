@@ -283,7 +283,8 @@ namespace JAFA_DATA.workData
                 int sYYMM = sYY * 100 + sMM;
                 int eYYMM = eYY * 100 + eMM;
 
-                adp.FillByDateSpan(dts.勤怠データ, sYYMM, eYYMM); // 2018/11/11
+                //adp.FillByDateSpan(dts.勤怠データ, sYYMM, eYYMM); // 2018/11/11, 2019/03/14 コメント化
+                adp.Fill(dts.勤怠データ);    // 2019/03/14
                 var s = dts.勤怠データ.Where(a => a.対象月度 >= sYYMM && a.対象月度 <= eYYMM)
                                            .OrderBy(a => a.対象職員コード)
                                            .ThenBy(a => a.対象月度);
@@ -326,7 +327,18 @@ namespace JAFA_DATA.workData
                         if (dts.社員マスター.Any(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.ToString())))
                         {
                             var ss = dts.社員マスター.Single(a => a.職員コード == Utility.StrtoInt(t.対象職員コード.ToString()));
-                            yfMonth = ss.有給付与月;
+
+                            // 2019/02/19
+                            if (ss.社員区分 == global.SEISHAIN)
+                            {
+                                yfMonth = 4;
+                            }
+                            else
+                            {
+                                yfMonth = ss.有給付与月;
+                            }
+
+                            //yfMonth = ss.有給付与月;
                         }
 
                         // 当年初有休残日数取得
